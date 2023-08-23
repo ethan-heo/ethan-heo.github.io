@@ -1,0 +1,29 @@
+{
+  "printWidth": 120,
+  "endOfLine": "lf",
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^@presentation",
+    "^@presentation/(.*)$",
+    "^@adapter",
+    "^@adapter/(.*)$",
+    "^@repository",
+    "^@repository/(.*)$",
+    "^@api",
+    "^@api/(.*)$",
+    "^@domain",
+    "^@domain/(.*)$",
+    "^@shared",
+    "^@shared/(.*)$",
+    "^@server/(.*)$",
+    "^@config",
+    "^@config/(.*)$",
+    "([.]svg|[.]jpg|[.]jpeg|[.]gif|[.]png)$",
+    "^[./]",
+    "^[./](?!.*([.]css|[.]scss))",
+    "([.]css|[.]scss)$"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
+}
