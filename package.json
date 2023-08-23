@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier": "prettier -w **/*.ts"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.11",
@@ -24,6 +25,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
-    "@trivago/prettier-plugin-sort-imports": "^4.2.0"
+    "@trivago/prettier-plugin-sort-imports": "^4.2.0",
+    "prettier": "^3.0.2"
   }
 }
