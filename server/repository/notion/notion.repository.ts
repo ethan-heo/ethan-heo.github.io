@@ -1,6 +1,6 @@
-import { NotionApi } from "@api/notion/notion.types";
+import { NotionApi } from "@server/api/notion/notion.types";
 
-import { NotionRepository } from "@domain/notion/notion.repository";
+import { NotionRepository } from "@server/domain/notion/notion.repository";
 
 import { formatNotionDatabases } from "./operations/format-notion-databases";
 

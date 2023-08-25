@@ -1,6 +1,6 @@
 import { Client } from "@notionhq/client";
 
-import { NotionDatabaseResult } from "@domain/notion/notion.model";
+import { NotionDatabaseResult } from "@server/domain/notion/notion.model";
 
 import { NotionApi } from "./notion.types";
 

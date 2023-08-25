@@ -1,20 +1,23 @@
-"use client";
+import ArticleList from "@client/presentation/pages/main/ArticleList";
 
-import ArticleList from "@presentation/pages/main/ArticleList";
+import { NotionModule } from "@server/adapter/notion.module";
 
-import { NotionModule } from "@adapter/notion.module";
-
-import withReactQueryHydration from "@shared/context/react-query/withReactQueryHydration";
+import withReactQueryHydration from "@client/shared/context/react-query/withReactQueryHydration";
 
 function Home() {
-  return <main className="flex min-h-screen flex-col items-center justify-between p-24">{/* <ArticleList /> */}</main>;
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <ArticleList />
+    </main>
+  );
 }
 
 export default withReactQueryHydration(Home, {
-  key: "databases",
+  key: "posts",
   callback: () => {
+    // server 모듈을 가져와서 사용하는 것이 맞을까?
     return NotionModule.getNotionDatabases({
-      database_id: process.env.NOTION_DATABASE_ID as string,
+      database_id: process.env.NEXT_PUBLIC_NOTION_DATABASE_ID as string,
     });
   },
 });

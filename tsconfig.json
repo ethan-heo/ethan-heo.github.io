@@ -13,25 +13,35 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "typeRoots": ["./node_modules/@types", "./types"],
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@presentation/*": ["./client/presentation/*"],
-      "@presentation": ["./client/presentation"],
-      "@adapter/*": ["./client/adapter/*"],
-      "@adapter": ["./client/adapter"],
-      "@repository/*": ["./client/repository/*"],
-      "@repository": ["./client/repository"],
-      "@api/*": ["./client/api/*"],
-      "@api": ["./client/api"],
-      "@domain/*": ["./client/domain/*"],
-      "@domain": ["./client/domain"],
-      "@shared/*": ["./client/shared/*"],
-      "@shared": ["./client/shared"],
-      "@server/*": ["./server/*"]
+      "@client/presentation/*": ["./client/presentation/*"],
+      "@client/presentation": ["./client/presentation"],
+      "@client/adapter/*": ["./client/adapter/*"],
+      "@client/adapter": ["./client/adapter"],
+      "@client/repository/*": ["./client/repository/*"],
+      "@client/repository": ["./client/repository"],
+      "@client/api/*": ["./client/api/*"],
+      "@client/api": ["./client/api"],
+      "@client/domain/*": ["./client/domain/*"],
+      "@client/domain": ["./client/domain"],
+      "@client/shared/*": ["./client/shared/*"],
+      "@client/shared": ["./client/shared"],
+      "@server/adapter/*": ["./server/adapter/*"],
+      "@server/adapter": ["./server/adapter"],
+      "@server/repository/*": ["./server/repository/*"],
+      "@server/repository": ["./server/repository"],
+      "@server/api/*": ["./server/api/*"],
+      "@server/api": ["./server/api"],
+      "@server/domain/*": ["./server/domain/*"],
+      "@server/domain": ["./server/domain"],
+      "@server/shared/*": ["./server/shared/*"],
+      "@server/shared": ["./server/shared"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

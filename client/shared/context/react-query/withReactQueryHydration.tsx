@@ -1,5 +1,5 @@
+import { Hydrate, dehydrate } from "@tanstack/react-query";
 import React from "react";
-import { Hydrate, QueryClient, dehydrate } from "react-query";
 
 import getQueryClient from "./getQueryClient";
 
@@ -8,13 +8,10 @@ type ReactQueryPrefetch = {
   callback: () => Promise<any>;
 };
 
-function withReactQueryHydration(
-  Component: React.FunctionComponent<{ queryClient: QueryClient }>,
-  prefetch: ReactQueryPrefetch,
-) {
+function withReactQueryHydration(Component: React.FunctionComponent, prefetch: ReactQueryPrefetch) {
   async function WithReactQueryHydration({ ...props }: any) {
     const queryClient = getQueryClient();
-    await queryClient.prefetchQuery(prefetch.key, prefetch.callback);
+    await queryClient.prefetchQuery([prefetch.key], prefetch.callback);
     const dehydratedState = dehydrate(queryClient);
 
     return (

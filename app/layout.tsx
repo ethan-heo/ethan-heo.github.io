@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import ReactQueryProvider from "@shared/context/react-query/ReactQueryProvider";
+import ReactQueryProvider from "@client/shared/context/react-query/ReactQueryProvider";
 
 import "./globals.css";
 

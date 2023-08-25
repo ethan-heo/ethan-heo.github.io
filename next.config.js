@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   publicRuntimeConfig: {
-    notion_key: process.env.NOTION_KEY,
-    notion_database: process.env.NOTION_DATABASE_ID,
+    notion_key: process.env.NEXT_PUBLIC_NOTION_KEY,
+    notion_database: process.env.NEXT_PUBLIC_NOTION_DATABASE_ID,
   },
 };
 
