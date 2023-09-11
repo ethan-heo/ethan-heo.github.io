@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import ReactQueryProvider from "@client/shared/context/react-query/ReactQueryProvider";
+import "@client/presentation/sass/global/global.scss";
+import "@client/presentation/sass/global/variables.scss";
 
-import "./globals.css";
+import ReactQueryProvider from "@client/shared/context/react-query/ReactQueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,6 +16,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
       <body className={inter.className}>
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>

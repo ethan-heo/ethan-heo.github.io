@@ -1,4 +1,4 @@
-import ArticleList from "@client/presentation/pages/main/ArticleList";
+import Posts from "@client/presentation/pages/main/Posts/Posts";
 
 import { NotionModule } from "@server/adapter/notion.module";
 
@@ -7,7 +7,7 @@ import withReactQueryHydration from "@client/shared/context/react-query/withReac
 function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <ArticleList />
+      <Posts />
     </main>
   );
 }
