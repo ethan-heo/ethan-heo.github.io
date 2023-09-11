@@ -10,4 +10,9 @@ export const getNotionRepository = (notionApi: NotionApi): NotionRepository => (
 
     return formatNotionDatabases(originalDatabase);
   },
+  searchNotionDatabases: async (params) => {
+    const searchedDatabase = await notionApi.searchNotionDatabases(params);
+
+    return formatNotionDatabases(searchedDatabase);
+  },
 });

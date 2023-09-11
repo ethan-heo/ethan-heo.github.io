@@ -2,6 +2,8 @@ import {
   PageObjectResponse,
   QueryDatabaseParameters,
   QueryDatabaseResponse,
+  SearchParameters,
+  SearchResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 
 export type NotionDatabaseStatus = "Ready" | "Doing" | "Done";
@@ -52,3 +54,13 @@ export type NotionDatabaseResult = OverrideObject<
 >;
 
 export type OriginalNotionDatabaseResult = QueryDatabaseResponse;
+
+export type SearchNotionDatabasePagingInfo = SearchParameters;
+
+export type SearchNotionDatabaseResult = SearchResponse;
+
+export type SearchQueryParams = {
+  query?: string;
+  start_cursor?: string;
+  page_size?: number;
+};
