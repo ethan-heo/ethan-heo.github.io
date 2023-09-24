@@ -1,6 +1,6 @@
-import { GetPostPagingInfo, GetSearchPagingInfo, Post } from "@client/domain/posts/posts.model";
+import { GetPostsParams, GetSearchPostParams, PostResult } from "@client/domain/posts/posts.model";
 
 export type PostApi = {
-  getPosts: (params: GetPostPagingInfo) => Promise<Post>;
-  searchPosts: (params: GetSearchPagingInfo) => Promise<Post>;
+  getPosts: (params: GetPostsParams) => Promise<PostResult>;
+  searchPosts: (params: GetSearchPostParams) => Promise<PostResult>;
 };

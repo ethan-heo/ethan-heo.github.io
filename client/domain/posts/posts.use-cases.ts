@@ -1,9 +1,7 @@
-import { NotionDatabasePagingInfo } from "@server/domain/notion/notion.model";
-
-import { GetSearchPagingInfo, Post } from "./posts.model";
+import { GetPostsParams, GetSearchPostParams, PostResult } from "./posts.model";
 import { PostsRepository } from "./posts.repository";
 
-type GetPosts = UseCaseMultiParamsAndPromiseResult<NotionDatabasePagingInfo, Post>;
+type GetPosts = UseCaseMultiParamsAndPromiseResult<GetPostsParams, PostResult>;
 
 export const getPostsUseCase = (postsRepository: PostsRepository): GetPosts => ({
   execute: (params) => {
@@ -11,7 +9,7 @@ export const getPostsUseCase = (postsRepository: PostsRepository): GetPosts => (
   },
 });
 
-type SearchPosts = UseCaseMultiParamsAndPromiseResult<GetSearchPagingInfo, Post>;
+type SearchPosts = UseCaseMultiParamsAndPromiseResult<GetSearchPostParams, PostResult>;
 
 export const searchPostsUseCase = (postsRepository: PostsRepository): SearchPosts => ({
   execute: (params) => {

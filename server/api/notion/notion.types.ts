@@ -1,10 +1,11 @@
 import {
-  NotionDatabasePagingInfo,
-  NotionDatabaseResult,
-  SearchNotionDatabasePagingInfo,
-} from "@server/domain/notion/notion.model";
+  NotionDatabaseParams,
+  NotionDatabaseResponse,
+  NotionSearchDatabaseParams,
+  NotionSearchDatabaseResponse,
+} from "@server/domain/notion/model";
 
 export type NotionApi = {
-  getNotionDatabases: (params: NotionDatabasePagingInfo) => Promise<NotionDatabaseResult>;
-  searchNotionDatabases: (params: SearchNotionDatabasePagingInfo) => Promise<NotionDatabaseResult>;
+  getNotionDatabases: (params: NotionDatabaseParams) => Promise<NotionDatabaseResponse>;
+  searchNotionDatabases: (params: NotionSearchDatabaseParams) => Promise<NotionSearchDatabaseResponse>;
 };

@@ -1,7 +1,17 @@
-import { NotionDatabasePagingInfo, NotionDatabases, SearchQueryParams } from "@server/domain/notion/notion.model";
+import {
+  NotionDatabaseParams,
+  NotionDatabaseResult,
+  NotionPageDatabaseResponse,
+  NotionSearchDatabaseParams,
+  NotionSearchDatabaseResponse,
+} from "@server/domain/notion/model";
 
-export type Post = NotionDatabases;
+export type PostResult = NotionDatabaseResult;
 
-export type GetPostPagingInfo = NotionDatabasePagingInfo;
+export type GetPostsParams = NotionDatabaseParams;
 
-export type GetSearchPagingInfo = SearchQueryParams;
+export type GetPostsResponse = NotionPageDatabaseResponse;
+
+export type GetSearchPostParams = NotionSearchDatabaseParams;
+
+export type GetSearchPostResponse = NotionSearchDatabaseResponse;

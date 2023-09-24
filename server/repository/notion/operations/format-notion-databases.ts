@@ -1,6 +1,6 @@
-import { NotionDatabaseResult, NotionDatabases } from "@server/domain/notion/notion.model";
+import { NotionDatabaseResponse, NotionDatabaseResult } from "@server/domain/notion/model";
 
-export const formatNotionDatabases = (notionDatabase: NotionDatabaseResult): NotionDatabases => {
+export const formatNotionDatabases = (notionDatabase: NotionDatabaseResponse): NotionDatabaseResult => {
   const { has_more, next_cursor, results } = notionDatabase;
 
   return {

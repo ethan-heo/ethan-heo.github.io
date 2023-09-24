@@ -1,6 +1,6 @@
-import { GetPostPagingInfo, GetSearchPagingInfo, Post } from "./posts.model";
+import { GetPostsParams, GetSearchPostParams, PostResult } from "./posts.model";
 
 export type PostsRepository = {
-  getPosts: (params: GetPostPagingInfo) => Promise<Post>;
-  searchPosts: (params: GetSearchPagingInfo) => Promise<Post>;
+  getPosts: (params: GetPostsParams) => Promise<PostResult>;
+  searchPosts: (params: GetSearchPostParams) => Promise<PostResult>;
 };

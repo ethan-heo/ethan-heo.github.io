@@ -1,7 +1,7 @@
-import { NotionDatabasePagingInfo, NotionDatabases, SearchNotionDatabasePagingInfo } from "./notion.model";
+import { NotionDatabaseParams, NotionDatabaseResult, NotionSearchDatabaseParams } from "./model";
 import { NotionRepository } from "./notion.repository";
 
-type GetNotionDatabases = UseCaseMultiParamsAndPromiseResult<NotionDatabasePagingInfo, NotionDatabases>;
+type GetNotionDatabases = UseCaseMultiParamsAndPromiseResult<NotionDatabaseParams, NotionDatabaseResult>;
 
 export const getNotionDatabasesUseCase = (notionRepository: NotionRepository): GetNotionDatabases => ({
   execute: (params) => {
@@ -9,7 +9,7 @@ export const getNotionDatabasesUseCase = (notionRepository: NotionRepository): G
   },
 });
 
-type GetSearchingDatabases = UseCaseMultiParamsAndPromiseResult<SearchNotionDatabasePagingInfo, NotionDatabases>;
+type GetSearchingDatabases = UseCaseMultiParamsAndPromiseResult<NotionSearchDatabaseParams, NotionDatabaseResult>;
 
 export const searchNotionDatabasesUseCase = (notionRepository: NotionRepository): GetSearchingDatabases => ({
   execute: (params) => {
