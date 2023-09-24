@@ -9,4 +9,7 @@ export const getPostsRepository = (postsApi: PostApi): PostsRepository => ({
   searchPosts: (params) => {
     return postsApi.searchPosts(params);
   },
+  getPost: (params) => {
+    return postsApi.getPost(params);
+  },
 });

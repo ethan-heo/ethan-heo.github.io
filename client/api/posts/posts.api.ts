@@ -9,4 +9,7 @@ export const getPostApi = (axiosInstance: AxiosInstance): PostApi => ({
   searchPosts: async (params) => {
     return (await axiosInstance.get("/search", { params })).data;
   },
+  getPost: async (params) => {
+    return (await axiosInstance.get("/post", { params })).data;
+  },
 });

@@ -1,7 +1,7 @@
-import { NotionPageResponse, NotionPageResult } from "@server/domain/notion/model";
+import { NotionPageResponse, NotionPageResult } from "@server/domain/notion/model/notion.model";
 
-export const formatNotionPage = (notionDatabase: NotionPageResponse): NotionPageResult => {
-  const { created_time, last_edited_time, id, archived } = notionDatabase;
+export const formatNotionPage = (notionPage: NotionPageResponse): NotionPageResult => {
+  const { created_time, last_edited_time, id, archived } = notionPage;
 
   return {
     createdTime: created_time,

@@ -1,7 +1,7 @@
-import { GetPostsParams, GetSearchPostParams, PostResult } from "./posts.model";
+import { GetPostParams, GetPostResponse, GetPostsParams, GetPostsResponse, GetSearchPostParams } from "./posts.model";
 import { PostsRepository } from "./posts.repository";
 
-type GetPosts = UseCaseMultiParamsAndPromiseResult<GetPostsParams, PostResult>;
+type GetPosts = UseCaseMultiParamsAndPromiseResult<GetPostsParams, GetPostsResponse>;
 
 export const getPostsUseCase = (postsRepository: PostsRepository): GetPosts => ({
   execute: (params) => {
@@ -9,10 +9,18 @@ export const getPostsUseCase = (postsRepository: PostsRepository): GetPosts => (
   },
 });
 
-type SearchPosts = UseCaseMultiParamsAndPromiseResult<GetSearchPostParams, PostResult>;
+type SearchPosts = UseCaseMultiParamsAndPromiseResult<GetSearchPostParams, GetPostsResponse>;
 
 export const searchPostsUseCase = (postsRepository: PostsRepository): SearchPosts => ({
   execute: (params) => {
     return postsRepository.searchPosts(params);
+  },
+});
+
+type GetPostUseCase = UseCaseMultiParamsAndPromiseResult<GetPostParams, GetPostResponse>;
+
+export const getPostUseCase = (postsRepository: PostsRepository): GetPostUseCase => ({
+  execute: (params) => {
+    return postsRepository.getPost(params);
   },
 });

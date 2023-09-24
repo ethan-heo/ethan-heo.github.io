@@ -1,3 +1,5 @@
+import { OriginalNotionBlockListResponse, OriginalNotionBlockResponse } from "./original-notion.model";
+
 export type MyNotionDatabaseStatus = "Ready" | "Doing" | "Done";
 
 export type MyNotionDatabaseResult = {
@@ -18,3 +20,7 @@ export type MyNotionPageResult = {
   id: string;
   archived: boolean;
 };
+
+export type MyNotionBlockListResult = (OriginalNotionBlockResponse & {
+  children: OriginalNotionBlockResponse[];
+})[];

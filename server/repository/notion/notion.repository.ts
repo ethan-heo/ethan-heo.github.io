@@ -4,6 +4,7 @@ import { NotionRepository } from "@server/domain/notion/notion.repository";
 
 import { formatNotionDatabases } from "./operations/format-notion-databases";
 import { formatNotionPage } from "./operations/format-notion-page";
+import { getNotionBlockList } from "./operations/get-notion-block-list";
 
 export const getNotionRepository = (notionApi: NotionApi): NotionRepository => ({
   getNotionDatabases: async (params) => {
@@ -20,5 +21,8 @@ export const getNotionRepository = (notionApi: NotionApi): NotionRepository => (
     const originalPage = await notionApi.getNotionPage(params);
 
     return formatNotionPage(originalPage);
+  },
+  getNotionBlockList: async (params) => {
+    return await getNotionBlockList(notionApi, params);
   },
 });

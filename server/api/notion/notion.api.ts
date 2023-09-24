@@ -1,6 +1,11 @@
 import { Client } from "@notionhq/client";
 
-import { NotionDatabaseResponse, NotionPageResponse, NotionSearchResponse } from "@server/domain/notion/model";
+import {
+  NotionBlockListResponse,
+  NotionDatabaseResponse,
+  NotionPageResponse,
+  NotionSearchResponse,
+} from "@server/domain/notion/model/notion.model";
 
 import { NotionApi } from "./notion.types";
 
@@ -13,5 +18,8 @@ export const getNotionApi = (notionInstance: Client): NotionApi => ({
   },
   searchNotionDatabases: (params) => {
     return notionInstance.search(params) as unknown as Promise<NotionSearchResponse>;
+  },
+  getNotionBlockList: (params) => {
+    return notionInstance.blocks.children.list(params) as unknown as Promise<NotionBlockListResponse>;
   },
 });

@@ -3,6 +3,7 @@ import { getNotionRepository } from "@server/repository/notion/notion.repository
 import { getNotionApi } from "@server/api/notion/notion.api";
 
 import {
+  getNotionBlockList,
   getNotionDatabasesUseCase,
   getNotionPageUseCase,
   searchNotionDatabasesUseCase,
@@ -17,4 +18,5 @@ export const NotionModule = {
   getNotionDatabases: getNotionDatabasesUseCase(notionRepository).execute,
   searchNotionDatabases: searchNotionDatabasesUseCase(notionRepository).execute,
   getNotionPage: getNotionPageUseCase(notionRepository).execute,
+  getNotionBlockList: getNotionBlockList(notionRepository).execute,
 };
