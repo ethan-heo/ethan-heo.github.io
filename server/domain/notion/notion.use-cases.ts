@@ -1,4 +1,10 @@
-import { NotionDatabaseParams, NotionDatabaseResult, NotionSearchDatabaseParams } from "./model";
+import {
+  NotionDatabaseParams,
+  NotionDatabaseResult,
+  NotionPageParams,
+  NotionPageResult,
+  NotionSearchParams,
+} from "./model";
 import { NotionRepository } from "./notion.repository";
 
 type GetNotionDatabases = UseCaseMultiParamsAndPromiseResult<NotionDatabaseParams, NotionDatabaseResult>;
@@ -9,10 +15,18 @@ export const getNotionDatabasesUseCase = (notionRepository: NotionRepository): G
   },
 });
 
-type GetSearchingDatabases = UseCaseMultiParamsAndPromiseResult<NotionSearchDatabaseParams, NotionDatabaseResult>;
+type GetSearchingDatabases = UseCaseMultiParamsAndPromiseResult<NotionSearchParams, NotionDatabaseResult>;
 
 export const searchNotionDatabasesUseCase = (notionRepository: NotionRepository): GetSearchingDatabases => ({
   execute: (params) => {
     return notionRepository.searchNotionDatabases(params);
+  },
+});
+
+type GetNotionPage = UseCaseMultiParamsAndPromiseResult<NotionPageParams, NotionPageResult>;
+
+export const getNotionPageUseCase = (notionRepository: NotionRepository): GetNotionPage => ({
+  execute: (params) => {
+    return notionRepository.getNotionPage(params);
   },
 });

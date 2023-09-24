@@ -1,4 +1,5 @@
 import {
+  GetPageParameters,
   PageObjectResponse,
   QueryDatabaseParameters,
   QueryDatabaseResponse,
@@ -10,8 +11,10 @@ export type OriginalNotionDatabaseParams = QueryDatabaseParameters;
 
 export type OriginalNotionDatabaseResponse = QueryDatabaseResponse;
 
-export type OriginalNotionSearchDatabaseParams = SearchParameters;
+export type OriginalNotionSearchParams = SearchParameters;
 
-export type OriginalNotionSearchDatabaseResponse = SearchResponse;
+export type OriginalNotionSearchResponse = SearchResponse;
 
-export type OriginalNotionPageDatabaseResponse = PageObjectResponse;
+export type OriginalNotionPageParams = GetPageParameters;
+
+export type OriginalNotionPageResponse = PageObjectResponse;

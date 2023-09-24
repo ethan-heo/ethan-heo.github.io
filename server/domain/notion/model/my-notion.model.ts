@@ -11,3 +11,10 @@ export type MyNotionDatabaseResult = {
     lastEditedTime: string;
   }[];
 };
+
+export type MyNotionPageResult = {
+  createdTime: string;
+  lastEditedTime: string;
+  id: string;
+  archived: boolean;
+};

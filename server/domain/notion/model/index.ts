@@ -1,11 +1,12 @@
-import { MyNotionDatabaseResult, MyNotionDatabaseStatus } from "./my-notion.model";
+import { MyNotionDatabaseResult, MyNotionDatabaseStatus, MyNotionPageResult } from "./my-notion.model";
 import { NotionNameProperty, NotionStatusProperty } from "./notion-types";
 import {
   OriginalNotionDatabaseParams,
   OriginalNotionDatabaseResponse,
-  OriginalNotionPageDatabaseResponse,
-  OriginalNotionSearchDatabaseParams,
-  OriginalNotionSearchDatabaseResponse,
+  OriginalNotionPageParams,
+  OriginalNotionPageResponse,
+  OriginalNotionSearchParams,
+  OriginalNotionSearchResponse,
 } from "./notion.model";
 
 export type NotionDatabaseProperties = NotionStatusProperty<MyNotionDatabaseStatus> & NotionNameProperty;
@@ -17,7 +18,7 @@ export type NotionDatabaseResponse = OverrideObject<
   "results",
   {
     results: OverrideObject<
-      OriginalNotionPageDatabaseResponse,
+      OriginalNotionPageResponse,
       "properties",
       {
         properties: NotionDatabaseProperties;
@@ -26,14 +27,14 @@ export type NotionDatabaseResponse = OverrideObject<
   }
 >;
 
-export type NotionSearchDatabaseParams = OriginalNotionSearchDatabaseParams;
+export type NotionSearchParams = OriginalNotionSearchParams;
 
-export type NotionSearchDatabaseResponse = OverrideObject<
-  OriginalNotionSearchDatabaseResponse,
+export type NotionSearchResponse = OverrideObject<
+  OriginalNotionSearchResponse,
   "results",
   {
     results: OverrideObject<
-      OriginalNotionPageDatabaseResponse,
+      OriginalNotionPageResponse,
       "properties",
       {
         properties: NotionDatabaseProperties;
@@ -42,12 +43,10 @@ export type NotionSearchDatabaseResponse = OverrideObject<
   }
 >;
 
-export type NotionPageDatabaseResponse = OriginalNotionPageDatabaseResponse;
+export type NotionPageParams = OriginalNotionPageParams;
+
+export type NotionPageResponse = OriginalNotionPageResponse;
 
 export type NotionDatabaseResult = MyNotionDatabaseResult;
 
-export type NotionSearchParams = {
-  query?: string;
-  start_cursor?: string;
-  page_size?: number;
-};
+export type NotionPageResult = MyNotionPageResult;
