@@ -5,11 +5,13 @@ import { NotionModule } from "@server/adapter/notion.module";
 
 import { NotionPageParams } from "@server/domain/notion/model/notion.model";
 
+import { getQueries } from "@server/shared/utils/url.utils";
+
 export async function GET(req: NextApiRequest) {
-  const query = req.query as NotionPageParams;
+  const query = getQueries<keyof NotionPageParams>(req.url as string, "page_id");
 
   const page = await NotionModule.getNotionPage({
-    ...query,
+    page_id: query.get("page_id") as string,
   });
   const blocks = await NotionModule.getNotionBlockList({
     block_id: page.id,

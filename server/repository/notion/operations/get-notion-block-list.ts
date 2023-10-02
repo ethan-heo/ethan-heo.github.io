@@ -22,7 +22,6 @@ export async function getNotionBlockList(notionApi: NotionApi, params: NotionBlo
     blocks.map(async (block) => {
       if (block.has_children) {
         const children = (await getNotionBlockList(notionApi, {
-          ..._params,
           block_id: block.id,
         })) as NotionBlockListResult;
         return {
