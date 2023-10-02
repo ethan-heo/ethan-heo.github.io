@@ -44,6 +44,6 @@
       "@server/shared": ["./server/shared"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.{tsx,ts}", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.{tsx,ts}", "app/**/*.{tsx,ts}", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }

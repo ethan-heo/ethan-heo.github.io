@@ -3,6 +3,7 @@ import {
   NotionBlockListResult,
   NotionDatabaseParams,
   NotionDatabaseResult,
+  NotionOnlyDatabaseResult,
   NotionPageParams,
   NotionPageResult,
   NotionSearchParams,
@@ -38,5 +39,13 @@ type GetNotionBlockListUseCase = UseCaseMultiParamsAndPromiseResult<NotionBlockL
 export const getNotionBlockList = (notionRepository: NotionRepository): GetNotionBlockListUseCase => ({
   execute: (params) => {
     return notionRepository.getNotionBlockList(params);
+  },
+});
+
+type GetNotionDatabaseAll = UseCaseMultiParamsAndPromiseResult<NotionDatabaseParams, NotionOnlyDatabaseResult>;
+
+export const getNotionDatabaseAllUseCase = (notionRepository: NotionRepository): GetNotionDatabaseAll => ({
+  execute: (params) => {
+    return notionRepository.getNotionDatabaseAll(params);
   },
 });

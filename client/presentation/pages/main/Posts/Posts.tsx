@@ -1,7 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import Link from "next/link";
+import React from "react";
 
 import { PostsModule } from "@client/adapter/posts.module";
 
@@ -10,20 +11,13 @@ function Posts() {
     enabled: false,
   });
 
-  useEffect(() => {
-    data?.databases.forEach((database) => {
-      PostsModule.getPost({ page_id: database.id }).then((result) => console.log(result));
-      // PostsModule.searchPosts({
-      //   start_cursor: database.id,
-      // }).then((result) => console.log(result));
-    });
-  }, [data]);
-
   return (
     <ul>
       {data?.databases?.map((database) => (
         <li key={database.id}>
-          <h3>{database.name}</h3>
+          <Link href={`/post/${database.id}`}>
+            <h3>{database.name}</h3>
+          </Link>
           <p>{database.lastEditedTime}</p>
         </li>
       ))}

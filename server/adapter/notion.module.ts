@@ -4,6 +4,7 @@ import { getNotionApi } from "@server/api/notion/notion.api";
 
 import {
   getNotionBlockList,
+  getNotionDatabaseAllUseCase,
   getNotionDatabasesUseCase,
   getNotionPageUseCase,
   searchNotionDatabasesUseCase,
@@ -19,4 +20,5 @@ export const NotionModule = {
   searchNotionDatabases: searchNotionDatabasesUseCase(notionRepository).execute,
   getNotionPage: getNotionPageUseCase(notionRepository).execute,
   getNotionBlockList: getNotionBlockList(notionRepository).execute,
+  getNotionDatabaseAll: getNotionDatabaseAllUseCase(notionRepository).execute,
 };

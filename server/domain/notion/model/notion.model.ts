@@ -57,6 +57,8 @@ export type NotionPageResponse = OriginalNotionPageResponse;
 
 export type NotionDatabaseResult = MyNotionDatabaseResult;
 
+export type NotionOnlyDatabaseResult = MyNotionDatabaseResult["databases"];
+
 export type NotionPageResult = MyNotionPageResult;
 
 export type NotionBlockListParams = OriginalNotionBlockListParams;
