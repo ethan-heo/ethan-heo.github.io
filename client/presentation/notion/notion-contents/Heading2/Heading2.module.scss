@@ -3,4 +3,5 @@ $component: "Heading2";
 .#{$component} {
   font-size: var(--font-heading-2);
   font-weight: var(--font-weight-bold);
+  line-height: 1.4em;
 }

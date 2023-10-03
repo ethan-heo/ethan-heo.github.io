@@ -19,7 +19,6 @@ function Heading3(props: Props) {
           </Annotations>
         ))}
       </h3>
-      ;
       <Space type="large" direction="vertical" />
     </>
   )
