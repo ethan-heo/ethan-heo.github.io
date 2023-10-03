@@ -1,0 +1,27 @@
+@use "sass:list";
+@use "sass:map";
+
+$component: "space";
+$directions: "vertical", "horizontal";
+$types: "large", "medium", "small";
+$spaces: (
+  list.nth($types, 1): 1.8rem,
+  list.nth($types, 2): 1.6rem,
+  list.nth($types, 3): 1.4rem,
+);
+
+@each $direction in $directions {
+  @each $type in $types {
+    .#{$component}__#{$direction}-#{$type} {
+      $space: #{map.get($spaces, $type)};
+
+      @if $direction == "vertical" {
+        width: 100%;
+        height: #{$space};
+      } @else {
+        width: #{$space};
+        height: 100%;
+      }
+    }
+  }
+}

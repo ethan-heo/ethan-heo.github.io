@@ -22,5 +22,9 @@ export type MyNotionPageResult = {
 };
 
 export type MyNotionBlockListResult = (OriginalNotionBlockResponse & {
-  children: OriginalNotionBlockResponse[];
+  children: MyNotionBlockListResult;
 })[];
+
+export type MyNotionBlock = OriginalNotionBlockResponse & {
+  children: MyNotionBlockListResult[];
+};

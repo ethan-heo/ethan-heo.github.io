@@ -1,0 +1,24 @@
+$component: "annotations";
+
+.#{$component} {
+  display: inline;
+
+  &.bold {
+    font-weight: var(--font-weight-bold);
+  }
+  &.italic {
+    font-style: italic;
+  }
+  &.strikethrough {
+    text-decoration: line-through;
+  }
+  &.code {
+    padding: 0.17em 0.3em;
+    background-color: var(--color-primary-600);
+    color: var(--color-primary-100);
+    border-radius: 0.3em;
+  }
+  &.underline {
+    text-decoration: underline;
+  }
+}

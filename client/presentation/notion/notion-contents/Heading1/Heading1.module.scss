@@ -1,0 +1,6 @@
+$component: "Heading1";
+
+.#{$component} {
+  font-size: var(--font-heading-1);
+  font-weight: var(--font-weight-bold);
+}

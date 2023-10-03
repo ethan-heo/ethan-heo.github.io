@@ -1,5 +1,7 @@
 import React from "react";
 
+import NotionRenderer from "@client/presentation/notion/NotionRenderer";
+
 import { NotionModule } from "@server/adapter/notion.module";
 
 type PostProps = {
@@ -16,12 +18,7 @@ async function Post({ params }: PostProps) {
     block_id: page.id,
   });
 
-  return (
-    <div>
-      Post {JSON.stringify(page)}
-      {JSON.stringify(blocks)}
-    </div>
-  );
+  return <NotionRenderer blocks={blocks} />;
 }
 
 export default Post;

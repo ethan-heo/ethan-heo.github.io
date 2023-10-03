@@ -1,4 +1,5 @@
 import {
+  MyNotionBlock,
   MyNotionBlockListResult,
   MyNotionDatabaseResult,
   MyNotionDatabaseStatus,
@@ -72,3 +73,5 @@ export type NotionBlockListResponse = OverrideObject<
 >;
 
 export type NotionBlockListResult = MyNotionBlockListResult;
+
+export type NotionBlock = MyNotionBlock;

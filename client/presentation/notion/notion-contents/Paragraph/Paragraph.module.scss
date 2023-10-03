@@ -1,0 +1,6 @@
+$component: "paragraph";
+
+.#{$component} {
+  font-size: var(--font-text);
+  font-weight: var(--font-weight-regular);
+}
