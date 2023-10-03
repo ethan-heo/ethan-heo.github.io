@@ -1,0 +1,6 @@
+$component: link;
+
+.#{$component} {
+  color: var(--color-surface-mixed-600);
+  text-decoration: underline;
+}

@@ -5,6 +5,7 @@ import Space from "@client/presentation/components/Space/Space"
 import { PickPostContent } from "@client/domain/posts/posts.model"
 
 import Annotations from "../Annotations/Annotations"
+import Link from "../Link/Link"
 import css from "./Heading1.module.scss"
 
 type Props = PickPostContent<"heading_1">
@@ -15,7 +16,7 @@ function Heading1(props: Props) {
       <h1 className={css.Heading1}>
         {props.heading_1.rich_text.map((text, idx) => (
           <Annotations key={`${props.id}-${idx}`} {...text.annotations}>
-            {text.plain_text}
+            {text.href ? <Link href={text.href}>{text.plain_text}</Link> : text.plain_text}
           </Annotations>
         ))}
       </h1>

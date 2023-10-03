@@ -6,6 +6,7 @@ import { PickPostContent } from "@client/domain/posts/posts.model"
 
 import NotionChildren from "../../NotionChildren/NotionChildren"
 import Annotations from "../Annotations/Annotations"
+import Link from "../Link/Link"
 import css from "./Paragraph.module.scss"
 
 type Props = PickPostContent<"paragraph">
@@ -16,7 +17,7 @@ function Paragraph(props: Props) {
       <div className={css.paragraph}>
         {props.paragraph.rich_text.map((text, idx) => (
           <Annotations key={`${props.id}-${idx}`} {...text.annotations}>
-            {text.plain_text}
+            {text.href ? <Link href={text.href}>{text.plain_text}</Link> : text.plain_text}
           </Annotations>
         ))}
         <NotionChildren blocks={props.children as any} />
