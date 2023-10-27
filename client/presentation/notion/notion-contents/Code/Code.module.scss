@@ -1,0 +1,10 @@
+$component: "code";
+
+.#{$component} {
+  font-size: var(--font-text);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.4em;
+  background-color: var(--color-surface-100);
+  //   text-shadow: none;
+  //   color: #fff !important;
+}
