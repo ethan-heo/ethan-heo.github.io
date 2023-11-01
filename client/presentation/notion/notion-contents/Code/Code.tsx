@@ -1,4 +1,3 @@
-import cn from "classnames"
 import Prism from "prismjs"
 import React from "react"
 
@@ -15,7 +14,7 @@ type Props = PickPostContent<"code">
 function Code({ code }: Props) {
   return (
     <>
-      <pre className={cn(css.code)}>
+      <pre className={css.code}>
         <code
           className={`language-${code.language}`}
           dangerouslySetInnerHTML={{
