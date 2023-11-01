@@ -10,7 +10,13 @@ import meta from "@client/shared/metadata.json"
 
 const inter = Inter({ subsets: ["latin"] })
 
-export const metadata: Metadata = meta
+export const metadata: Metadata = {
+  ...meta,
+  title: {
+    default: meta.title,
+    template: `${meta.title} | %s`,
+  },
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
