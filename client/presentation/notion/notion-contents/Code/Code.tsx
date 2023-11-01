@@ -15,7 +15,7 @@ type Props = PickPostContent<"code">
 function Code({ code }: Props) {
   return (
     <>
-      <pre className={cn("line-numbers", css.code)}>
+      <pre className={cn(css.code)}>
         <code
           className={`language-${code.language}`}
           dangerouslySetInnerHTML={{
