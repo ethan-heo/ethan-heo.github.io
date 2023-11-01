@@ -9,12 +9,10 @@ import { PickPostContent } from "@client/domain/posts/posts.model"
 import css from "./Code.module.scss"
 
 import "prismjs/themes/prism-okaidia.min.css"
-import "prismjs/themes/prism.min.css"
 
 type Props = PickPostContent<"code">
 
 function Code({ code }: Props) {
-  console.log(code)
   return (
     <>
       <pre className={cn("line-numbers", css.code)}>

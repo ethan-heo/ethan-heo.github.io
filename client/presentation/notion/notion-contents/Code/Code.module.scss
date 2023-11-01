@@ -5,6 +5,7 @@ $component: "code";
   font-weight: var(--font-weight-regular);
   line-height: 1.4em;
   background-color: var(--color-surface-100);
-  //   text-shadow: none;
-  //   color: #fff !important;
+  border: 5px solid var(--color-primary-600);
+  border-radius: 2px;
+  padding: 0.4em;
 }
