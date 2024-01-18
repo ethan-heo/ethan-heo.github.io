@@ -1,30 +1,35 @@
-import { OriginalNotionBlockListResponse, OriginalNotionBlockResponse } from "./original-notion.model";
+import {
+  OriginalNotionBlockListResponse,
+  OriginalNotionBlockResponse,
+  OriginalNotionPageResponse,
+} from "./original-notion.model"
 
-export type MyNotionDatabaseStatus = "Ready" | "Doing" | "Done";
+export type MyNotionDatabaseStatus = "Ready" | "Doing" | "Done"
 
 export type MyNotionDatabaseResult = {
-  hasMore: boolean;
-  nextCursor: string | null;
+  hasMore: boolean
+  nextCursor: string | null
   databases: {
-    status: MyNotionDatabaseStatus;
-    name: string;
-    id: string;
-    url: string;
-    lastEditedTime: string;
-  }[];
-};
+    status: MyNotionDatabaseStatus
+    name: string
+    id: string
+    url: string
+    lastEditedTime: string
+  }[]
+}
 
 export type MyNotionPageResult = {
-  createdTime: string;
-  lastEditedTime: string;
-  id: string;
-  archived: boolean;
-};
+  createdTime: string
+  lastEditedTime: string
+  id: string
+  archived: boolean
+  title: string
+}
 
 export type MyNotionBlockListResult = (OriginalNotionBlockResponse & {
-  children: MyNotionBlockListResult;
-})[];
+  children: MyNotionBlockListResult
+})[]
 
 export type MyNotionBlock = OriginalNotionBlockResponse & {
-  children: MyNotionBlockListResult[];
-};
+  children: MyNotionBlockListResult[]
+}

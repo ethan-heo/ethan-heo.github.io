@@ -1,0 +1,11 @@
+$component: "code";
+
+.#{$component} {
+  font-size: var(--font-text);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.4em;
+  background-color: var(--color-surface-100);
+  border: 5px solid var(--color-primary-600);
+  border-radius: 2px;
+  padding: 0.4em;
+}

@@ -5,26 +5,27 @@ import "@client/presentation/sass/global/global.scss"
 import "@client/presentation/sass/global/reset.scss"
 import "@client/presentation/sass/global/variables.scss"
 
+import { NotionModule } from "@server/adapter/notion.module"
+
 import ReactQueryProvider from "@client/shared/context/react-query/ReactQueryProvider"
-import meta from "@client/shared/metadata.json"
 
 const inter = Inter({ subsets: ["latin"] })
 
-export const metadata: Metadata = {
-  ...meta,
-  title: {
-    default: meta.title,
-    template: `${meta.title} | %s`,
-  },
+export const generateMetadata = async ({ params }: { params: { id: string } }) => {
+  const page = await NotionModule.getNotionPage({
+    page_id: params.id,
+  })
+
+  return {
+    title: page.title,
+  }
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="keywords" content={meta.keywords.join(", ")} />
-        <title>{meta.title}</title>
       </head>
       <body className={inter.className}>
         <ReactQueryProvider>{children}</ReactQueryProvider>
