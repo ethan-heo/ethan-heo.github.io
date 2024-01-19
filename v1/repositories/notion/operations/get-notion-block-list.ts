@@ -1,16 +1,17 @@
-import { NotionBlockListParams, NotionBlockListResult } from "@server/domain/notion/model/notion.model"
-
 import { NotionApi } from "@v1/apis/notion/notion.interface"
 
-export async function getNotionBlockList(notionApi: NotionApi, params: NotionBlockListParams) {
-  let isStopGettingBlockLists = true
-  let _params = params
-  const blocks: NotionBlockListResult = []
+import { NotionBlockList } from "@v1/domains/notion/models/normalized-notion.model"
+import { NotionListBlockChildrenParams } from "@v1/domains/notion/models/notion.model"
 
-  while (isStopGettingBlockLists) {
+export async function getNotionBlockList(notionApi: NotionApi, params: NotionListBlockChildrenParams) {
+  let isStopGettingBlockList = true
+  let _params = params
+  const blocks: NotionBlockList = []
+
+  while (isStopGettingBlockList) {
     const originalBlockList = await notionApi.getNotionBlockList(_params)
 
-    isStopGettingBlockLists = originalBlockList.has_more
+    isStopGettingBlockList = originalBlockList.has_more
     _params = {
       ..._params,
       start_cursor: originalBlockList.next_cursor as string,
@@ -23,7 +24,7 @@ export async function getNotionBlockList(notionApi: NotionApi, params: NotionBlo
       if (block.has_children) {
         const children = (await getNotionBlockList(notionApi, {
           block_id: block.id,
-        })) as NotionBlockListResult
+        })) as NotionBlockList
         return {
           ...block,
           children,

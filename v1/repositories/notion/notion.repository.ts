@@ -8,8 +8,8 @@ export const getNotionRepository = (notionApi: NotionApi): NotionRepository => (
   getNotionDatabases: (params) => {
     return notionApi.getNotionDatabases(params)
   },
-  getNotionBlockList: async (params) => {
-    return await getNotionBlockList(notionApi, params)
+  getNotionBlocks: (params) => {
+    return getNotionBlockList(notionApi, params)
   },
   getNotionPage: (params) => {
     return notionApi.getNotionPage(params)

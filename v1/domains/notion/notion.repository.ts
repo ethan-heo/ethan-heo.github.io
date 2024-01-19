@@ -6,5 +6,5 @@ import { NotionDatabaseParams, NotionPageParams, NotionPageRes } from "./models/
 export type NotionRepository = {
   getNotionDatabases: (params: NotionDatabaseParams) => Promise<NormalizedNotionDatabaseRes>
   getNotionPage: (params: NotionPageParams) => Promise<NotionPageRes>
-  getNotionBlockList: (params: NotionBlockListParams) => Promise<NotionBlockList>
+  getNotionBlocks: (params: NotionBlockListParams) => Promise<NotionBlockList>
 }

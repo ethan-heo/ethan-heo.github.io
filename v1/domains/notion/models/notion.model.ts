@@ -16,8 +16,6 @@ export type NotionListBlockChildrenParams = ListBlockChildrenParameters
 
 export type NotionListBlockChildrenRes = ListBlockChildrenResponse
 
-export type NotionBlockObjectRes = BlockObjectResponse
-
 export type NotionPageParams = GetPageParameters
 
 export type NotionPageRes = PageObjectResponse

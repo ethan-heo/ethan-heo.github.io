@@ -8,4 +8,4 @@ type OverrideObject<
 
 type PickUnion<T, K extends keyof T, U extends T[K]> = Extract<T, { [P in K]: U }>
 
-type ArrayType<A extends readonly unknown[]> = A extends (infer E)[] ? E : never
+type ArrayElement<A extends readonly unknown[]> = A extends (infer E)[] ? E : never

@@ -1,17 +1,13 @@
-import { NotionBlockObjectRes, NotionDatabaseRes, NotionListBlockChildrenRes } from "./notion.model"
+import { NotionDatabaseRes, NotionListBlockChildrenRes } from "./notion.model"
 
 export type NotionDatabaseStatusProperty = "Ready" | "Doing" | "Done"
-
-export type NotionBlockList = (NotionBlockObjectRes & {
-  children: NotionBlockList
-})[]
 
 export type NormalizedNotionDatabaseRes = Pick<
   OverrideObject<
     NotionDatabaseRes,
     "results",
     {
-      results: Extract<ArrayType<NotionDatabaseRes["results"]>, { title: any[] }>
+      results: Extract<ArrayElement<NotionDatabaseRes["results"]>, { title: any[] }>
     }
   >,
   "has_more" | "next_cursor" | "results"
@@ -23,6 +19,10 @@ export type NormalizedNotionBlockListRes = OverrideObject<
   NotionListBlockChildrenRes,
   "results",
   {
-    results: Extract<ArrayType<NotionListBlockChildrenRes["results"]>, { type: string }>[]
+    results: Extract<ArrayElement<NotionListBlockChildrenRes["results"]>, { type: string }>[]
   }
 >
+
+export type NotionBlockList = (ArrayElement<NormalizedNotionBlockListRes["results"]> & {
+  children: NotionBlockList
+})[]
