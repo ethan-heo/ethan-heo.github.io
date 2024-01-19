@@ -1,16 +1,15 @@
-import { getPostsRepository } from "@client/repository/posts/posts.repository";
+import { getPostsRepository } from "@client/repository/posts/posts.repository"
 
-import { getPostApi } from "@client/api/posts/posts.api";
+import { getPostApi } from "@client/api/posts/posts.api"
 
-import { getPostUseCase, getPostsUseCase, searchPostsUseCase } from "@client/domain/posts/posts.use-cases";
+import { getPostUseCase, getPostsUseCase } from "@client/domain/posts/posts.use-cases"
 
-import axiosInstance from "@client/shared/axios.instance";
+import axiosInstance from "@client/shared/axios.instance"
 
-const postsApi = getPostApi(axiosInstance);
-const postsRepository = getPostsRepository(postsApi);
+const postsApi = getPostApi(axiosInstance)
+const postsRepository = getPostsRepository(postsApi)
 
 export const PostsModule = {
   getPosts: getPostsUseCase(postsRepository).execute,
-  searchPosts: searchPostsUseCase(postsRepository).execute,
   getPost: getPostUseCase(postsRepository).execute,
-};
+}

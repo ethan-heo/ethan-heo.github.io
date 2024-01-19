@@ -16,18 +16,18 @@ function Posts() {
     enabled: false,
   })
 
-  if (data?.databases.length === 0) {
+  if (data?.results.length === 0) {
     return <div className={cn(css["posts-empty"])}>아직 보여드릴 내용이 없어요 🥲</div>
   }
 
   return (
     <ul className={css.posts}>
-      {data?.databases?.map((database) => (
+      {data?.results?.map((database) => (
         <li key={database.id} className={css[`posts__item`]}>
           <Link href={`/post/${database.id}`} className={css[`posts__item__title`]}>
-            <h3>{database.name}</h3>
+            <h3>{database.properties[0].name}</h3>
           </Link>
-          <p className={css[`posts__item__date`]}>{formatPostDate(database.lastEditedTime)}</p>
+          <p className={css[`posts__item__date`]}>{formatPostDate(database.last_edited_time)}</p>
         </li>
       ))}
     </ul>

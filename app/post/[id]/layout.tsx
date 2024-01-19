@@ -1,13 +1,12 @@
-import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 
 import "@client/presentation/sass/global/global.scss"
 import "@client/presentation/sass/global/reset.scss"
 import "@client/presentation/sass/global/variables.scss"
 
-import { NotionModule } from "@server/adapter/notion.module"
-
 import ReactQueryProvider from "@client/shared/context/react-query/ReactQueryProvider"
+
+import { NotionModule } from "@v1/adapters/notion.module"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -17,7 +16,7 @@ export const generateMetadata = async ({ params }: { params: { id: string } }) =
   })
 
   return {
-    title: page.title,
+    title: (page.properties as any).Name.title[0].plain_text,
   }
 }
 

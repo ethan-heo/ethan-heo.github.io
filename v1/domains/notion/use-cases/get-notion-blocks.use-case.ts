@@ -4,7 +4,7 @@ import { NotionRepository } from "../notion.repository"
 
 type GetNotionBlockListUseCase = UseCaseMultiParamsAndPromiseResult<NotionListBlockChildrenParams, NotionBlockList>
 
-export const getNotionBlockList = (notionRepository: NotionRepository): GetNotionBlockListUseCase => ({
+export const getNotionBlocks = (notionRepository: NotionRepository): GetNotionBlockListUseCase => ({
   execute: (params) => {
     return notionRepository.getNotionBlocks(params)
   },

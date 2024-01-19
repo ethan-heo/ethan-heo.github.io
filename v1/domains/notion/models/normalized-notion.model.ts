@@ -7,13 +7,13 @@ export type NormalizedNotionDatabaseRes = Pick<
     NotionDatabaseRes,
     "results",
     {
-      results: Extract<ArrayElement<NotionDatabaseRes["results"]>, { title: any[] }>
+      results: Extract<ArrayElement<NotionDatabaseRes["results"]>, { title: any[] }>[]
     }
   >,
   "has_more" | "next_cursor" | "results"
 >
 
-export type NotionDatabase = NormalizedNotionDatabaseRes["results"]
+export type NotionDatabase = ArrayElement<NormalizedNotionDatabaseRes["results"]>
 
 export type NormalizedNotionBlockListRes = OverrideObject<
   NotionListBlockChildrenRes,
