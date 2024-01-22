@@ -1,5 +1,4 @@
 import {
-  BlockObjectResponse,
   GetPageParameters,
   ListBlockChildrenParameters,
   ListBlockChildrenResponse,

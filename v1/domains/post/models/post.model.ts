@@ -15,11 +15,3 @@ export type GetPostRes = {
 export type PostContent = ArrayElement<NotionBlockList>
 
 export type PickPostContent<K extends PostContent["type"]> = Extract<PostContent, { type: K }>
-
-export type PostContentAnnotation = {
-  bold: boolean
-  italic: boolean
-  strikethrough: boolean
-  underline: boolean
-  code: boolean
-}
