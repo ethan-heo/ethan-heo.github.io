@@ -46,12 +46,16 @@
       "@v1/adapters": ["./v1/adapters"],
       "@v1/repositories/*": ["./v1/repositories/*"],
       "@v1/repositories": ["./v1/repositories"],
+      "@v1/presentations/*": ["./v1/presentations/*"],
+      "@v1/presentations": ["./v1/presentations"],
       "@v1/apis/*": ["./v1/apis/*"],
       "@v1/apis": ["./v1/apis"],
       "@v1/domains/*": ["./v1/domains/*"],
       "@v1/domains": ["./v1/domains"],
       "@v1/shared/*": ["./v1/shared/*"],
-      "@v1/shared": ["./v1/shared"]
+      "@v1/shared": ["./v1/shared"],
+      "@meta/*": ["./meta/*"],
+      "@meta": ["./meta"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

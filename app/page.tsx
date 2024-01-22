@@ -1,8 +1,8 @@
-import Posts from "@client/presentation/pages/main/Posts/Posts"
-
-import withReactQueryHydration from "@client/shared/context/react-query/withReactQueryHydration"
+import Posts from "@v1/presentations/post/posts.component"
 
 import { NotionModule } from "@v1/adapters/notion.module"
+
+import withReactQueryHydration from "@v1/shared/context/react-query/withReactQueryHydration"
 
 function Home() {
   return (

@@ -16,7 +16,7 @@ const getNotionDatabaseAll = async (notionApi: NotionApi, params: NotionDatabase
       ..._params,
       start_cursor: next_cursor as string,
     }
-    databases.push(...databases)
+    databases.push(...results)
   }
 
   return databases

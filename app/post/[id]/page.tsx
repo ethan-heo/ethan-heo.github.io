@@ -2,7 +2,7 @@ import fs from "fs/promises"
 import path from "path"
 import React from "react"
 
-import NotionRenderer from "@client/presentation/notion/NotionRenderer"
+import NotionRenderer from "@v1/presentations/notion/notion-renderer.component"
 
 import { NotionModule } from "@v1/adapters/notion.module"
 

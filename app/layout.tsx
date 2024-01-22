@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 
-import "@client/presentation/sass/global/global.scss"
-import "@client/presentation/sass/global/reset.scss"
-import "@client/presentation/sass/global/variables.scss"
+import ReactQueryProvider from "@v1/shared/context/react-query/ReactQueryProvider"
+import "@v1/shared/sass/global/global.scss"
+import "@v1/shared/sass/global/reset.scss"
+import "@v1/shared/sass/global/variables.scss"
 
-import ReactQueryProvider from "@client/shared/context/react-query/ReactQueryProvider"
-import meta from "@client/shared/metadata.json"
+import meta from "@meta/metadata.json"
 
 const inter = Inter({ subsets: ["latin"] })
 

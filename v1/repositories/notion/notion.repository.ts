@@ -2,7 +2,7 @@ import { NotionApi } from "@v1/apis/notion/notion.interface"
 
 import { NotionRepository } from "@v1/domains/notion/notion.repository"
 
-import { getNotionBlockList } from "./operations/get-notion-block-list"
+import { getNotionBlockList } from "./operations/get-notion-block-list.operation"
 import getNotionDatabaseAll from "./operations/get-notion-database-all.operation"
 
 export const getNotionRepository = (notionApi: NotionApi): NotionRepository => ({

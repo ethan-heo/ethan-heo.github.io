@@ -4,9 +4,9 @@ import "@client/presentation/sass/global/global.scss"
 import "@client/presentation/sass/global/reset.scss"
 import "@client/presentation/sass/global/variables.scss"
 
-import ReactQueryProvider from "@client/shared/context/react-query/ReactQueryProvider"
-
 import { NotionModule } from "@v1/adapters/notion.module"
+
+import ReactQueryProvider from "@v1/shared/context/react-query/ReactQueryProvider"
 
 const inter = Inter({ subsets: ["latin"] })
 

@@ -1,0 +1,5 @@
+export { default as heading_1 } from "./heading-1/heading-1.component"
+export { default as heading_2 } from "./heading-2/heading-2.component"
+export { default as heading_3 } from "./heading-3/heading-3.component"
+export { default as paragraph } from "./paragraph/paragraph.component"
+export { default as code } from "./code/code"
