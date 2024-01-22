@@ -3,7 +3,7 @@ import React from "react"
 import { GetPostRes } from "@v1/domains/post/models/post.model"
 
 import NotionMapper from "../notion-mapper.component"
-import css from "./NotionChildren.module.scss"
+import css from "./notion-children.module.scss"
 
 type NotionChildrenProps = {
   blocks: GetPostRes["blocks"]
