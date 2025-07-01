@@ -22,7 +22,48 @@
  *  - block 데이터 일반화
  */
 
-import type { BlockResult, DatabaseResult } from "./notion";
+import type { QueryDatabaseParameters } from "@notionhq/client/build/src/api-endpoints";
+import type { DatabaseResult, NotionAPI } from "./notion";
+
+type CreateBlogAPI<Params, Result, API = NotionAPI> = (
+    notionApi: API
+) => (params: Params) => Result;
+
+type GetBlogs = CreateBlogAPI<QueryDatabaseParameters, Promise<BlogItem[]>>;
+
+/**
+ * @description 블로그 목록 정보를 가져오기 위한 기능
+ */
+const getBlogs: GetBlogs = (notionApi) => async (params) => {
+    const databases = await notionApi.getDatabaseAll(params);
+
+    return databases.map(normalizeDatabases);
+};
+
+type GetCategories = CreateBlogAPI<BlogItem[], BlogCategories, void>;
+
+/**
+ * @description 데이터 베이스의 모든 카테고리를 수집하기 위한 기능
+ */
+const getCategories: GetCategories = () => (blogItems) => {
+    return [
+        ...blogItems.reduce((categories, blogItem) => {
+            for (const category of blogItem.categories)
+                categories.add(category);
+            return categories;
+        }, new Set<string>()),
+    ];
+};
+
+// Notion API의 실제 데이터와 타입이 맞지 않는 이슈로
+// @notionhp/client 패키지를 사용하는게 아닌 Web API를 사용하는 방식으로 변경할 수 있어
+// Adapter를 통해 결합도를 줄이는 방향으로 정함.
+const blogAdapter = (api: NotionAPI) => ({
+    getBlogs: getBlogs(api),
+    getCategories: getCategories(),
+});
+
+export default blogAdapter;
 
 interface BlogModel {
     id: string;
@@ -31,7 +72,7 @@ interface BlogModel {
     backgroundImage: string;
     categories: string[];
     related: BlogModel[];
-    readTime: string;
+    readTime: number;
     description: string;
     contents: any[];
     popular: number;
@@ -39,39 +80,30 @@ interface BlogModel {
 
 type BlogItem = Pick<
     BlogModel,
-    "id" | "title" | "readTime" | "createdDate" | "backgroundImage"
+    | "id"
+    | "title"
+    | "readTime"
+    | "createdDate"
+    | "backgroundImage"
+    | "categories"
 >;
 
 type BlogContents = any;
 
 type BlogCategories = BlogModel["categories"];
 
-interface GetBlogParams {
-    cursor?: string;
-    limit: number;
-    hasMore: boolean;
+function normalizeDatabases(data: DatabaseResult): BlogItem {
+    return {
+        id: data.id,
+        title: data.properties.Name.title[0].plain_text,
+        readTime: data.properties.readTime.number,
+        createdDate: data.created_time,
+        categories: data.properties.category.multi_select.map(
+            (option) => option.name
+        ),
+        backgroundImage:
+            data.cover.type === "external"
+                ? data.cover.external.url
+                : data.cover.file.url,
+    };
 }
-
-const getBlogs = (params: GetBlogParams): BlogItem => {
-    return void 0 as any;
-};
-
-const getPopularBlogs = (): BlogItem => {
-    return void 0 as any;
-};
-
-const searchBlogs = (searchItem: string): BlogItem => {
-    return void 0 as any;
-};
-
-const getAllCategories = (): BlogCategories => {
-    return void 0 as any;
-};
-
-const normalizeDatabases = (data: DatabaseResult): BlogItem => {
-    return void 0 as any;
-};
-
-const normalizeBlocks = (data: BlockResult): BlogContents => {
-    return void 0 as any;
-};
