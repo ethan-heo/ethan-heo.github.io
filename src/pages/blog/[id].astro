@@ -1,0 +1,37 @@
+---
+import dotenv from 'dotenv'
+import Notion from '../../modules/notion';
+import blogAdapter from '../../modules/blog';
+import blogs from '../../assets/blogs.json'
+import Layout from '../../layouts/Layout.astro';
+
+
+export async function getStaticPaths() {
+  dotenv.config()
+  
+  const notion = new Notion(process.env.NOTION_API_KEY as string)
+  const Blog = blogAdapter(notion)
+  const result = []
+
+  for await (const blog of blogs) {
+    const contents = await Blog.getContents({ block_id: blog.id })
+
+    result.push({
+      params: {
+        id: blog.id,
+      },
+      props: {
+          ...blog,
+          contents
+        }
+    })
+  }
+
+  return result
+}
+
+const props = Astro.props
+---
+<Layout>
+  <div>{JSON.stringify(props.contents, null, 4)}</div>
+</Layout>
