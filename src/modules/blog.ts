@@ -32,6 +32,12 @@ type CreateBlogAPI<Params, Result, API = NotionAPI> = (
     notionApi: API
 ) => (params: Params) => Result;
 
+type CreateBlogAPIWithMultiParams<
+    Params extends any[],
+    Result,
+    API = NotionAPI
+> = (notionApi: API) => (...params: Params) => Result;
+
 type GetBlogs = CreateBlogAPI<QueryDatabaseParameters, Promise<BlogItem[]>>;
 
 /**
@@ -70,6 +76,19 @@ const getContents: GetContents = (notionApi) => (params) => {
     return notionApi.getBlockAll(params);
 };
 
+type SearchBlog = CreateBlogAPIWithMultiParams<
+    [BlogItem[], string],
+    BlogItem[],
+    void
+>;
+
+/**
+ * @description 블로그 목록에서 검색한 단어와 일치하는 목록을 반환하기 위한 기능
+ */
+const searchBlog: SearchBlog = () => (blogs, searchText) => {
+    return blogs.filter((blog) => blog.title.includes(searchText));
+};
+
 // Notion API의 실제 데이터와 타입이 맞지 않는 이슈로
 // @notionhp/client 패키지를 사용하는게 아닌 Web API를 사용하는 방식으로 변경할 수 있어
 // Adapter를 통해 결합도를 줄이는 방향으로 정함.
@@ -77,6 +96,7 @@ const blogAdapter = (api: NotionAPI) => ({
     getBlogs: getBlogs(api),
     getCategories: getCategories(),
     getContents: getContents(api),
+    searchBlog: searchBlog(),
 });
 
 export default blogAdapter;
