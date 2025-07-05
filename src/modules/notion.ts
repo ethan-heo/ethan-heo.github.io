@@ -7,6 +7,7 @@ import type {
     QueryDatabaseParameters,
     QueryDatabaseResponse,
 } from "@notionhq/client/build/src/api-endpoints";
+import normalizeBlock, { type BlockResult } from "./notion-block-normalizer";
 
 export interface NotionAPI {
     getDatabaseAll: (
@@ -58,8 +59,11 @@ class Notion implements NotionAPI {
                 ...params,
                 start_cursor: startCursor,
             });
+            const result = block.results
+                .map(normalizeBlock)
+                .filter((result) => result !== null);
 
-            blocks = [...blocks, ...block.results];
+            blocks = [...blocks, ...result];
             hasMore = block.has_more;
             startCursor = block.next_cursor ?? undefined;
         }
@@ -99,10 +103,6 @@ export type DatabaseResult = DatabaseObjectResponse & {
 interface BlockResponse extends ListBlockChildrenResponse {
     results: BlockObjectResponse[];
 }
-
-export type BlockResult = BlockObjectResponse & {
-    children?: BlockResult[];
-};
 
 export interface DatabaseResultProperties {
     category: MultiSelect;

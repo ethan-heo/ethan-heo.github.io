@@ -26,7 +26,8 @@ import type {
     ListBlockChildrenParameters,
     QueryDatabaseParameters,
 } from "@notionhq/client/build/src/api-endpoints";
-import type { BlockResult, DatabaseResult, NotionAPI } from "./notion";
+import type { DatabaseResult, NotionAPI } from "./notion";
+import type { BlockResult } from "./notion-block-normalizer";
 
 type CreateBlogAPI<Params, Result, API = NotionAPI> = (
     notionApi: API
