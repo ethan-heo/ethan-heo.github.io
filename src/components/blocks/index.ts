@@ -9,3 +9,4 @@ export { default as code } from "./Code.astro";
 export { default as to_do } from "./Todo.astro";
 export { default as divider } from "./Divider.astro";
 export { default as table } from "./Table.astro";
+export { default as image } from "./Image.astro";

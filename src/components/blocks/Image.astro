@@ -1,0 +1,23 @@
+---
+import { type BlockNormalizerResult } from "../../modules/notion-block-normalizer";
+
+const props = Astro.props as BlockNormalizerResult<"image">;
+const hasCaption = props.content.caption.length > 0;
+---
+
+<div class="max-w-md w-full mx-auto">
+    <div class="overflow-hidden rounded-lg shadow-md">
+        <img
+            src={props.content.url}
+            alt={hasCaption ? props.content.caption[0].plain_text : ""}
+            class="w-full h-full object-cover"
+        />
+    </div>
+    {
+        hasCaption && (
+            <p class="mt-3 text-center text-sm text-accent">
+                {props.content.caption[0].plain_text}
+            </p>
+        )
+    }
+</div>
