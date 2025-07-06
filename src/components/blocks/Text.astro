@@ -1,0 +1,34 @@
+---
+import { type RichText } from "../../modules/notion-block-normalizer";
+import cn from "classnames";
+
+const { annotations, plain_text, ...props } = Astro.props as RichText;
+
+const useMark = annotations.code;
+const ANNOTATIONS_CLASS_MAP = {
+    bold: "font-bold",
+    italic: "italic",
+    strikethrough: "line-through",
+    underline: "underline",
+};
+const annotationClass = Object.entries(annotations)
+    .map(([name, use]) => {
+        const result =
+            ANNOTATIONS_CLASS_MAP[name as keyof typeof ANNOTATIONS_CLASS_MAP];
+
+        if (!result || !use) return null;
+
+        return result;
+    })
+    .filter(Boolean);
+---
+
+{
+    useMark ? (
+        <mark class={cn(annotationClass, "bg-accent-content", "rounded-xs")}>
+            {plain_text}
+        </mark>
+    ) : (
+        <span class={cn(annotationClass)}>{plain_text}</span>
+    )
+}

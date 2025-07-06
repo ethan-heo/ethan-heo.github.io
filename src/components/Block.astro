@@ -1,0 +1,16 @@
+---
+import * as blockComponents from "./blocks";
+import type { BlockResult } from "../modules/notion-block-normalizer";
+
+const props = Astro.props as BlockResult;
+
+const Component = blockComponents[props.type];
+---
+
+{
+    Component && (
+        <Component {...props}>
+            <slot />
+        </Component>
+    )
+}

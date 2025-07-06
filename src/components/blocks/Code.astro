@@ -1,0 +1,20 @@
+---
+/**
+ * Pre 태그 공백 이슈
+ * - https://stackoverflow.com/questions/77738519/unknown-height-is-being-applied-to-pre-tag
+ */
+import { type BlockNormalizerResult } from "../../modules/notion-block-normalizer";
+
+const props = Astro.props as BlockNormalizerResult<"code">;
+const contents = props.rich_text[0].plain_text.split("\n");
+---
+
+<div class="mockup-code w-full mt-2 mb-3">
+    {
+        contents.map((content, idx) => (
+            <pre data-prefix={idx + 1} class="flex">
+                <code>{content}</code>
+            </pre>
+        ))
+    }
+</div>

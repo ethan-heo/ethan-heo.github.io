@@ -1,0 +1,52 @@
+---
+import { type BlockNormalizerResult } from "../../modules/notion-block-normalizer";
+import cn from "classnames";
+import Text from "./Text.astro";
+
+const {
+    children: tableRows,
+    has_row_header,
+    has_column_header,
+} = Astro.props as BlockNormalizerResult<"table">;
+const [headRows, ...bodyRows] =
+    tableRows as BlockNormalizerResult<"table_row">[];
+const addHeaderRowClass = () => has_column_header && "bg-base-200";
+const addHeaderColumnClass = (idx: number) =>
+    has_row_header && idx === 0 && "bg-base-200";
+---
+
+<div class="overflow-x-auto mt-2 mb-3">
+    <table class="table">
+        <!-- head -->
+        <thead>
+            <tr class={cn(addHeaderRowClass())}>
+                {
+                    headRows.contents.map(([cell], idx) => {
+                        return (
+                            <th class={cn(addHeaderColumnClass(idx))}>
+                                {cell && <Text {...cell} />}
+                            </th>
+                        );
+                    })
+                }
+            </tr>
+        </thead>
+        <tbody>
+            {
+                bodyRows.map((row) => {
+                    return (
+                        <tr>
+                            {row.contents.map(([cell], idx) => {
+                                return (
+                                    <td class={cn(addHeaderColumnClass(idx))}>
+                                        {cell && <Text {...cell} />}
+                                    </td>
+                                );
+                            })}
+                        </tr>
+                    );
+                })
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,29 @@
+---
+import { type BlockNormalizerResult } from "../../modules/notion-block-normalizer";
+import Text from "./Text.astro";
+import BulletedListItem from "./BulletedListItem.astro";
+
+const { blocks } = Astro.props as {
+    blocks: BlockNormalizerResult<"bulleted_list_item">[];
+};
+---
+
+<ul
+    role="list"
+    class="mt-3 list-inside list-disc space-y-3 pl-5 text-accent-content marker:text-accent"
+>
+    {
+        blocks.map((block) => {
+            return (
+                <li>
+                    {block.text.map((t) => (
+                        <Text {...t} />
+                    ))}
+                    {block.has_children && (
+                        <BulletedListItem blocks={block.children} />
+                    )}
+                </li>
+            );
+        })
+    }
+</ul>

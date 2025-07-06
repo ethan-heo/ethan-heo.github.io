@@ -268,6 +268,35 @@ const NotionBlockNormalizer: BlockNormalizer = {
             contents: block.table_row.cells,
         };
     },
+    code: (block) => {
+        return {
+            id: block.id,
+            has_children: block.has_children,
+            children: [],
+            type: "code",
+            rich_text: block.code.rich_text,
+            caption: block.code.caption,
+            language: block.code.language,
+        };
+    },
+    to_do: (block) => {
+        return {
+            id: block.id,
+            has_children: block.has_children,
+            children: [],
+            type: "to_do",
+            checked: block.to_do.checked,
+            text: block.to_do.rich_text,
+        };
+    },
+    divider: (block) => {
+        return {
+            id: block.id,
+            has_children: block.has_children,
+            children: [],
+            type: "divider",
+        };
+    },
 };
 
 const normalizeBlock = (block: BlockObjectResponse) => {
@@ -282,14 +311,20 @@ const normalizeBlock = (block: BlockObjectResponse) => {
 
 export default normalizeBlock;
 
-type BlockType = Extract<
+export type BlockType = Extract<
     BlockObjectResponse["type"],
-    TextBlock | MediaContentBlock | TableBlock | PageLink
+    | TextBlock
+    | MediaContentBlock
+    | TableBlock
+    | PageLink
+    | Code
+    | Todo
+    | Divider
 >;
 
 type BlockNormalizer = {
     [key in BlockType]: (
-        block: Extract<BlockObjectResponse, { type: key }>
+        block: Extract<BlockObjectResponse, { type: key }>,
     ) => BlockNormalizerResult<key>;
 };
 
@@ -303,7 +338,7 @@ type TextBlock =
     | "quote"
     | "toggle";
 
-type RichText = RichTextItemResponse;
+export type RichText = RichTextItemResponse;
 
 interface TextBlockNormalizerResult {
     type: TextBlock;
@@ -345,21 +380,50 @@ interface PageLinkNormalizerResult {
     pageId: string;
 }
 
-interface CommonNormalizerResult {
-    id: string;
-    has_children?: boolean;
-    children?: BlockNormalizerResult<BlockType>[];
+type Code = "code";
+
+interface CodeNormalizerResult {
+    type: Code;
+    rich_text: RichText[];
+    caption: RichText[];
+    language: string;
 }
 
-type BlockNormalizerResult<T extends BlockType> = (T extends TextBlock
+type Todo = "to_do";
+
+interface TodoNormalizerResult {
+    type: Todo;
+    checked: boolean;
+    text: RichText[];
+}
+
+type Divider = "divider";
+
+interface DividerNormalizerResult {
+    type: Divider;
+}
+
+interface CommonNormalizerResult {
+    id: string;
+    has_children: boolean;
+    children: BlockNormalizerResult<BlockType>[];
+}
+
+export type BlockNormalizerResult<T extends BlockType> = (T extends TextBlock
     ? TextBlockNormalizerResult
     : T extends MediaContentBlock
-    ? MediaContentNormalizerResult
-    : T extends TableBlock
-    ? TableBlockNormalizerResult
-    : T extends PageLink
-    ? PageLinkNormalizerResult
-    : never) &
+      ? MediaContentNormalizerResult
+      : T extends TableBlock
+        ? TableBlockNormalizerResult
+        : T extends PageLink
+          ? PageLinkNormalizerResult
+          : T extends Code
+            ? CodeNormalizerResult
+            : T extends Todo
+              ? TodoNormalizerResult
+              : T extends Divider
+                ? DividerNormalizerResult
+                : never) &
     CommonNormalizerResult;
 
 export type BlockResult = BlockNormalizerResult<BlockType>;

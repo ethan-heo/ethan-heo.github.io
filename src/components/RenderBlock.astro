@@ -1,0 +1,71 @@
+---
+import type {
+    BlockResult,
+    BlockType,
+} from "../modules/notion-block-normalizer";
+import Block from "./Block.astro";
+import LazyBlock from "./LazyBlock.astro";
+import RenderBlock from "./RenderBlock.astro";
+
+const { blocks } = Astro.props as { blocks: BlockResult[] };
+const lazyRenderingBlocks: {
+    type?: BlockType;
+    blocks: BlockResult[];
+} = {
+    blocks: [],
+};
+const LazyRenderBlockType: BlockType[] = [
+    "bulleted_list_item",
+    "numbered_list_item",
+    "to_do",
+];
+const isLazyRenderingBlock = (blockType: BlockType) => {
+    return LazyRenderBlockType.includes(blockType);
+};
+const isRenderLazyRenderingBlock = (block: BlockResult) => {
+    return (
+        !compareNextBlockWithLazyBlock(block) &&
+        lazyRenderingBlocks.blocks.length > 0
+    );
+};
+const compareNextBlockWithLazyBlock = (block?: BlockResult) => {
+    if (!block) return false;
+
+    return lazyRenderingBlocks?.type === block.type;
+};
+const resetLazyRenderingBlocks = () => {
+    lazyRenderingBlocks.type = undefined;
+    lazyRenderingBlocks.blocks = [];
+};
+---
+
+{
+    blocks.map((block, idx) => {
+        const nextBlock = blocks[idx + 1];
+
+        if (isLazyRenderingBlock(block.type)) {
+            lazyRenderingBlocks.type = block.type;
+        }
+
+        if (compareNextBlockWithLazyBlock(nextBlock)) {
+            lazyRenderingBlocks.blocks.push(block);
+
+            return null;
+        }
+
+        if (isRenderLazyRenderingBlock(nextBlock)) {
+            lazyRenderingBlocks.blocks.push(block);
+            const _props = {
+                ...lazyRenderingBlocks,
+            };
+            resetLazyRenderingBlocks();
+            return <LazyBlock type={_props.type} blocks={_props.blocks} />;
+        }
+
+        return (
+            <Block {...block}>
+                {block.has_children && <RenderBlock blocks={block.children} />}
+            </Block>
+        );
+    })
+}

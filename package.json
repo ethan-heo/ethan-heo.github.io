@@ -16,13 +16,17 @@
         "@types/react": "^19.1.8",
         "@types/react-dom": "^19.1.6",
         "astro": "^5.10.0",
+        "classnames": "^2.5.1",
         "daisyui": "^5.0.43",
         "react": "^19.1.0",
         "react-dom": "^19.1.0",
         "tailwindcss": "^4.1.10"
     },
     "devDependencies": {
+        "@tailwindcss/typography": "^0.5.16",
         "dotenv": "^17.0.0",
+        "prettier": "3.6.2",
+        "prettier-plugin-astro": "0.14.1",
         "ts-node": "^10.9.2"
     }
 }
