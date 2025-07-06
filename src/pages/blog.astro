@@ -1,0 +1,26 @@
+---
+import BlogList from "../components/BlogList.astro";
+import "../styles/global.css";
+import Template from "../template/Template.astro";
+
+const metaData = {
+    title: "이든 | 블로그",
+    description: "이든의 블로그입니다. 어떤 생각을 하고 있는지 알아보세요.",
+    categories: [
+        "Frontend",
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "React",
+        "Redux",
+        "Library",
+        "Nextjs",
+    ],
+    url: "https://ethan-heo.github.io/blog",
+    backgroundImage: "",
+};
+---
+
+<Template {...metaData}>
+    <BlogList />
+</Template>

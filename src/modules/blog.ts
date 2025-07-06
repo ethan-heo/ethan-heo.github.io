@@ -131,7 +131,6 @@ type BlogItem = Pick<
 type BlogCategories = BlogModel["categories"];
 
 function normalizeDatabases(data: DatabaseResult): BlogItem {
-    console.log(data.properties.related);
     return {
         id: data.id,
         title: data.properties.Name.title[0].plain_text,
