@@ -1,12 +1,26 @@
 ---
-import Main from '../components/Main.astro';
-import Layout from '../layouts/Layout.astro';
-import '../styles/global.css'
+import Main from "../components/Main.astro";
+import "../styles/global.css";
+import Template from "../template/Template.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const metaData = {
+    title: "이든",
+    description: "이든이 개발자로써 어떤 생각을 하고 있는지 알아보세요",
+    categories: [
+        "Frontend",
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "React",
+        "Redux",
+        "Library",
+        "Nextjs",
+    ],
+    url: "https://ethan-heo.github.io/",
+    backgroundImage: "",
+};
 ---
 
-<Layout>
-	<Main />
-</Layout>
+<Template {...metaData}>
+    <Main />
+</Template>

@@ -30,13 +30,13 @@ import type { DatabaseResult, NotionAPI } from "./notion";
 import type { BlockResult } from "./notion-block-normalizer";
 
 type CreateBlogAPI<Params, Result, API = NotionAPI> = (
-    notionApi: API
+    notionApi: API,
 ) => (params: Params) => Result;
 
 type CreateBlogAPIWithMultiParams<
     Params extends any[],
     Result,
-    API = NotionAPI
+    API = NotionAPI,
 > = (notionApi: API) => (...params: Params) => Result;
 
 type GetBlogs = CreateBlogAPI<QueryDatabaseParameters, Promise<BlogItem[]>>;
@@ -108,11 +108,12 @@ interface BlogModel {
     createdDate: string;
     backgroundImage: string;
     categories: string[];
-    related: BlogModel[];
+    related: string[];
     readTime: number;
     description: string;
     contents: any[];
     popular: number;
+    url: string;
 }
 
 type BlogItem = Pick<
@@ -123,22 +124,29 @@ type BlogItem = Pick<
     | "createdDate"
     | "backgroundImage"
     | "categories"
+    | "description"
+    | "related"
 >;
 
 type BlogCategories = BlogModel["categories"];
 
 function normalizeDatabases(data: DatabaseResult): BlogItem {
+    console.log(data.properties.related);
     return {
         id: data.id,
         title: data.properties.Name.title[0].plain_text,
         readTime: data.properties.readTime.number,
         createdDate: data.created_time,
         categories: data.properties.category.multi_select.map(
-            (option) => option.name
+            (option) => option.name,
         ),
         backgroundImage:
             data.cover.type === "external"
                 ? data.cover.external.url
                 : data.cover.file.url,
+        description: data.properties.description.rich_text[0].plain_text,
+        related: data.properties.related.relation.map(
+            (relation) => relation.id,
+        ),
     };
 }

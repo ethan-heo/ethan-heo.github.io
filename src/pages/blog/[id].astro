@@ -3,8 +3,9 @@ import dotenv from "dotenv";
 import Notion from "../../modules/notion";
 import blogAdapter from "../../modules/blog";
 import blogs from "../../assets/blogs.json";
-import Layout from "../../layouts/Layout.astro";
 import RenderBlock from "../../components/RenderBlock.astro";
+import BlogLayout from "../../layouts/BlogLayout.astro";
+import Template from "../../template/Template.astro";
 
 export async function getStaticPaths() {
     dotenv.config();
@@ -30,9 +31,11 @@ export async function getStaticPaths() {
     return result;
 }
 
-const props = Astro.props;
+const { contents, ...props } = Astro.props;
 ---
 
-<Layout>
-    <RenderBlock blocks={props.contents} />
-</Layout>
+<Template {...props} url={`https://ethan-heo.github.io/blog/${props.id}`}>
+    <BlogLayout {...props}>
+        <RenderBlock blocks={contents} />
+    </BlogLayout>
+</Template>

@@ -7,14 +7,14 @@ import type {
     QueryDatabaseParameters,
     QueryDatabaseResponse,
 } from "@notionhq/client/build/src/api-endpoints";
-import normalizeBlock, { type BlockResult } from "./notion-block-normalizer";
+import normalizeBlock, { type BlockResult } from "./notion-block-normalizer.ts";
 
 export interface NotionAPI {
     getDatabaseAll: (
-        params: QueryDatabaseParameters
+        params: QueryDatabaseParameters,
     ) => Promise<DatabaseResult[]>;
     getBlockAll: (
-        params: ListBlockChildrenParameters
+        params: ListBlockChildrenParameters,
     ) => Promise<BlockResult[]>;
     getDatabase: (params: QueryDatabaseParameters) => Promise<DatabaseResponse>;
     getBlock: (params: ListBlockChildrenParameters) => Promise<BlockResponse>;
@@ -84,7 +84,7 @@ class Notion implements NotionAPI {
 
     getBlock(params: ListBlockChildrenParameters) {
         return this.client.blocks.children.list(
-            params
+            params,
         ) as Promise<BlockResponse>;
     }
 }
@@ -133,6 +133,8 @@ interface Related {
     relation: {
         id: string;
     }[];
+    name: string;
+    description: string | null;
     has_more: boolean;
 }
 
@@ -155,7 +157,7 @@ interface Description {
         };
         plain_text: string;
         href: string | null;
-    };
+    }[];
 }
 
 interface ReadTime {
