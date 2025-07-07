@@ -4,7 +4,7 @@
     "version": "0.0.1",
     "scripts": {
         "dev": "astro dev",
-        "build": "astro build",
+        "build": "pnpm gen:blogs && astro build",
         "preview": "astro preview",
         "astro": "astro",
         "gen:blogs": "node --loader ts-node/esm scripts/createBlogs.ts"
