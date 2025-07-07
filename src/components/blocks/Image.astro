@@ -5,7 +5,7 @@ const props = Astro.props as BlockNormalizerResult<"image">;
 const hasCaption = props.content.caption.length > 0;
 ---
 
-<div class="max-w-md w-full mx-auto">
+<div class="max-w-md w-full mx-auto mt-4 mb-4">
     <div class="overflow-hidden rounded-lg shadow-md">
         <img
             src={props.content.url}

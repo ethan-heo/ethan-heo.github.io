@@ -9,7 +9,7 @@ const props = Astro.props as BlockNormalizerResult<"code">;
 const contents = props.rich_text[0].plain_text.split("\n");
 ---
 
-<div class="mockup-code w-full mt-2 mb-3">
+<div class="mockup-code w-full mt-4 mb-4">
     {
         contents.map((content, idx) => (
             <pre data-prefix={idx + 1} class="flex">
