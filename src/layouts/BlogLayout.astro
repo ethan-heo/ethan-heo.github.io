@@ -4,8 +4,13 @@ import "../styles/global.css";
 const props = Astro.props;
 ---
 
-<h1 class="text-2xl/7 font-bold mb-3 mt-8">{props.title}</h1>
-<time class="block mb-10 text-xs" datetime={props.createdDate}
+<h1 class="text-4xl font-bold mb-3 mt-20">{props.title}</h1>
+<time class="block mb-4 text-xs" datetime={props.createdDate}
     >{props.createdDate}</time
 >
+<img
+    src={props.backgroundImage}
+    alt={""}
+    class="aspect-4/3 mb-14 object-cover rounded-lg shadow-md"
+/>
 <slot />
