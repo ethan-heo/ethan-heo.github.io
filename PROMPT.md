@@ -1,3 +1,84 @@
+### Webmanifest 파일의 용도 및 실무 적용 가이드 (2025-07-07)
+
+- 💡 개선 제안:
+    - `site.webmanifest`(Web App Manifest)는 웹사이트를 모바일/데스크톱에서 앱처럼 설치(PWA, Progressive Web App)할 수 있게 해주는 표준 JSON 파일입니다.
+    - 홈화면 아이콘, 앱 이름, 시작 URL, 테마 색상 등 앱 설치/실행에 필요한 메타데이터를 정의합니다.
+    - Template.astro의 `<head>`에 `<link rel="manifest" href="/site.webmanifest" />`를 추가하면, 브라우저가 이 파일을 인식해 PWA 기능을 활성화합니다.
+
+- 🔧 설정 방법 예시:
+  `/public/site.webmanifest` 예시:
+
+    ```json
+    {
+        "name": "Ethan Blog",
+        "short_name": "Blog",
+        "start_url": "/",
+        "display": "standalone",
+        "background_color": "#001c23",
+        "theme_color": "#ffd6a7",
+        "icons": [
+            {
+                "src": "/android-chrome-192x192.png",
+                "sizes": "192x192",
+                "type": "image/png"
+            },
+            {
+                "src": "/android-chrome-512x512.png",
+                "sizes": "512x512",
+                "type": "image/png"
+            }
+        ]
+    }
+    ```
+
+    - name, short_name: 앱 이름/축약명
+    - start_url: 앱 실행 시 시작 경로
+    - display: standalone(앱처럼), minimal-ui 등
+    - icons: 홈화면/런처에 표시될 아이콘 목록
+
+- 🧩 아키텍처 제안:
+    - PWA(Progressive Web App) 지원을 통해 오프라인 사용, 홈화면 설치, 푸시 알림 등 네이티브 앱과 유사한 경험을 제공할 수 있습니다.
+    - manifest와 함께 service worker를 등록하면, 오프라인 캐싱 등 고급 기능도 구현 가능합니다.
+
+**맥락과 판단 근거:**
+webmanifest는 현대 웹사이트의 모바일/앱 경험, SEO, 접근성, 브랜드 일관성까지 강화하는 핵심 요소입니다. 실제 서비스에서도 PWA 지원을 위해 반드시 포함하는 것이 바람직합니다.
+
+---
+
+### Favicon 설정 방법 및 Template.astro 적용 가이드 (2025-07-07)
+
+- 💡 개선 제안:
+    - favicon은 사이트의 브랜드 아이덴티티를 브라우저 탭, 즐겨찾기, 모바일 홈화면 등에서 보여주는 중요한 요소입니다.
+    - 다양한 해상도와 브라우저 호환성을 위해 여러 포맷과 크기를 준비하는 것이 좋습니다.
+    - Template.astro의 `<head>`에 여러 favicon 링크를 추가하면, 최신 브라우저와 레거시 환경 모두에서 일관된 브랜드 경험을 제공합니다.
+
+- 🔧 설정 방법 예시:
+    1. `/public` 폴더에 다양한 포맷의 파비콘 파일을 추가합니다.
+        - favicon.ico (기본, 32x32 또는 48x48)
+        - favicon.svg (벡터, 최신 브라우저)
+        - apple-touch-icon.png (180x180, iOS)
+        - android-chrome-192x192.png, android-chrome-512x512.png 등
+    2. Template.astro의 `<head>`에 아래와 같이 추가합니다:
+
+    ```astro
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    ```
+
+    - SVG가 있으면 최신 브라우저에서 우선 사용되고, PNG/ICO는 레거시 호환용입니다.
+
+- 🧩 아키텍처 제안:
+    - favicon, manifest, apple-touch-icon 등은 모두 `/public`에 두고, 빌드/배포 시 자동 포함되도록 관리하세요.
+    - 브랜드 리뉴얼, 다크모드 대응 등도 고려해 SVG 활용을 권장합니다.
+
+**맥락과 판단 근거:**
+다양한 환경에서 일관된 브랜드 경험을 제공하고, SEO 및 PWA(Progressive Web App) 지원까지 고려한 표준적인 파비콘 설정 방식입니다. 실제 서비스에서도 위와 같은 다중 포맷/사이즈 적용이 권장됩니다.
+
+---
+
 ### BlogList.tsx 코드 리뷰 (2025-07-07)
 
 - 💡 개선 제안:

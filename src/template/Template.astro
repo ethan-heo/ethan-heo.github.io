@@ -9,7 +9,6 @@ const props = Astro.props;
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
         <meta name="description" content={props.description} />
         <meta name="keywords" content={props.categories.join(" ")} />
@@ -22,8 +21,25 @@ const props = Astro.props;
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={props.title} />
         <meta name="twitter:description" content={props.description} />
-        <meta name="twitter:image" content={props.backgroundImage} />
-        <meta name="twitter:url" content={props.url} />
+        <meta
+            name="twitter:image"
+            content={props.backgroundImage ?? "/logo.png"}
+        />
+        <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="/favicon-16x16.png"
+        />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/site.webmanifest" />
         <title>{props.title}</title>
     </head>
     <body class="flex flex-col min-h-screen">
