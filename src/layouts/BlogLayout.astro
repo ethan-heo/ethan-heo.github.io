@@ -2,10 +2,13 @@
 import "../styles/global.css";
 
 const props = Astro.props;
+const date = new Date(props.createdDate);
 ---
 
 <h1 class="text-4xl font-bold mb-3 mt-20">{props.title}</h1>
 <time class="block mb-14 text-xs" datetime={props.createdDate}
-    >{props.createdDate}</time
+    >{
+        `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
+    }</time
 >
 <slot />
