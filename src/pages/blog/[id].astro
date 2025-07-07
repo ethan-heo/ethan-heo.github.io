@@ -34,7 +34,7 @@ export async function getStaticPaths() {
 const { contents, ...props } = Astro.props;
 ---
 
-<Template {...props} url={`https://ethan-heo.github.io/blog/${props.id}`}>
+<Template {...props} url={`/${props.id}`}>
     <BlogLayout {...props}>
         <RenderBlock blocks={contents} />
     </BlogLayout>

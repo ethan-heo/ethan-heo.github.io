@@ -5,17 +5,19 @@ const {
     title: _title,
     backgroundImage: _backgroundImage,
     description,
-    url,
+    url: _url,
     categories,
 } = Astro.props;
 const title = _title ? `Ethan Blog | ${_title}` : `Ethan Blog`;
 const image = _backgroundImage ?? "/logo.png";
+const url = _url ?? "";
 ---
 
 <!doctype html>
 <html lang="ko" data-theme="abyss">
     <head>
         <meta charset="UTF-8" />
+        <link rel="canonical" href={`https://ethan-heo.github.io${url}`} />
         <meta name="language" content="ko" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
@@ -54,7 +56,7 @@ const image = _backgroundImage ?? "/logo.png";
             <a class="link" href="/">
                 <div class="avatar">
                     <div
-                        class="ring-primary ring-offset-base-100 w-12 rounded-full ring-2 ring-offset-2"
+                        class="ring-primary ring-offset-base-100 w-9 rounded-full ring-2 ring-offset-2"
                     >
                         <img src="/logo.png" alt="Ethan blog" />
                     </div>
@@ -64,13 +66,13 @@ const image = _backgroundImage ?? "/logo.png";
                 <li>
                     <a class="link link-hover" href="/blog">Blog</a>
                 </li>
-                <li>
+                <!-- <li>
                     <a class="link link-hover" href="/Resume">Resume</a>
-                </li>
+                </li> -->
             </ul>
         </header>
         <main
-            class="flex-1 w-full px-4 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl 2xl:max-w-6xl mx-auto"
+            class="flex-1 w-full h-full px-4 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl 2xl:max-w-6xl mx-auto"
         >
             <slot />
         </main>
