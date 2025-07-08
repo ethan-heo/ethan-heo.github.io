@@ -17,9 +17,15 @@ const { getBlogs } = BlogAdapter(notion);
 
 const blogs = await getBlogs({
     database_id: NOTION_DATABASE_ID as string,
+    filter: {
+        property: "publish",
+        checkbox: {
+            equals: true,
+        },
+    },
 });
 
 fs.writeFileSync(
     path.resolve(__dirname, "../src/assets/blogs.json"),
-    JSON.stringify(blogs)
+    JSON.stringify(blogs),
 );
