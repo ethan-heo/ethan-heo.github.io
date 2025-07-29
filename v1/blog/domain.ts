@@ -1,0 +1,3 @@
+interface BlogListItem {}
+
+interface BlogContent {}

@@ -9,6 +9,17 @@ import type {
 } from "@notionhq/client/build/src/api-endpoints";
 import normalizeBlock, { type BlockResult } from "./notion-block-normalizer.ts";
 
+/**
+ * 추가 아이디어.
+ *
+ * 1. 데이터를 가져올 때 Semantic 마크업 데이터로 활용할 수 있는 구조로 변환하도록 만들어보면 어떨까?
+ *  -> h1 + div -> sectioning > h1 + div 이런식으로?
+ * 2. NotionAPI -> blog Adapter 와의 관계에서 Notion API -> CMS -> blog Adapter 로 변경하면 좀 더 유연하게 사용할 수 있지 않을까 생각 되는데?
+ *  -> 이렇게 하면 바꿔야 할 부분이 많음. (데이터 구조, 형식)
+ *  -> 추상적인 개념이 필요함. 예를들어 Blog에서 사용되는 데이터의 형식이 blog에 종속되지 않도록 개념이 추가되야 함.
+ *  -> NotionAPI 인터페이스를 CMSAPI로 교체해야 하고 이 때 메서드의 시그니처가 변경되어야 함.
+ */
+
 export interface NotionAPI {
     getDatabaseAll: (
         params: QueryDatabaseParameters,

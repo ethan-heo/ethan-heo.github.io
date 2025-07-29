@@ -1,0 +1,3 @@
+interface BlogRepository {}
+
+interface Notion {}
