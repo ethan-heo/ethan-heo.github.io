@@ -1,25 +1,17 @@
-export type NotionBlogBlockType =
-    | TextBlockType
-    | MediaBlockType
-    | TableBlockType
-    | PageLinkBlockType
-    | CodeBlockType
-    | TodoBlockType
-    | DividerBlockType;
-
-type CreateBlock<T, A = never> = {
+type CreateBlock<T, A = any> = {
     type: T;
     id: string;
     has_children: boolean;
+    children: NotionBlogContent[];
     content: A extends Array<infer C>
         ? {
-              [K in keyof C]: K extends keyof C ? C[K] : never;
+              [K in keyof C]: K extends keyof C ? C[K] : null;
           }[]
         : A extends {}
           ? {
-                [K in keyof A]: K extends keyof A ? A[K] : never;
+                [K in keyof A]: K extends keyof A ? A[K] : null;
             }
-          : never;
+          : null;
 };
 
 interface Annotations {
@@ -119,3 +111,12 @@ export type NotionBlogContent =
     | CodeBlock
     | TodoBlock
     | DividerBlock;
+
+export type NotionBlogBlockType =
+    | TextBlockType
+    | MediaBlockType
+    | TableBlockType
+    | PageLinkBlockType
+    | CodeBlockType
+    | TodoBlockType
+    | DividerBlockType;

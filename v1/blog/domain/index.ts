@@ -5,6 +5,9 @@ import type {
     OriginalBlogContent,
     OriginalBlogItem,
 } from "./domain.interface";
+import type { TransformerMap } from "./transformer";
+import transformerMap from "./transformer";
+import type { NotionBlogBlockType } from "./notion-blog-block.interface";
 
 /**
  * @description OriginalBlogItem 형식의 목록을 받아 BlogItem 형식의 목록으로 변환한다.
@@ -29,3 +32,21 @@ type TransformSearchResult = (blogItems: BlogItem[]) => Category[];
 type TransformOriginalBlogContent = (
     originalBlogContent: OriginalBlogContent,
 ) => BlogContent;
+
+const createOriginalBlogContentTransformer =
+    (
+        transformerMap: TransformerMap<NotionBlogBlockType>,
+    ): TransformOriginalBlogContent =>
+    (originalBlogContent) => {
+        const transformer = transformerMap[originalBlogContent.type];
+
+        if (!transformer)
+            throw new Error(
+                `${originalBlogContent.type} 을 변환할 수 없습니다.`,
+            );
+
+        return transformer(originalBlogContent as any);
+    };
+
+const transformOriginBlogContent =
+    createOriginalBlogContentTransformer(transformerMap);
