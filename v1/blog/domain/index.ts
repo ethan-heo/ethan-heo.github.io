@@ -68,10 +68,16 @@ export const searchResult: SearchResult = (searchQuery, blogItems) => {
     return blogItems.filter((blogItem) => {
         const { title, description, categories } = blogItem;
 
+        const normalizedTitle = title.toLocaleLowerCase();
+        const normalizedDescription = description.toLocaleLowerCase();
+        const normalizedCategories = categories.map((category) =>
+            category.toLocaleLowerCase(),
+        );
+
         return (
-            title.includes(query) ||
-            description.includes(query) ||
-            categories.some((category) => query.includes(category))
+            normalizedTitle.includes(query) ||
+            normalizedDescription.includes(query) ||
+            normalizedCategories.some((category) => query.includes(category))
         );
     });
 };
