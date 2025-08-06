@@ -64,3 +64,8 @@ export type OriginalBlogContent = Extract<
 export type BlogContent = NotionBlogContent;
 
 export type Category = string;
+
+export interface SearchedBlogItem {
+    id: string;
+    title: string;
+}

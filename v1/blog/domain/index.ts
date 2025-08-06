@@ -4,6 +4,7 @@ import type {
     Category,
     OriginalBlogContent,
     OriginalBlogItem,
+    SearchedBlogItem,
 } from "./domain.interface";
 import type { TransformerMap } from "./transformer";
 import transformerMap from "./transformer";
@@ -19,12 +20,14 @@ type TransformOriginalBlogItems = (
 /**
  * @description 검색어를 입력 받아 유효한 검색어인지 확인한다.
  */
-type ValidateSearchQuery = (str: string) => string;
+type ValidateSearchQuery = (str: string) => void;
 
 /**
- * @description 검색 결과를 입력 받아 Category 형식으로 변환하여 반환한다.
+ * @description 검색 결과를 입력 받아
  */
-type TransformSearchResult = (blogItems: BlogItem[]) => Category[];
+type TransformSearchResult = (blogItems: BlogItem[]) => SearchedBlogItem[];
+
+type SearchResult = (searchQuery: string, blogItems: BlogItem[]) => BlogItem[];
 
 /**
  * @description 외부 서비스의 컨텐츠를 입력받아 BlogContent 형식으로 변환하여 반환한다.
@@ -50,3 +53,28 @@ const createOriginalBlogContentTransformer =
 
 const transformOriginBlogContent =
     createOriginalBlogContentTransformer(transformerMap);
+
+const transformSearchResult: TransformSearchResult = (blogItems) => {
+    return blogItems.map((blogItem) => ({
+        id: blogItem.id,
+        title: blogItem.title,
+    }));
+};
+
+const searchResult: SearchResult = (searchQuery, blogItems) => {
+    return blogItems.filter((blogItem) => {
+        const { title, description, categories } = blogItem;
+
+        return (
+            title.includes(searchQuery) &&
+            description.includes(searchQuery) &&
+            categories.some((category) => searchQuery.includes(category))
+        );
+    });
+};
+
+const validateSearchQuery: ValidateSearchQuery = (searchQuery) => {
+    if (searchQuery.trim().length === 0) {
+        throw new Error(`검색 결과가 존재하지 않음.`);
+    }
+};
