@@ -7,6 +7,6 @@ import type {
 export interface BlogRepository {
     getOriginalBlogList: (id: string) => Promise<OriginalBlogItem[]>;
     getOriginalContents: (id: string) => Promise<OriginalBlogContent[]>;
-    getBlogList: (page: number, size: number) => BlogItem[];
+    getBlogList: (page: number, size?: number) => BlogItem[];
     toJSON: (blogItems: BlogItem[], target: string) => void;
 }
