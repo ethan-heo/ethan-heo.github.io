@@ -67,8 +67,8 @@ export const searchResult: SearchResult = (searchQuery, blogItems) => {
         const { title, description, categories } = blogItem;
 
         return (
-            title.includes(searchQuery) &&
-            description.includes(searchQuery) &&
+            title.includes(searchQuery) ||
+            description.includes(searchQuery) ||
             categories.some((category) => searchQuery.includes(category))
         );
     });
