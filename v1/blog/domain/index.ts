@@ -13,9 +13,7 @@ import type { NotionBlogBlockType } from "./notion-blog-block.interface";
 /**
  * @description OriginalBlogItem 형식의 목록을 받아 BlogItem 형식의 목록으로 변환한다.
  */
-type TransformOriginalBlogItems = (
-    originalBlogItems: OriginalBlogItem[],
-) => BlogItem[];
+type TransformBlogItems = (originalBlogItems: OriginalBlogItem[]) => BlogItem[];
 
 /**
  * @description 검색어를 입력 받아 유효한 검색어인지 확인한다.
@@ -23,10 +21,13 @@ type TransformOriginalBlogItems = (
 type ValidateSearchQuery = (str: string) => void;
 
 /**
- * @description 검색 결과를 입력 받아
+ * @description 검색 결과인 blogItems를 입력받아 SearchedBlogItem[] 형식으로 변환한다.
  */
 type TransformSearchResult = (blogItems: BlogItem[]) => SearchedBlogItem[];
 
+/**
+ * @description 검색 결과를 반환합니다.
+ */
 type SearchResult = (searchQuery: string, blogItems: BlogItem[]) => BlogItem[];
 
 /**
@@ -36,7 +37,7 @@ type TransformOriginalBlogContent = (
     originalBlogContent: OriginalBlogContent,
 ) => BlogContent;
 
-const createOriginalBlogContentTransformer =
+export const createOriginalBlogContentTransformer =
     (
         transformerMap: TransformerMap<NotionBlogBlockType>,
     ): TransformOriginalBlogContent =>
@@ -51,17 +52,17 @@ const createOriginalBlogContentTransformer =
         return transformer(originalBlogContent as any);
     };
 
-const transformOriginBlogContent =
+export const transformOriginBlogContent =
     createOriginalBlogContentTransformer(transformerMap);
 
-const transformSearchResult: TransformSearchResult = (blogItems) => {
+export const transformSearchResult: TransformSearchResult = (blogItems) => {
     return blogItems.map((blogItem) => ({
         id: blogItem.id,
         title: blogItem.title,
     }));
 };
 
-const searchResult: SearchResult = (searchQuery, blogItems) => {
+export const searchResult: SearchResult = (searchQuery, blogItems) => {
     return blogItems.filter((blogItem) => {
         const { title, description, categories } = blogItem;
 
@@ -73,8 +74,35 @@ const searchResult: SearchResult = (searchQuery, blogItems) => {
     });
 };
 
-const validateSearchQuery: ValidateSearchQuery = (searchQuery) => {
+export const validateSearchQuery: ValidateSearchQuery = (searchQuery) => {
     if (searchQuery.trim().length === 0) {
         throw new Error(`검색 결과가 존재하지 않음.`);
     }
+};
+
+export const transformBlogItems: TransformBlogItems = (originalBlogItems) => {
+    return originalBlogItems.map((originalBlogItem) => {
+        const { id, title, properties, created_time, cover } = originalBlogItem;
+        let backgroundImg: string;
+
+        if (cover.type === "external") {
+            backgroundImg = cover.external.url;
+        } else {
+            backgroundImg = cover.file.url;
+        }
+
+        return {
+            id,
+            backgroundImg,
+            title: title.map((text) => text.plain_text).join(" "),
+            description: properties.description.rich_text
+                .map((text) => text.plain_text)
+                .join(" "),
+            createdDate: created_time,
+            categories: properties.category.multi_select.map(
+                (select) => select.name,
+            ),
+            related: properties.related.relation.map((relation) => relation.id),
+        };
+    });
 };
