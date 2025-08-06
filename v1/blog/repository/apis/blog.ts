@@ -11,9 +11,9 @@ const createBlogAPI = (): BlogAPI => {
                 size * page + size,
             ) as unknown as BlogItem[];
         },
-        toJSON(blogItems) {
+        toJSON(blogItems, target) {
             fs.writeFileSync(
-                path.resolve(__dirname, "../src/assets/blogs.json"),
+                path.resolve(__dirname, target),
                 JSON.stringify(blogItems),
             );
         },
@@ -24,5 +24,5 @@ export default createBlogAPI;
 
 export interface BlogAPI {
     getBlogList: (page: number, size: number) => BlogItem[];
-    toJSON: (blogItems: BlogItem[]) => void;
+    toJSON: (blogItems: BlogItem[], target: string) => void;
 }

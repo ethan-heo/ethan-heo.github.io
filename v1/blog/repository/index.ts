@@ -15,6 +15,9 @@ const blogRepository = (
     getBlogList(page, size) {
         return blogAPI.getBlogList(page, size);
     },
+    toJSON(blogItems, target) {
+        return blogAPI.toJSON(blogItems, target);
+    },
 });
 
 export default blogRepository;
