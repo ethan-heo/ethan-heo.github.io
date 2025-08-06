@@ -63,13 +63,15 @@ export const transformSearchResult: TransformSearchResult = (blogItems) => {
 };
 
 export const searchResult: SearchResult = (searchQuery, blogItems) => {
+    const query = searchQuery.toLowerCase().trim();
+
     return blogItems.filter((blogItem) => {
         const { title, description, categories } = blogItem;
 
         return (
-            title.includes(searchQuery) ||
-            description.includes(searchQuery) ||
-            categories.some((category) => searchQuery.includes(category))
+            title.includes(query) ||
+            description.includes(query) ||
+            categories.some((category) => query.includes(category))
         );
     });
 };
