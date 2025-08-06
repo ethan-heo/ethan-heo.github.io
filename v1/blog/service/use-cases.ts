@@ -1,4 +1,7 @@
-import type { BlogContent } from "../domain/interfaces/model.interface";
+import type {
+    BlogContent,
+    BlogItem,
+} from "../domain/interfaces/model.interface";
 import type { BlogUseCase } from "./use-case.interface";
 
 type TransformBlogListToJSON = BlogUseCase<[string, string], void>;
@@ -18,3 +21,9 @@ export const getBlogContents: GetBlogContents =
 
         return originalContents.map(domain.transformOriginalBlogContent);
     };
+
+type GetBlogList = BlogUseCase<[number, number], BlogItem[]>;
+
+export const getBlogList: GetBlogList = (_, repository) => (page, size) => {
+    return repository.getBlogList(page, size);
+};
