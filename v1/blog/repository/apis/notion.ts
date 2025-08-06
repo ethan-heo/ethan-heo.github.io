@@ -28,7 +28,7 @@ const createNotionAPI = (apiKey: string): NotionAPI => {
                 start_cursor: startCursor,
             });
 
-            result = [...result, ...blogItem.results];
+            result.push(...blogItem.results);
             hasMore = blogItem.has_more;
             startCursor = blogItem.next_cursor ?? undefined;
         }
