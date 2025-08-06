@@ -1,6 +1,7 @@
 import type {
     BlogContent,
     BlogItem,
+    SearchedBlogItem,
 } from "../domain/interfaces/model.interface";
 import type { BlogUseCase } from "./use-case.interface";
 
@@ -27,3 +28,14 @@ type GetBlogList = BlogUseCase<[number, number], BlogItem[]>;
 export const getBlogList: GetBlogList = (_, repository) => (page, size) => {
     return repository.getBlogList(page, size);
 };
+
+type SearchBlogItems = BlogUseCase<[string], SearchedBlogItem[]>;
+
+export const searchBlogItems: SearchBlogItems =
+    (domain, repository) => (searchQuery) => {
+        domain.validateSearchQuery(searchQuery);
+
+        return domain.transformSearchResult(
+            domain.searchResult(searchQuery, repository.getBlogList(1)),
+        );
+    };
