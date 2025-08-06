@@ -2,7 +2,7 @@ import type {
     BlogItem,
     OriginalBlogContent,
     OriginalBlogItem,
-} from "../domain/domain.interface";
+} from "../domain/interfaces/model.interface";
 
 export interface BlogRepository {
     getOriginalBlogList: (id: string) => Promise<OriginalBlogItem[]>;

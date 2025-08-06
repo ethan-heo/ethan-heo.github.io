@@ -1,4 +1,4 @@
-import type { OriginalBlogContent } from "./domain.interface";
+import type { OriginalBlogContent } from "./interfaces/model.interface";
 import type {
     CodeBlock,
     CodeBlockType,

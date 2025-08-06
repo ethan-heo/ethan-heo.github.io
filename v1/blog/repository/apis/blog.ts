@@ -1,4 +1,4 @@
-import type { BlogItem } from "../../domain/domain.interface";
+import type { BlogItem } from "../../domain/interfaces/model.interface";
 import blogs from "../../../../src/assets/blogs.json";
 
 const createBlogAPI = (): BlogAPI => {
