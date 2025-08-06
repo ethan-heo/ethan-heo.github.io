@@ -52,7 +52,7 @@ export const createOriginalBlogContentTransformer =
         return transformer(originalBlogContent as any);
     };
 
-export const transformOriginBlogContent =
+export const transformOriginalBlogContent =
     createOriginalBlogContentTransformer(transformerMap);
 
 export const transformSearchResult: TransformSearchResult = (blogItems) => {
