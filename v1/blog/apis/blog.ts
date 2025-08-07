@@ -1,5 +1,5 @@
-import type { BlogItem } from "../../domain/interfaces/model.interface";
-import blogs from "../../../../src/assets/blogs.json";
+import type { BlogItem } from "../domain/interfaces/model.interface";
+import blogs from "../../../src/assets/blogs.json";
 import fs from "node:fs";
 import path from "node:path";
 

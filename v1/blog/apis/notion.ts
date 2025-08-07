@@ -8,7 +8,7 @@ import type {
 import type {
     OriginalBlogContent,
     OriginalBlogItem,
-} from "../../domain/interfaces/model.interface";
+} from "../domain/interfaces/model.interface";
 
 const createNotionAPI = (apiKey: string): NotionAPI => {
     const client = new Client({ auth: apiKey });
