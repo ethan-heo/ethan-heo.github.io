@@ -3,6 +3,7 @@ import createBlogRepository from "./repository";
 import type { NotionAPI } from "./apis/notion";
 import type { BlogAPI } from "./apis/blog";
 import createBlogService from "./service";
+import type { BlogItem } from "./domain/interfaces/model.interface";
 
 const createBlogController = (notionAPI: NotionAPI, blogAPI: BlogAPI) => {
     const service = createBlogService(
@@ -11,11 +12,12 @@ const createBlogController = (notionAPI: NotionAPI, blogAPI: BlogAPI) => {
     );
 
     return {
-        transformBlogListToJSON: (id: string, target: string) =>
-            service.transformBlogListToJSONUseCase(id, target),
-        getBlogContents: (id: string) => service.getBlogContentsUseCase(id),
-        getBlogList: (page: number, size: number) =>
-            service.getBlogListUseCase(page, size),
+        createBlogListToJSON: (originalBlogItems: BlogItem[], target: string) =>
+            service.createBlogListToJSONUseCase(originalBlogItems, target),
+        getBlogContentAll: (id: string) => service.getBlogContentAllUseCase(id),
+        getBlogListFromJSON: (page: number, size: number) =>
+            service.getBlogListFromJSONUseCase(page, size),
+        getBlogItemAll: (id: string) => service.getBlogItemAllUseCase(id),
         searchBlogItems: (searchQuery: string) =>
             service.searchBlogItemsUseCase(searchQuery),
     };
