@@ -9,23 +9,32 @@ type TransformBlogListToJSONUseCase = BlogUseCase<[string, string], void>;
 
 export const transformBlogListToJSONUseCase: TransformBlogListToJSONUseCase =
     (domain, repository) => async (id, target) => {
-        const blogList = await repository.getOriginalBlogList(id);
+        const blogList = await repository.getOriginalBlogItemAll(id);
 
-        repository.toJSON(domain.transformBlogItems(blogList), target);
+        repository.toJSON(blogList.map(domain.transformBlogItem), target);
     };
 
-type GetBlogContentsUseCase = BlogUseCase<[string], Promise<BlogContent[]>>;
+type GetBlogContentAllUseCase = BlogUseCase<[string], Promise<BlogContent[]>>;
 
-export const getBlogContentsUseCase: GetBlogContentsUseCase =
+export const getBlogContentAllUseCase: GetBlogContentAllUseCase =
     (domain, repository) => async (id) => {
-        const originalContents = await repository.getOriginalContents(id);
+        const originalContents = await repository.getOriginalContentAll(id);
 
         return originalContents.map(domain.transformOriginalBlogContent);
     };
 
-type GetBlogListUseCase = BlogUseCase<[number, number], BlogItem[]>;
+type GetBlogItemAllUseCase = BlogUseCase<[string], Promise<BlogItem[]>>;
 
-export const getBlogListUseCase: GetBlogListUseCase =
+export const getBlogItemAllUseCase: GetBlogItemAllUseCase =
+    (domain, repository) => async (id) => {
+        const blogList = await repository.getOriginalBlogItemAll(id);
+
+        return blogList.map(domain.transformBlogItem);
+    };
+
+type GetBlogListFromJSONUseCase = BlogUseCase<[number, number], BlogItem[]>;
+
+export const getBlogListFromJSONUseCase: GetBlogListFromJSONUseCase =
     (_, repository) => (page, size) => {
         return repository.getBlogList(page, size);
     };
