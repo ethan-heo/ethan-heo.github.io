@@ -4,7 +4,7 @@ import type { NotionAPI } from "./apis/notion";
 import type { BlogAPI } from "./apis/blog";
 import createBlogService from "./service";
 
-const blogController = (notionAPI: NotionAPI, blogAPI: BlogAPI) => {
+const createBlogController = (notionAPI: NotionAPI, blogAPI: BlogAPI) => {
     const service = createBlogService(
         blogDomain,
         createBlogRepository(notionAPI, blogAPI),
@@ -21,4 +21,4 @@ const blogController = (notionAPI: NotionAPI, blogAPI: BlogAPI) => {
     };
 };
 
-export default blogController;
+export default createBlogController;
