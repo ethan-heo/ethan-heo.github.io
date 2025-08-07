@@ -6,10 +6,10 @@ const createBlogRepository = (
     notionAPI: NotionAPI,
     blogAPI: BlogAPI,
 ): BlogRepository => ({
-    getOriginalBlogList(id) {
+    getOriginalBlogItemAll(id) {
         return notionAPI.getDatabaseAll(id);
     },
-    getOriginalContents(id) {
+    getOriginalContentAll(id) {
         return notionAPI.getBlockAll(id);
     },
     getBlogList(page, size) {

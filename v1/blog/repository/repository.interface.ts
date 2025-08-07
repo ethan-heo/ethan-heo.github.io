@@ -5,8 +5,8 @@ import type {
 } from "../domain/interfaces/model.interface";
 
 export interface BlogRepository {
-    getOriginalBlogList: (id: string) => Promise<OriginalBlogItem[]>;
-    getOriginalContents: (id: string) => Promise<OriginalBlogContent[]>;
+    getOriginalBlogItemAll: (id: string) => Promise<OriginalBlogItem[]>;
+    getOriginalContentAll: (id: string) => Promise<OriginalBlogContent[]>;
     getBlogList: (page: number, size?: number) => BlogItem[];
     toJSON: (blogItems: BlogItem[], target: string) => void;
 }
