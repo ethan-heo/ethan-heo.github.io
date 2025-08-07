@@ -5,11 +5,11 @@ import {
     getBlogListFromJSONUseCase,
     getBlogItemAllUseCase,
     searchBlogItemsUseCase,
-    transformBlogListToJSONUseCase,
+    createBlogListToJSONUseCase,
 } from "./use-cases";
 
 const createBlogService = (domain: BlogDomain, repository: BlogRepository) => ({
-    transformBlogListToJSONUseCase: transformBlogListToJSONUseCase(
+    createBlogListToJSONUseCase: createBlogListToJSONUseCase(
         domain,
         repository,
     ),

@@ -5,13 +5,11 @@ import type {
 } from "../domain/interfaces/model.interface";
 import type { BlogUseCase } from "./use-case.interface";
 
-type TransformBlogListToJSONUseCase = BlogUseCase<[string, string], void>;
+type CreateBlogListToJSONUseCase = BlogUseCase<[BlogItem[], string], void>;
 
-export const transformBlogListToJSONUseCase: TransformBlogListToJSONUseCase =
-    (domain, repository) => async (id, target) => {
-        const blogList = await repository.getOriginalBlogItemAll(id);
-
-        repository.toJSON(blogList.map(domain.transformBlogItem), target);
+export const createBlogListToJSONUseCase: CreateBlogListToJSONUseCase =
+    (_, repository) => (blogItems, target) => {
+        repository.toJSON(blogItems, target);
     };
 
 type GetBlogContentAllUseCase = BlogUseCase<[string], Promise<BlogContent[]>>;
