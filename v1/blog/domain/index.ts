@@ -2,34 +2,29 @@ import transformerMap from "./transformer";
 import type { BlogDomain } from "./interfaces/domain.interface";
 
 const blogDomain: BlogDomain = {
-    transformBlogItems: (originalBlogItems) => {
-        return originalBlogItems.map((originalBlogItem) => {
-            const { id, title, properties, created_time, cover } =
-                originalBlogItem;
-            let backgroundImg: string;
+    transformBlogItem: (originalBlogItem) => {
+        const { id, title, properties, created_time, cover } = originalBlogItem;
+        let backgroundImg: string;
 
-            if (cover.type === "external") {
-                backgroundImg = cover.external.url;
-            } else {
-                backgroundImg = cover.file.url;
-            }
+        if (cover.type === "external") {
+            backgroundImg = cover.external.url;
+        } else {
+            backgroundImg = cover.file.url;
+        }
 
-            return {
-                id,
-                backgroundImg,
-                title: title.map((text) => text.plain_text).join(" "),
-                description: properties.description.rich_text
-                    .map((text) => text.plain_text)
-                    .join(" "),
-                createdDate: created_time,
-                categories: properties.category.multi_select.map(
-                    (select) => select.name,
-                ),
-                related: properties.related.relation.map(
-                    (relation) => relation.id,
-                ),
-            };
-        });
+        return {
+            id,
+            backgroundImg,
+            title: title.map((text) => text.plain_text).join(" "),
+            description: properties.description.rich_text
+                .map((text) => text.plain_text)
+                .join(" "),
+            createdDate: created_time,
+            categories: properties.category.multi_select.map(
+                (select) => select.name,
+            ),
+            related: properties.related.relation.map((relation) => relation.id),
+        };
     },
     searchResult: (searchQuery, blogItems) => {
         const query = searchQuery.toLowerCase().trim();
