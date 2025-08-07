@@ -1,5 +1,24 @@
-const controller = () => ({});
+import blogDomain from "./domain";
+import createBlogRepository from "./repository";
+import type { NotionAPI } from "./apis/notion";
+import type { BlogAPI } from "./apis/blog";
+import createBlogService from "./service";
 
-const BlogController = controller();
+const blogController = (notionAPI: NotionAPI, blogAPI: BlogAPI) => {
+    const service = createBlogService(
+        blogDomain,
+        createBlogRepository(notionAPI, blogAPI),
+    );
 
-export default BlogController;
+    return {
+        transformBlogListToJSON: (id: string, target: string) =>
+            service.transformBlogListToJSONUseCase(id, target),
+        getBlogContents: (id: string) => service.getBlogContentsUseCase(id),
+        getBlogList: (page: number, size: number) =>
+            service.getBlogListUseCase(page, size),
+        searchBlogItems: (searchQuery: string) =>
+            service.searchBlogItemsUseCase(searchQuery),
+    };
+};
+
+export default blogController;
