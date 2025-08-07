@@ -7,7 +7,7 @@ import {
     transformBlogListToJSONUseCase,
 } from "./use-cases";
 
-const BlogService = (domain: BlogDomain, repository: BlogRepository) => ({
+const createBlogService = (domain: BlogDomain, repository: BlogRepository) => ({
     transformBlogListToJSONUseCase: transformBlogListToJSONUseCase(
         domain,
         repository,
@@ -17,4 +17,4 @@ const BlogService = (domain: BlogDomain, repository: BlogRepository) => ({
     searchBlogItemsUseCase: searchBlogItemsUseCase(domain, repository),
 });
 
-export default BlogService;
+export default createBlogService;
