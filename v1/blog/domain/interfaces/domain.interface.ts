@@ -7,7 +7,7 @@ import type {
 } from "./model.interface";
 
 export interface BlogDomain {
-    transformBlogItems: (originalBlogItems: OriginalBlogItem[]) => BlogItem[];
+    transformBlogItem: (originalBlogItem: OriginalBlogItem) => BlogItem;
     searchResult: (searchQuery: string, blogItems: BlogItem[]) => BlogItem[];
     validateSearchQuery: (str: string) => void;
     transformSearchResult: (blogItems: BlogItem[]) => SearchedBlogItem[];
