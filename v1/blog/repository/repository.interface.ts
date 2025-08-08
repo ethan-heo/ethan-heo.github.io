@@ -5,8 +5,13 @@ import type {
 } from "../domain/interfaces/model.interface.ts";
 
 export interface BlogRepository {
-    getOriginalBlogItemAll: (id: string) => Promise<OriginalBlogItem[]>;
-    getOriginalContentAll: (id: string) => Promise<OriginalBlogContent[]>;
-    getBlogList: (page: number, size?: number) => BlogItem[];
-    toJSON: (blogItems: BlogItem[], target: string) => void;
+    notion: {
+        init: (apiKey: string) => void;
+        getOriginalBlogItemAll: (id: string) => Promise<OriginalBlogItem[]>;
+        getOriginalContentAll: (id: string) => Promise<OriginalBlogContent[]>;
+    };
+    blog: {
+        getBlogList: (page: number, size?: number) => BlogItem[];
+        toJSON: (blogItems: BlogItem[], target: string) => void;
+    };
 }

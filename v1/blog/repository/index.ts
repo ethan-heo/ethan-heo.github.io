@@ -6,17 +6,22 @@ const createBlogRepository = (
     notionAPI: NotionAPI,
     blogAPI: BlogAPI,
 ): BlogRepository => ({
-    getOriginalBlogItemAll(id) {
-        return notionAPI.getDatabaseAll(id);
+    notion: {
+        init: (apiKey) => notionAPI.init(apiKey),
+        getOriginalBlogItemAll(id) {
+            return notionAPI.getDatabaseAll(id);
+        },
+        getOriginalContentAll(id) {
+            return notionAPI.getBlockAll(id);
+        },
     },
-    getOriginalContentAll(id) {
-        return notionAPI.getBlockAll(id);
-    },
-    getBlogList(page, size) {
-        return blogAPI.getBlogList(page, size);
-    },
-    toJSON(blogItems, target) {
-        return blogAPI.toJSON(blogItems, target);
+    blog: {
+        getBlogList(page, size) {
+            return blogAPI.getBlogList(page, size);
+        },
+        toJSON(blogItems, target) {
+            return blogAPI.toJSON(blogItems, target);
+        },
     },
 });
 

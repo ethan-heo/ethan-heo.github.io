@@ -6,9 +6,11 @@ import {
     getBlogItemAllUseCase,
     searchBlogItemsUseCase,
     createBlogListToJSONUseCase,
+    initNotionClientUseCase,
 } from "./use-cases.ts";
 
 const createBlogService = (domain: BlogDomain, repository: BlogRepository) => ({
+    initNotionClientUseCase: initNotionClientUseCase(domain, repository),
     createBlogListToJSONUseCase: createBlogListToJSONUseCase(
         domain,
         repository,

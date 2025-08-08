@@ -10,13 +10,11 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const { NOTION_API_KEY, NOTION_DATABASE_ID } = process.env;
-const controller = createBlogController(
-    createNotionAPI(NOTION_API_KEY as string),
-    createBlogAPI(),
-);
-const blotList = await controller.getBlogItemAll(NOTION_DATABASE_ID as string);
+const controller = createBlogController(createNotionAPI(), createBlogAPI());
 
-controller.createBlogListToJSON(
-    blotList,
+controller.notion.init(NOTION_API_KEY as string);
+
+controller.blog.createBlogListToJSON(
+    await controller.notion.getBlogItemAll(NOTION_DATABASE_ID as string),
     path.resolve(__dirname, "../src/assets/blogs.json"),
 );
