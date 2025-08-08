@@ -55,3 +55,10 @@ export const initNotionClientUseCase: InitNotionClientUseCase =
     (_, repository) => (apiKey) => {
         repository.notion.init(apiKey);
     };
+
+type HasNextBlogListUseCase = BlogUseCase<[number, number], boolean>;
+
+export const hasNextBlogListUseCase: HasNextBlogListUseCase =
+    (_, repository) => (page, size) => {
+        return repository.blog.hasNextBlogList(page, size);
+    };

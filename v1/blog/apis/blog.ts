@@ -1,12 +1,10 @@
 import type { BlogItem } from "../domain/interfaces/model.interface.ts";
 import blogs from "../../../src/assets/blogs.json" assert { type: "json" };
 import fs from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
 
 const createBlogAPI = (): BlogAPI => {
     return {
-        getBlogList(page: number, size) {
+        getBlogList(page, size) {
             let _page = page > 0 ? page - 1 : 0;
 
             if (!size) {
@@ -18,6 +16,12 @@ const createBlogAPI = (): BlogAPI => {
                 size * _page + size,
             ) as unknown as BlogItem[];
         },
+        hasNextBlogList: (page, size) => {
+            if (!size) {
+                return blogs.length > 0;
+            }
+            return !!blogs[page * size + size];
+        },
         toJSON(blogItems, target) {
             fs.writeFileSync(target, JSON.stringify(blogItems));
         },
@@ -28,5 +32,6 @@ export default createBlogAPI;
 
 export interface BlogAPI {
     getBlogList: (page: number, size?: number) => BlogItem[];
+    hasNextBlogList: (page: number, size?: number) => boolean;
     toJSON: (blogItems: BlogItem[], target: string) => void;
 }

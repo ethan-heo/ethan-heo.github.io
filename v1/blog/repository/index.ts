@@ -22,6 +22,9 @@ const createBlogRepository = (
         toJSON(blogItems, target) {
             return blogAPI.toJSON(blogItems, target);
         },
+        hasNextBlogList(page, size) {
+            return blogAPI.hasNextBlogList(page, size);
+        },
     },
 });
 

@@ -12,6 +12,7 @@ export interface BlogRepository {
     };
     blog: {
         getBlogList: (page: number, size?: number) => BlogItem[];
+        hasNextBlogList: (page: number, size?: number) => boolean;
         toJSON: (blogItems: BlogItem[], target: string) => void;
     };
 }

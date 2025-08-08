@@ -23,6 +23,8 @@ const blogController = {
             service.getBlogListFromJSONUseCase(page, size),
         searchBlogItems: (searchQuery: string) =>
             service.searchBlogItemsUseCase(searchQuery),
+        hasNextBlogList: (page: number, size: number) =>
+            service.hasNextBlogListUseCase(page, size),
     },
 };
 

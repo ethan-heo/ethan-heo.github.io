@@ -1,19 +1,12 @@
-import { useState } from "react";
-import blogData from "../../assets/blogs.json";
-
-const LIMITS = 18;
-const DATA_LENGTH = blogData.length;
+import useBlogListPagination from "./\buseBlogListPagination";
 
 function BlogList() {
-    const [page, setPage] = useState(1);
-    const useMore = LIMITS * page < DATA_LENGTH;
-    const sliceSize = useMore ? LIMITS * page : undefined;
-    const blogs = blogData.slice(0, sliceSize);
+    const { blogList, useAddMore, addMore } = useBlogListPagination();
 
     return (
         <div className="flex flex-col gap-5 items-center mt-20">
             <ul className="grid grid-cols-1 w-full sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-                {blogs.map((blog) => (
+                {blogList.map((blog) => (
                     <li
                         key={blog.id}
                         className="card bg-base-100 w-full shadow-sm"
@@ -21,7 +14,7 @@ function BlogList() {
                         <div className="card bg-base-100 shadow-md">
                             <figure className="h-48 overflow-hidden">
                                 <img
-                                    src={blog.backgroundImage}
+                                    src={blog.backgroundImg}
                                     alt={blog.title}
                                     className="w-full h-full object-cover"
                                 />
@@ -46,10 +39,10 @@ function BlogList() {
                     </li>
                 ))}
             </ul>
-            {useMore && (
+            {useAddMore && (
                 <button
                     className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl btn-primary"
-                    onClick={() => setPage(page + 1)}
+                    onClick={addMore}
                     aria-label="더 보기"
                 >
                     More
