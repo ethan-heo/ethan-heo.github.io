@@ -16,7 +16,7 @@ import type {
     TextBlockType,
     TodoBlock,
     TodoBlockType,
-} from "./notion-blog-block.interface.ts";
+} from "./interfaces/notion-blog-block.interface.ts";
 
 type TransformerResult<T extends NotionBlogBlockType> = T extends TextBlockType
     ? TextBlock

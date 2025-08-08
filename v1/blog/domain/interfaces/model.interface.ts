@@ -6,7 +6,7 @@ import type {
     NotionBlogBlockType,
     NotionBlogContent,
     RichText,
-} from "../notion-blog-block.interface.ts";
+} from "./notion-blog-block.interface.ts";
 
 export interface BlogItem {
     id: string;
