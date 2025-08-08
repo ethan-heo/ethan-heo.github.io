@@ -1,10 +1,10 @@
 ---
-import { type BlockNormalizerResult } from "../../modules/notion-block-normalizer";
 import Text from "./Text.astro";
 import NumberedListItem from "./NumberedListItem.astro";
+import type { TextBlock } from "../../../v1/blog/domain/interfaces/notion-blog-block.interface";
 
 const { blocks } = Astro.props as {
-    blocks: BlockNormalizerResult<"numbered_list_item">[];
+    blocks: TextBlock[];
 };
 ---
 
@@ -16,7 +16,7 @@ const { blocks } = Astro.props as {
         blocks.map((block) => {
             return (
                 <li>
-                    {block.text.map((t) => (
+                    {block.content.map((t) => (
                         <Text {...t} />
                     ))}
                     {block.has_children && (

@@ -1,10 +1,10 @@
 ---
-import { type BlockNormalizerResult } from "../../modules/notion-block-normalizer";
 import Text from "./Text.astro";
 import BulletedListItem from "./BulletedListItem.astro";
+import type { TodoBlock } from "../../../v1/blog/domain/interfaces/notion-blog-block.interface";
 
 const { blocks } = Astro.props as {
-    blocks: BlockNormalizerResult<"to_do">[];
+    blocks: TodoBlock[];
 };
 ---
 
@@ -18,10 +18,10 @@ const { blocks } = Astro.props as {
                 <li>
                     <input
                         type="checkbox"
-                        checked={block.checked ? "checked" : undefined}
+                        checked={block.content.checked ? "checked" : undefined}
                         class="checkbox checkbox-sm mr-0.5 pointer-events-none bg-accent checked:accent-content"
                     />
-                    {block.text.map((t) => (
+                    {block.content.texts.map((t) => (
                         <Text {...t} />
                     ))}
                     {block.has_children && (

@@ -3,10 +3,10 @@
  * Pre 태그 공백 이슈
  * - https://stackoverflow.com/questions/77738519/unknown-height-is-being-applied-to-pre-tag
  */
-import { type BlockNormalizerResult } from "../../modules/notion-block-normalizer";
+import type { CodeBlock } from "../../../v1/blog/domain/interfaces/notion-blog-block.interface";
 
-const props = Astro.props as BlockNormalizerResult<"code">;
-const contents = props.rich_text[0].plain_text.split("\n");
+const props = Astro.props as CodeBlock;
+const contents = props.content.texts[0].plain_text.split("\n");
 ---
 
 <div class="mockup-code w-full mt-4 mb-4">

@@ -1,13 +1,13 @@
 ---
 import * as blockComponents from "./blocks";
 import type {
-    BlockResult,
-    BlockType,
-} from "../modules/notion-block-normalizer";
+    NotionBlogBlockType,
+    NotionBlogContent,
+} from "../../v1/blog/domain/interfaces/notion-blog-block.interface";
 
 const { type, blocks } = Astro.props as {
-    type: BlockType;
-    blocks: BlockResult[];
+    type: NotionBlogBlockType;
+    blocks: NotionBlogContent[];
 };
 
 const Component = blockComponents[type];

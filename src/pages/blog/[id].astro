@@ -1,21 +1,20 @@
 ---
 import dotenv from "dotenv";
-import Notion from "../../modules/notion";
-import blogAdapter from "../../modules/blog";
 import blogs from "../../assets/blogs.json";
 import RenderBlock from "../../components/RenderBlock.astro";
 import BlogLayout from "../../layouts/BlogLayout.astro";
 import Template from "../../template/Template.astro";
+import blogController from "../../../v1/blog/controller";
 
 export async function getStaticPaths() {
     dotenv.config();
 
-    const notion = new Notion(process.env.NOTION_API_KEY as string);
-    const Blog = blogAdapter(notion);
+    blogController.notion.init(process.env.NOTION_API_KEY as string);
+
     const result = [];
 
     for await (const blog of blogs) {
-        const contents = await Blog.getContents({ block_id: blog.id });
+        const contents = await blogController.notion.getBlogContentAll(blog.id);
 
         result.push({
             params: {

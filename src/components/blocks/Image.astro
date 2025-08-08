@@ -1,7 +1,7 @@
 ---
-import { type BlockNormalizerResult } from "../../modules/notion-block-normalizer";
+import type { MediaBlock } from "../../../v1/blog/domain/interfaces/notion-blog-block.interface";
 
-const props = Astro.props as BlockNormalizerResult<"image">;
+const props = Astro.props as MediaBlock;
 const hasCaption = props.content.caption.length > 0;
 ---
 

@@ -1,10 +1,10 @@
 ---
-import { type BlockNormalizerResult } from "../../modules/notion-block-normalizer";
+import type { TextBlock } from "../../../v1/blog/domain/interfaces/notion-blog-block.interface";
 import Text from "./Text.astro";
 
-const props = Astro.props as BlockNormalizerResult<"paragraph">;
+const props = Astro.props as TextBlock;
 ---
 
 <p class="mt-2 mb-2">
-    {props.text.map((t) => <Text {...t} />)}
+    {props.content.map((t) => <Text {...t} />)}
 </p>

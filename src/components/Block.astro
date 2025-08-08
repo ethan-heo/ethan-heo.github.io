@@ -1,8 +1,8 @@
 ---
+import type { NotionBlogContent } from "../../v1/blog/domain/interfaces/notion-blog-block.interface";
 import * as blockComponents from "./blocks";
-import type { BlockResult } from "../modules/notion-block-normalizer";
 
-const props = Astro.props as BlockResult;
+const props = Astro.props as NotionBlogContent;
 
 const Component = blockComponents[props.type];
 ---

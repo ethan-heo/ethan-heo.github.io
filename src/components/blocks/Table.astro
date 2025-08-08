@@ -1,18 +1,14 @@
 ---
-import { type BlockNormalizerResult } from "../../modules/notion-block-normalizer";
 import cn from "classnames";
 import Text from "./Text.astro";
+import type { TableBlock } from "../../../v1/blog/domain/interfaces/notion-blog-block.interface";
 
-const {
-    children: tableRows,
-    has_row_header,
-    has_column_header,
-} = Astro.props as BlockNormalizerResult<"table">;
-const [headRows, ...bodyRows] =
-    tableRows as BlockNormalizerResult<"table_row">[];
-const addHeaderRowClass = () => has_column_header && "bg-base-200";
+const props = Astro.props as TableBlock;
+const [headRows, ...bodyRows] = props.content.table;
+const addHeaderRowClass = () =>
+    props.content.has_column_header && "bg-base-200";
 const addHeaderColumnClass = (idx: number) =>
-    has_row_header && idx === 0 && "bg-base-200";
+    props.content.has_row_header && idx === 0 && "bg-base-200";
 ---
 
 <div class="overflow-x-auto mt-2 mb-3">
@@ -21,7 +17,7 @@ const addHeaderColumnClass = (idx: number) =>
         <thead>
             <tr class={cn(addHeaderRowClass())}>
                 {
-                    headRows.contents.map(([cell], idx) => {
+                    headRows.map((cell, idx) => {
                         return (
                             <th class={cn(addHeaderColumnClass(idx))}>
                                 {cell && <Text {...cell} />}
@@ -33,10 +29,10 @@ const addHeaderColumnClass = (idx: number) =>
         </thead>
         <tbody>
             {
-                bodyRows.map((row) => {
+                bodyRows.map((cells) => {
                     return (
                         <tr>
-                            {row.contents.map(([cell], idx) => {
+                            {cells.map((cell, idx) => {
                                 return (
                                     <td class={cn(addHeaderColumnClass(idx))}>
                                         {cell && <Text {...cell} />}

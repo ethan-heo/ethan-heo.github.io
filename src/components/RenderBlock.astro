@@ -1,34 +1,34 @@
 ---
 import type {
-    BlockResult,
-    BlockType,
-} from "../modules/notion-block-normalizer";
+    NotionBlogBlockType,
+    NotionBlogContent,
+} from "../../v1/blog/domain/interfaces/notion-blog-block.interface";
 import Block from "./Block.astro";
 import LazyBlock from "./LazyBlock.astro";
 import RenderBlock from "./RenderBlock.astro";
 
-const { blocks } = Astro.props as { blocks: BlockResult[] };
+const { blocks } = Astro.props as { blocks: NotionBlogContent[] };
 const lazyRenderingBlocks: {
-    type?: BlockType;
-    blocks: BlockResult[];
+    type?: NotionBlogBlockType;
+    blocks: NotionBlogContent[];
 } = {
     blocks: [],
 };
-const LazyRenderBlockType: BlockType[] = [
+const LazyRenderBlockType: NotionBlogBlockType[] = [
     "bulleted_list_item",
     "numbered_list_item",
     "to_do",
 ];
-const isLazyRenderingBlock = (blockType: BlockType) => {
+const isLazyRenderingBlock = (blockType: NotionBlogBlockType) => {
     return LazyRenderBlockType.includes(blockType);
 };
-const isRenderLazyRenderingBlock = (block: BlockResult) => {
+const isRenderLazyRenderingBlock = (block: NotionBlogContent) => {
     return (
         !compareNextBlockWithLazyBlock(block) &&
         lazyRenderingBlocks.blocks.length > 0
     );
 };
-const compareNextBlockWithLazyBlock = (block?: BlockResult) => {
+const compareNextBlockWithLazyBlock = (block?: NotionBlogContent) => {
     if (!block) return false;
 
     return lazyRenderingBlocks?.type === block.type;
