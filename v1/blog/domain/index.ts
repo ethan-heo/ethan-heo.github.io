@@ -1,9 +1,9 @@
-import transformerMap from "./transformer";
-import type { BlogDomain } from "./interfaces/domain.interface";
+import transformerMap from "./transformer.ts";
+import type { BlogDomain } from "./interfaces/domain.interface.ts";
 
 const blogDomain: BlogDomain = {
     transformBlogItem: (originalBlogItem) => {
-        const { id, title, properties, created_time, cover } = originalBlogItem;
+        const { id, properties, created_time, cover } = originalBlogItem;
         let backgroundImg: string;
 
         if (cover.type === "external") {
@@ -15,7 +15,7 @@ const blogDomain: BlogDomain = {
         return {
             id,
             backgroundImg,
-            title: title.map((text) => text.plain_text).join(" "),
+            title: properties.Name.title[0].text.content,
             description: properties.description.rich_text
                 .map((text) => text.plain_text)
                 .join(" "),

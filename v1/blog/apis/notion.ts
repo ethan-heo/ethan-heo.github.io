@@ -8,7 +8,7 @@ import type {
 import type {
     OriginalBlogContent,
     OriginalBlogItem,
-} from "../domain/interfaces/model.interface";
+} from "../domain/interfaces/model.interface.ts";
 
 const createNotionAPI = (apiKey: string): NotionAPI => {
     const client = new Client({ auth: apiKey });
@@ -72,7 +72,16 @@ const createNotionAPI = (apiKey: string): NotionAPI => {
     };
 
     return {
-        getDatabaseAll: (id: string) => getDatabaseAll({ database_id: id }),
+        getDatabaseAll: (id: string) =>
+            getDatabaseAll({
+                database_id: id,
+                filter: {
+                    property: "publish",
+                    checkbox: {
+                        equals: true,
+                    },
+                },
+            }),
         getBlockAll: (id: string) => getBlockAll({ block_id: id }),
     };
 };

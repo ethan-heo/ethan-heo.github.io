@@ -2,8 +2,8 @@ import type {
     BlogContent,
     BlogItem,
     SearchedBlogItem,
-} from "../domain/interfaces/model.interface";
-import type { BlogUseCase } from "./use-case.interface";
+} from "../domain/interfaces/model.interface.ts";
+import type { BlogUseCase } from "./use-case.interface.ts";
 
 type CreateBlogListToJSONUseCase = BlogUseCase<[BlogItem[], string], void>;
 

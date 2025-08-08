@@ -1,9 +1,9 @@
-import blogDomain from "./domain";
-import createBlogRepository from "./repository";
-import type { NotionAPI } from "./apis/notion";
-import type { BlogAPI } from "./apis/blog";
-import createBlogService from "./service";
-import type { BlogItem } from "./domain/interfaces/model.interface";
+import blogDomain from "./domain/index.ts";
+import createBlogRepository from "./repository/index.ts";
+import type { NotionAPI } from "./apis/notion.ts";
+import type { BlogAPI } from "./apis/blog.ts";
+import createBlogService from "./service/index.ts";
+import type { BlogItem } from "./domain/interfaces/model.interface.ts";
 
 const createBlogController = (notionAPI: NotionAPI, blogAPI: BlogAPI) => {
     const service = createBlogService(

@@ -4,7 +4,7 @@ import type {
     OriginalBlogContent,
     OriginalBlogItem,
     SearchedBlogItem,
-} from "./model.interface";
+} from "./model.interface.ts";
 
 export interface BlogDomain {
     transformBlogItem: (originalBlogItem: OriginalBlogItem) => BlogItem;

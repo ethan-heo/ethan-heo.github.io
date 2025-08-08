@@ -1,31 +1,22 @@
-import BlogAdapter from "../src/modules/blog.ts";
-import Notion from "../src/modules/notion.ts";
 import dotenv from "dotenv";
-import fs from "node:fs";
 import path from "path";
 import { fileURLToPath } from "url";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import createBlogController from "../v1/blog/controller.ts";
+import createNotionAPI from "../v1/blog/apis/notion.ts";
+import createBlogAPI from "../v1/blog/apis/blog.ts";
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const { NOTION_API_KEY, NOTION_DATABASE_ID } = process.env;
+const controller = createBlogController(
+    createNotionAPI(NOTION_API_KEY as string),
+    createBlogAPI(),
+);
+const blotList = await controller.getBlogItemAll(NOTION_DATABASE_ID as string);
 
-const notion = new Notion(NOTION_API_KEY as string);
-const { getBlogs } = BlogAdapter(notion);
-
-const blogs = await getBlogs({
-    database_id: NOTION_DATABASE_ID as string,
-    filter: {
-        property: "publish",
-        checkbox: {
-            equals: true,
-        },
-    },
-});
-
-fs.writeFileSync(
+controller.createBlogListToJSON(
+    blotList,
     path.resolve(__dirname, "../src/assets/blogs.json"),
-    JSON.stringify(blogs),
 );

@@ -1,6 +1,6 @@
-import type { BlogAPI } from "../apis/blog";
-import type { NotionAPI } from "../apis/notion";
-import type { BlogRepository } from "./repository.interface";
+import type { BlogAPI } from "../apis/blog.ts";
+import type { NotionAPI } from "../apis/notion.ts";
+import type { BlogRepository } from "./repository.interface.ts";
 
 const createBlogRepository = (
     notionAPI: NotionAPI,

@@ -1,7 +1,8 @@
-import type { BlogItem } from "../domain/interfaces/model.interface";
-import blogs from "../../../src/assets/blogs.json";
+import type { BlogItem } from "../domain/interfaces/model.interface.ts";
+import blogs from "../../../src/assets/blogs.json" assert { type: "json" };
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const createBlogAPI = (): BlogAPI => {
     return {
@@ -18,10 +19,7 @@ const createBlogAPI = (): BlogAPI => {
             ) as unknown as BlogItem[];
         },
         toJSON(blogItems, target) {
-            fs.writeFileSync(
-                path.resolve(__dirname, target),
-                JSON.stringify(blogItems),
-            );
+            fs.writeFileSync(target, JSON.stringify(blogItems));
         },
     };
 };

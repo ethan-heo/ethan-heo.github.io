@@ -6,7 +6,7 @@ import type {
     NotionBlogBlockType,
     NotionBlogContent,
     RichText,
-} from "../notion-blog-block.interface";
+} from "../notion-blog-block.interface.ts";
 
 export interface BlogItem {
     id: string;
@@ -47,10 +47,7 @@ export type OriginalBlogItem = DatabaseObjectResponse & {
         Name: {
             id: string;
             type: "title";
-            title: {
-                type: "text";
-                text: RichText[];
-            };
+            title: RichText[];
         };
     };
     cover: Exclude<DatabaseObjectResponse["cover"], null>;

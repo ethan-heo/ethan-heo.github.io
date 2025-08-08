@@ -1,12 +1,12 @@
-import type { BlogDomain } from "../domain/interfaces/domain.interface";
-import type { BlogRepository } from "../repository/repository.interface";
+import type { BlogDomain } from "../domain/interfaces/domain.interface.ts";
+import type { BlogRepository } from "../repository/repository.interface.ts";
 import {
     getBlogContentAllUseCase,
     getBlogListFromJSONUseCase,
     getBlogItemAllUseCase,
     searchBlogItemsUseCase,
     createBlogListToJSONUseCase,
-} from "./use-cases";
+} from "./use-cases.ts";
 
 const createBlogService = (domain: BlogDomain, repository: BlogRepository) => ({
     createBlogListToJSONUseCase: createBlogListToJSONUseCase(
