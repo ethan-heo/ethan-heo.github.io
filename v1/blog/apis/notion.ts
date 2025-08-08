@@ -10,8 +10,16 @@ import type {
     OriginalBlogItem,
 } from "../domain/interfaces/model.interface.ts";
 
-const createNotionAPI = (apiKey: string): NotionAPI => {
-    const client = new Client({ auth: apiKey });
+const createNotionAPI = (): NotionAPI => {
+    let client: Client;
+
+    const init = (apiKey: string) => {
+        client = new Client({ auth: apiKey });
+    };
+
+    const isInitialized = () => {
+        if (!client) throw new Error(`Client 인스턴스가 생성되지 않았습니다.`);
+    };
 
     const getDatabase = async (params: QueryDatabaseParameters) => {
         return client.databases.query(params) as Promise<DatabaseResponse>;
@@ -72,8 +80,10 @@ const createNotionAPI = (apiKey: string): NotionAPI => {
     };
 
     return {
-        getDatabaseAll: (id: string) =>
-            getDatabaseAll({
+        init,
+        getDatabaseAll: (id: string) => {
+            isInitialized();
+            return getDatabaseAll({
                 database_id: id,
                 filter: {
                     property: "publish",
@@ -81,14 +91,20 @@ const createNotionAPI = (apiKey: string): NotionAPI => {
                         equals: true,
                     },
                 },
-            }),
-        getBlockAll: (id: string) => getBlockAll({ block_id: id }),
+            });
+        },
+        getBlockAll: (id: string) => {
+            isInitialized();
+
+            return getBlockAll({ block_id: id });
+        },
     };
 };
 
 export default createNotionAPI;
 
 export interface NotionAPI {
+    init: (apiKey: string) => void;
     getDatabaseAll: (id: string) => Promise<OriginalBlogItem[]>;
     getBlockAll: (id: string) => Promise<OriginalBlogContent[]>;
 }
