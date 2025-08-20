@@ -58,6 +58,10 @@ export type OriginalBlogContent = Extract<
     { type: NotionBlogBlockType }
 >;
 
+export type OriginalBlogContentWithChildren = OriginalBlogContent & {
+    children?: OriginalBlogContentWithChildren[];
+};
+
 export type BlogContent = NotionBlogContent;
 
 export type Category = string;

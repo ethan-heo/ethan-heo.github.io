@@ -54,9 +54,9 @@ const resetLazyRenderingBlocks = () => {
         }
 
         if (isRenderLazyRenderingBlock(nextBlock)) {
-            lazyRenderingBlocks.blocks.push(block);
             const _props = {
                 ...lazyRenderingBlocks,
+                blocks: [...lazyRenderingBlocks.blocks, block],
             };
             resetLazyRenderingBlocks();
             return <LazyBlock type={_props.type} blocks={_props.blocks} />;

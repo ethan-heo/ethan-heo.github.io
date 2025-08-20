@@ -1,7 +1,7 @@
 import type {
     BlogContent,
     BlogItem,
-    OriginalBlogContent,
+    OriginalBlogContentWithChildren,
     OriginalBlogItem,
     SearchedBlogItem,
 } from "./model.interface.ts";
@@ -12,6 +12,6 @@ export interface BlogDomain {
     validateSearchQuery: (str: string) => void;
     transformSearchResult: (blogItems: BlogItem[]) => SearchedBlogItem[];
     transformOriginalBlogContent: (
-        originalBlogContent: OriginalBlogContent,
+        originalBlogContent: OriginalBlogContentWithChildren,
     ) => BlogContent;
 }

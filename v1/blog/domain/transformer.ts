@@ -37,7 +37,7 @@ type TransformerResult<T extends NotionBlogBlockType> = T extends TextBlockType
 export type TransformerMap<T extends NotionBlogBlockType> = {
     [key in T]: (
         originalBlogContent: Extract<OriginalBlogContent, { type: key }>,
-    ) => TransformerResult<T>;
+    ) => TransformerResult<key>;
 };
 
 const transformerMap: TransformerMap<NotionBlogBlockType> = {

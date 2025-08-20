@@ -1,6 +1,7 @@
 import type {
     BlogContent,
     BlogItem,
+    OriginalBlogContentWithChildren,
     SearchedBlogItem,
 } from "../domain/interfaces/model.interface.ts";
 import type { BlogUseCase } from "./use-case.interface.ts";
@@ -16,10 +17,22 @@ type GetBlogContentAllUseCase = BlogUseCase<[string], Promise<BlogContent[]>>;
 
 export const getBlogContentAllUseCase: GetBlogContentAllUseCase =
     (domain, repository) => async (id) => {
-        const originalContents =
-            await repository.notion.getOriginalContentAll(id);
+        const transformContents = (
+            originalContents: OriginalBlogContentWithChildren[],
+        ): BlogContent[] => {
+            return originalContents.map((originalContent) => {
+                return {
+                    ...domain.transformOriginalBlogContent(originalContent),
+                    children: Array.isArray(originalContent.children)
+                        ? transformContents(originalContent.children)
+                        : [],
+                };
+            });
+        };
 
-        return originalContents.map(domain.transformOriginalBlogContent);
+        return transformContents(
+            await repository.notion.getOriginalContentAll(id),
+        );
     };
 
 type GetBlogItemAllUseCase = BlogUseCase<[string], Promise<BlogItem[]>>;

@@ -1,6 +1,6 @@
 import type {
     BlogItem,
-    OriginalBlogContent,
+    OriginalBlogContentWithChildren,
     OriginalBlogItem,
 } from "../domain/interfaces/model.interface.ts";
 
@@ -8,7 +8,9 @@ export interface BlogRepository {
     notion: {
         init: (apiKey: string) => void;
         getOriginalBlogItemAll: (id: string) => Promise<OriginalBlogItem[]>;
-        getOriginalContentAll: (id: string) => Promise<OriginalBlogContent[]>;
+        getOriginalContentAll: (
+            id: string,
+        ) => Promise<OriginalBlogContentWithChildren[]>;
     };
     blog: {
         getBlogList: (page: number, size?: number) => BlogItem[];

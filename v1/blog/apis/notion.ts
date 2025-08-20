@@ -6,7 +6,7 @@ import type {
     QueryDatabaseResponse,
 } from "@notionhq/client/build/src/api-endpoints";
 import type {
-    OriginalBlogContent,
+    OriginalBlogContentWithChildren,
     OriginalBlogItem,
 } from "../domain/interfaces/model.interface.ts";
 
@@ -45,7 +45,7 @@ const createNotionAPI = (): NotionAPI => {
     };
 
     const getBlockAll = async (params: ListBlockChildrenParameters) => {
-        let blocks: BlockResponseResults[] = [];
+        let blocks: OriginalBlogContentWithChildren[] = [];
         let hasMore = true;
         let startCursor;
 
@@ -106,7 +106,7 @@ export default createNotionAPI;
 export interface NotionAPI {
     init: (apiKey: string) => void;
     getDatabaseAll: (id: string) => Promise<OriginalBlogItem[]>;
-    getBlockAll: (id: string) => Promise<OriginalBlogContent[]>;
+    getBlockAll: (id: string) => Promise<OriginalBlogContentWithChildren[]>;
 }
 
 interface DatabaseResponse extends QueryDatabaseResponse {
@@ -114,9 +114,5 @@ interface DatabaseResponse extends QueryDatabaseResponse {
 }
 
 interface BlockResponse extends ListBlockChildrenResponse {
-    results: BlockResponseResults[];
+    results: OriginalBlogContentWithChildren[];
 }
-
-type BlockResponseResults = OriginalBlogContent & {
-    children: OriginalBlogContent[];
-};
