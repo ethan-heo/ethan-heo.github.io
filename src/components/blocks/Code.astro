@@ -12,9 +12,7 @@ const contents = props.content.texts[0].plain_text.split("\n");
 <div class="mockup-code w-full mt-4 mb-4">
     {
         contents.map((content, idx) => (
-            <pre data-prefix={idx + 1} class="whitespace-nowrap">
-                <code>{content}</code>
-            </pre>
+            <pre data-prefix={idx + 1}><code>{content}</code></pre>
         ))
     }
 </div>
