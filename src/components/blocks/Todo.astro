@@ -1,6 +1,6 @@
 ---
 import Text from "./Text.astro";
-import BulletedListItem from "./BulletedListItem.astro";
+import Todo from "./Todo.astro";
 import type { TodoBlock } from "../../../v1/blog/domain/interfaces/notion-blog-block.interface";
 
 const { blocks } = Astro.props as {
@@ -24,9 +24,7 @@ const { blocks } = Astro.props as {
                     {block.content.texts.map((t) => (
                         <Text {...t} />
                     ))}
-                    {block.has_children && (
-                        <BulletedListItem blocks={block.children} />
-                    )}
+                    {block.has_children && <Todo blocks={block.children} />}
                 </li>
             );
         })
