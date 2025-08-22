@@ -9,7 +9,7 @@ import type {
 export interface BlogDomain {
     transformBlogItem: (originalBlogItem: OriginalBlogItem) => BlogItem;
     searchResult: (searchQuery: string, blogItems: BlogItem[]) => BlogItem[];
-    validateSearchQuery: (str: string) => void;
+    validateSearchQuery: (str: string) => boolean;
     transformSearchResult: (blogItems: BlogItem[]) => SearchedBlogItem[];
     transformOriginalBlogContent: (
         originalBlogContent: OriginalBlogContentWithChildren,

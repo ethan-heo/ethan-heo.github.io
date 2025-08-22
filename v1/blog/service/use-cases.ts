@@ -51,11 +51,16 @@ export const getBlogListFromJSONUseCase: GetBlogListFromJSONUseCase =
         return repository.blog.getBlogList(page, size);
     };
 
-type SearchBlogItemsUseCase = BlogUseCase<[string], SearchedBlogItem[]>;
+type SearchBlogItemsUseCase = BlogUseCase<[string], SearchedBlogItem[] | Error>;
 
 export const searchBlogItemsUseCase: SearchBlogItemsUseCase =
     (domain, repository) => (searchQuery) => {
-        domain.validateSearchQuery(searchQuery);
+        // validateSearchQuery 에서 반환되는 결과를 boolean으로 하면 어떨까? 그럼 조금 깔끔하게 처리가 가능할지도?
+        // 확실히 boolean으로 처리하는 것이 결과 처리에 대한 여러 상황에 대처하기 용이해보임.
+
+        if (!domain.validateSearchQuery(searchQuery)) {
+            return new Error(`잘못된 입력입니다.`);
+        }
 
         return domain.transformSearchResult(
             domain.searchResult(searchQuery, repository.blog.getBlogList(1)),

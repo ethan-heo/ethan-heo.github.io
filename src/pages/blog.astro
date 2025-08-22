@@ -1,5 +1,6 @@
 ---
 import BlogList from "../components/react/BlogList";
+import SearchBlogs from "../components/react/SearchBlog";
 import "../styles/global.css";
 import Template from "../template/Template.astro";
 
@@ -22,5 +23,6 @@ const metaData = {
 ---
 
 <Template {...metaData}>
+    <SearchBlogs client:load />
     <BlogList client:load />
 </Template>

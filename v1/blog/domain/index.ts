@@ -42,20 +42,25 @@ const blogDomain: BlogDomain = {
                 normalizedTitle.includes(query) ||
                 normalizedDescription.includes(query) ||
                 normalizedCategories.some((category) =>
-                    query.includes(category),
+                    category.includes(query),
                 )
             );
         });
     },
     validateSearchQuery: (searchQuery) => {
         if (searchQuery.trim().length === 0) {
-            throw new Error(`검색 결과가 존재하지 않음.`);
+            return false;
         }
+
+        return true;
     },
     transformSearchResult: (blogItems) => {
         return blogItems.map((blogItem) => ({
             id: blogItem.id,
             title: blogItem.title,
+            descriptions: blogItem.description,
+            categories: blogItem.categories,
+            backgroundImg: blogItem.backgroundImg,
         }));
     },
     transformOriginalBlogContent: (originalBlogContent) => {

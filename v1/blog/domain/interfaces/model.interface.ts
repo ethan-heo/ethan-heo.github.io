@@ -69,4 +69,7 @@ export type Category = string;
 export interface SearchedBlogItem {
     id: string;
     title: string;
+    descriptions: string;
+    categories: string[];
+    backgroundImg: string;
 }
