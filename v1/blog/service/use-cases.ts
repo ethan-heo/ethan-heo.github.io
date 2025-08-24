@@ -4,6 +4,7 @@ import type {
     OriginalBlogContentWithChildren,
     SearchedBlogItem,
 } from "../domain/interfaces/model.interface.ts";
+import type { NotionBlogContent } from "../domain/interfaces/notion-blog-block.interface.ts";
 import type { BlogUseCase } from "./use-case.interface.ts";
 
 type CreateBlogListToJSONUseCase = BlogUseCase<[BlogItem[], string], void>;
@@ -20,7 +21,7 @@ export const getBlogContentAllUseCase: GetBlogContentAllUseCase =
         const transformContents = (
             originalContents: OriginalBlogContentWithChildren[],
         ): BlogContent[] => {
-            return originalContents.map((originalContent) => {
+            const contents = originalContents.map((originalContent) => {
                 return {
                     ...domain.transformOriginalBlogContent(originalContent),
                     children: Array.isArray(originalContent.children)
@@ -28,6 +29,10 @@ export const getBlogContentAllUseCase: GetBlogContentAllUseCase =
                         : [],
                 };
             });
+
+            return domain.transformNestedBlockContent(
+                contents as NotionBlogContent[],
+            );
         };
 
         return transformContents(

@@ -1,7 +1,7 @@
 ---
 import Text from "./Text.astro";
-import Todo from "./Todo.astro";
 import type { TodoBlock } from "../../../v1/blog/domain/interfaces/notion-blog-block.interface";
+import RenderBlock from "../RenderBlock.astro";
 
 const { blocks } = Astro.props as {
     blocks: TodoBlock[];
@@ -24,7 +24,9 @@ const { blocks } = Astro.props as {
                     {block.content.texts.map((t) => (
                         <Text {...t} />
                     ))}
-                    {block.has_children && <Todo blocks={block.children} />}
+                    {block.has_children && (
+                        <RenderBlock blocks={block.children} />
+                    )}
                 </li>
             );
         })

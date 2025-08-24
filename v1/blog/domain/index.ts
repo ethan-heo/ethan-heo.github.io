@@ -1,5 +1,10 @@
 import transformerMap from "./transformer.ts";
 import type { BlogDomain } from "./interfaces/domain.interface.ts";
+import type {
+    NotionBlogBlockType,
+    NotionBlogContent,
+} from "./interfaces/notion-blog-block.interface.ts";
+import type { BlogContent } from "./interfaces/model.interface.ts";
 
 const blogDomain: BlogDomain = {
     transformBlogItem: (originalBlogItem) => {
@@ -72,6 +77,68 @@ const blogDomain: BlogDomain = {
             );
 
         return transformer(originalBlogContent as any);
+    },
+    transformNestedBlockContent: (blogContents) => {
+        const NESTED_CONTENT_TYPES = [
+            "bulleted_list_item",
+            "numbered_list_item",
+            "to_do",
+        ];
+
+        let type: NotionBlogBlockType | null = null;
+        let nestedContents: NotionBlogContent[] = [];
+
+        const canCollect = (blogContent: NotionBlogContent) => {
+            if (type === null) {
+                return NESTED_CONTENT_TYPES.includes(blogContent.type);
+            } else {
+                return blogContent.type === type;
+            }
+        };
+        const reset = () => {
+            type = null;
+            nestedContents = [];
+        };
+        const canDrain = () => {
+            return type !== null && nestedContents.length > 0;
+        };
+        const drain = () => {
+            const result = nestedContents.slice();
+
+            reset();
+
+            return result;
+        };
+
+        const result: BlogContent[] = [];
+
+        for (const blogContent of blogContents) {
+            if (canCollect(blogContent)) {
+                type = blogContent.type;
+                nestedContents.push(blogContent);
+                continue;
+            } else {
+                if (canDrain()) {
+                    result.push({
+                        type: "nested_items",
+                        contentType: type as NotionBlogBlockType,
+                        content: drain(),
+                    });
+                }
+
+                result.push(blogContent);
+            }
+        }
+
+        if (canDrain()) {
+            result.push({
+                type: "nested_items",
+                contentType: type as NotionBlogBlockType,
+                content: drain(),
+            });
+        }
+
+        return result;
     },
 };
 

@@ -3,6 +3,7 @@ import type {
     DatabaseObjectResponse,
 } from "@notionhq/client";
 import type {
+    NestedNotionBlogContent,
     NotionBlogBlockType,
     NotionBlogContent,
     RichText,
@@ -62,7 +63,7 @@ export type OriginalBlogContentWithChildren = OriginalBlogContent & {
     children?: OriginalBlogContentWithChildren[];
 };
 
-export type BlogContent = NotionBlogContent;
+export type BlogContent = NotionBlogContent | NestedNotionBlogContent;
 
 export type Category = string;
 

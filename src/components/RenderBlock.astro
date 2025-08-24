@@ -1,71 +1,21 @@
 ---
-import type {
-    NotionBlogBlockType,
-    NotionBlogContent,
-} from "../../v1/blog/domain/interfaces/notion-blog-block.interface";
+import type { BlogContent } from "../../v1/blog/domain/interfaces/model.interface";
 import Block from "./Block.astro";
 import LazyBlock from "./LazyBlock.astro";
 import RenderBlock from "./RenderBlock.astro";
 
-const { blocks } = Astro.props as { blocks: NotionBlogContent[] };
-const lazyRenderingBlocks: {
-    type?: NotionBlogBlockType;
-    blocks: NotionBlogContent[];
-} = {
-    blocks: [],
-};
-const LazyRenderBlockType: NotionBlogBlockType[] = [
-    "bulleted_list_item",
-    "numbered_list_item",
-    "to_do",
-];
-const isLazyRenderingBlock = (blockType: NotionBlogBlockType) => {
-    return LazyRenderBlockType.includes(blockType);
-};
-const isRenderLazyRenderingBlock = (block: NotionBlogContent) => {
-    return (
-        !compareNextBlockWithLazyBlock(block) &&
-        lazyRenderingBlocks.blocks.length > 0
-    );
-};
-const compareNextBlockWithLazyBlock = (block?: NotionBlogContent) => {
-    if (!block) return false;
-
-    return lazyRenderingBlocks?.type === block.type;
-};
-const resetLazyRenderingBlocks = () => {
-    lazyRenderingBlocks.type = undefined;
-    lazyRenderingBlocks.blocks = [];
+const { blocks } = Astro.props as {
+    blocks: BlogContent[];
 };
 ---
 
 {
-    blocks.map((block, idx) => {
-        const nextBlock = blocks[idx + 1];
-
-        if (isLazyRenderingBlock(block.type)) {
-            lazyRenderingBlocks.type = block.type;
+    blocks.map((block) => {
+        if (block.type === "nested_items") {
+            return (
+                <LazyBlock type={block.contentType} blocks={block.content} />
+            );
         }
-
-        if (compareNextBlockWithLazyBlock(nextBlock)) {
-            lazyRenderingBlocks.blocks.push(block);
-
-            return null;
-        }
-
-        if (isRenderLazyRenderingBlock(nextBlock)) {
-            const _props = {
-                ...lazyRenderingBlocks,
-                blocks: [...lazyRenderingBlocks.blocks, block],
-            };
-            resetLazyRenderingBlocks();
-            return <LazyBlock type={_props.type} blocks={_props.blocks} />;
-        }
-
-        return (
-            <Block {...block}>
-                {block.has_children && <RenderBlock blocks={block.children} />}
-            </Block>
-        );
+        return <Block {...block} />;
     })
 }

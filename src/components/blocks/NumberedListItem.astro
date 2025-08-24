@@ -1,7 +1,7 @@
 ---
 import Text from "./Text.astro";
-import NumberedListItem from "./NumberedListItem.astro";
 import type { TextBlock } from "../../../v1/blog/domain/interfaces/notion-blog-block.interface";
+import RenderBlock from "../RenderBlock.astro";
 
 const { blocks } = Astro.props as {
     blocks: TextBlock[];
@@ -20,7 +20,7 @@ const { blocks } = Astro.props as {
                         <Text {...t} />
                     ))}
                     {block.has_children && (
-                        <NumberedListItem blocks={block.children} />
+                        <RenderBlock blocks={block.children} />
                     )}
                 </li>
             );

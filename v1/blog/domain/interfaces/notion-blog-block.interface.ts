@@ -112,6 +112,12 @@ export type NotionBlogContent =
     | TodoBlock
     | DividerBlock;
 
+export type NestedNotionBlogContent = {
+    type: "nested_items";
+    contentType: NotionBlogBlockType;
+    content: NotionBlogContent[];
+};
+
 export type NotionBlogBlockType =
     | TextBlockType
     | MediaBlockType
