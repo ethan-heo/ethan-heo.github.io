@@ -11,7 +11,7 @@ function BlogList() {
                         key={blog.id}
                         className="card bg-base-100 w-full shadow-sm"
                     >
-                        <div className="card bg-base-100 shadow-md">
+                        <div className="card bg-base-100 shadow-md grow">
                             <figure className="h-48 overflow-hidden">
                                 <img
                                     src={blog.backgroundImg}
