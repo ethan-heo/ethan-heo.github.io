@@ -1,6 +1,7 @@
 import type {
     BlogContent,
     BlogItem,
+    HeadingInfo,
     OriginalBlogContentWithChildren,
     SearchedBlogItem,
 } from "../domain/interfaces/model.interface.ts";
@@ -84,4 +85,17 @@ type HasNextBlogListUseCase = BlogUseCase<[number, number], boolean>;
 export const hasNextBlogListUseCase: HasNextBlogListUseCase =
     (_, repository) => (page, size) => {
         return repository.blog.hasNextBlogList(page, size);
+    };
+
+type TransformJumpLinkFromElementUseCase = BlogUseCase<
+    [Element],
+    HeadingInfo[]
+>;
+
+export const transformJumpLinkFromElementUseCase: TransformJumpLinkFromElementUseCase =
+    (domain) => (element) => {
+        const result = domain.transformHeadingNodeAttrToHeadingInfo(
+            domain.findHeadingNodesToDOM(element),
+        );
+        return result;
     };

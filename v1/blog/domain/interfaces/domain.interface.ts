@@ -1,14 +1,12 @@
 import type {
     BlogContent,
     BlogItem,
+    HeadingInfo,
     OriginalBlogContentWithChildren,
     OriginalBlogItem,
     SearchedBlogItem,
 } from "./model.interface.ts";
-import type {
-    NestedNotionBlogContent,
-    NotionBlogContent,
-} from "./notion-blog-block.interface.ts";
+import type { NotionBlogContent } from "./notion-blog-block.interface.ts";
 
 export interface BlogDomain {
     transformBlogItem: (originalBlogItem: OriginalBlogItem) => BlogItem;
@@ -21,4 +19,8 @@ export interface BlogDomain {
     transformNestedBlockContent: (
         blogContents: NotionBlogContent[],
     ) => BlogContent[];
+    findHeadingNodesToDOM: (node: Element) => Element[];
+    transformHeadingNodeAttrToHeadingInfo: (
+        headingNodes: Element[],
+    ) => HeadingInfo[];
 }

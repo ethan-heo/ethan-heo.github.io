@@ -74,3 +74,8 @@ export interface SearchedBlogItem {
     categories: string[];
     backgroundImg: string;
 }
+
+export interface HeadingInfo {
+    text: string;
+    level: number;
+}

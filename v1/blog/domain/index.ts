@@ -140,6 +140,29 @@ const blogDomain: BlogDomain = {
 
         return result;
     },
+    findHeadingNodesToDOM: (element) => {
+        const result: Element[] = [];
+
+        for (const childElement of element.children) {
+            if (childElement.nodeType !== Node.ELEMENT_NODE) continue;
+
+            const nodeName = childElement.nodeName.toUpperCase();
+
+            if (/H[2-6]/g.test(nodeName)) {
+                result.push(childElement);
+            } else {
+                result.push(...blogDomain.findHeadingNodesToDOM(childElement));
+            }
+        }
+
+        return result;
+    },
+    transformHeadingNodeAttrToHeadingInfo: (headingNodes) => {
+        return headingNodes.map((headingNode) => ({
+            text: headingNode.textContent ? headingNode.textContent.trim() : "",
+            level: Number(headingNode.nodeName.replace(/[a-zA-Z]/g, "")),
+        }));
+    },
 };
 
 export default blogDomain;
