@@ -3,8 +3,11 @@ import type { TextBlock } from "../../../v1/blog/domain/interfaces/notion-blog-b
 import Text from "./Text.astro";
 
 const props = Astro.props as TextBlock;
+const id = props.content
+    .reduce((acc, { plain_text }) => acc + plain_text, "")
+    .trim();
 ---
 
-<h2 class="mb-4 mt-8 text-3xl font-bold">
+<h2 class="mb-4 mt-8 text-3xl font-bold" id={id}>
     {props.content.map((t) => <Text {...t} />)}
 </h2>
