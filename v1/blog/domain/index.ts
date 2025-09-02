@@ -3,8 +3,12 @@ import type { BlogDomain } from "./interfaces/domain.interface.ts";
 import type {
     NotionBlogBlockType,
     NotionBlogContent,
+    TextBlock,
 } from "./interfaces/notion-blog-block.interface.ts";
-import type { BlogContent } from "./interfaces/model.interface.ts";
+import type {
+    BlogContent,
+    BlogContentType,
+} from "./interfaces/model.interface.ts";
 
 const blogDomain: BlogDomain = {
     transformBlogItem: (originalBlogItem) => {
@@ -140,27 +144,44 @@ const blogDomain: BlogDomain = {
 
         return result;
     },
-    findHeadingNodesToDOM: (element) => {
-        const result: Element[] = [];
+    findHeadingBlock: (blogContents) => {
+        const result: TextBlock[] = [];
+        const HEADING_TYPES = ["heading_1", "heading_2", "heading_3"];
+        const isNotionBlockType = (
+            blogContent: BlogContent,
+        ): blogContent is NotionBlogContent => {
+            return blogContent.type !== "nested_items";
+        };
+        const isTextBlockType = (
+            blogContent: BlogContent,
+        ): blogContent is TextBlock => {
+            return HEADING_TYPES.includes(blogContent.type);
+        };
 
-        for (const childElement of element.children) {
-            if (childElement.nodeType !== Node.ELEMENT_NODE) continue;
+        for (const blogContent of blogContents) {
+            if (
+                isTextBlockType(blogContent) &&
+                /heading_[1-3]/g.test(blogContent.type)
+            ) {
+                result.push(blogContent);
+                continue;
+            }
 
-            const nodeName = childElement.nodeName.toUpperCase();
-
-            if (/H[2-6]/g.test(nodeName)) {
-                result.push(childElement);
-            } else {
-                result.push(...blogDomain.findHeadingNodesToDOM(childElement));
+            if (isNotionBlockType(blogContent)) {
+                result.push(
+                    ...blogDomain.findHeadingBlock(blogContent.children),
+                );
             }
         }
 
         return result;
     },
-    transformHeadingNodeAttrToHeadingInfo: (headingNodes) => {
-        return headingNodes.map((headingNode) => ({
-            text: headingNode.textContent ? headingNode.textContent.trim() : "",
-            level: Number(headingNode.nodeName.replace(/[a-zA-Z]/g, "")),
+    transformHeadingBlockToHeadingInfo: (blogContents) => {
+        return blogContents.map((blogContent) => ({
+            text: blogContent.content
+                .reduce((acc, { plain_text }) => acc + plain_text, "")
+                .trim(),
+            level: Number(blogContent.type.match(/[0-9]/g)),
         }));
     },
 };

@@ -1,11 +1,17 @@
 import React from "react";
 import Contents from "./Contents";
-import useTransformHeadingElementToInfo from "./useTransformHeadingElementToInfo";
+import type { HeadingInfo } from "../../../../v1/blog/domain/interfaces/model.interface";
 
-const TableOfContents: React.FC = () => {
-    const contents = useTransformHeadingElementToInfo();
+interface Props {
+    contents: HeadingInfo[];
+}
 
-    return <Contents contents={contents} />;
+const TableOfContents: React.FC<Props> = ({ contents = [] }) => {
+    return (
+        <div className="mb-8">
+            <Contents contents={contents} />
+        </div>
+    );
 };
 
 export default TableOfContents;

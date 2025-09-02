@@ -8,7 +8,7 @@ import {
     toJSONUseCase,
     initNotionClientUseCase,
     hasNextBlogListUseCase,
-    transformJumpLinkFromElementUseCase,
+    transformJumpLinkFromBlogContentsUseCase,
 } from "./use-cases.ts";
 
 const createBlogService = (domain: BlogDomain, repository: BlogRepository) => ({
@@ -19,10 +19,8 @@ const createBlogService = (domain: BlogDomain, repository: BlogRepository) => ({
     getBlogItemAllUseCase: getBlogItemAllUseCase(domain, repository),
     searchBlogItemsUseCase: searchBlogItemsUseCase(domain, repository),
     hasNextBlogListUseCase: hasNextBlogListUseCase(domain, repository),
-    transformJumpLinkFromElementUseCase: transformJumpLinkFromElementUseCase(
-        domain,
-        repository,
-    ),
+    transformJumpLinkFromBlogContentsUseCase:
+        transformJumpLinkFromBlogContentsUseCase(domain, repository),
 });
 
 export default createBlogService;

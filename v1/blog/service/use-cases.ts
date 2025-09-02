@@ -87,15 +87,15 @@ export const hasNextBlogListUseCase: HasNextBlogListUseCase =
         return repository.blog.hasNextBlogList(page, size);
     };
 
-type TransformJumpLinkFromElementUseCase = BlogUseCase<
-    [Element],
+type TransformJumpLinkFromBlogContentsUseCase = BlogUseCase<
+    [BlogContent[]],
     HeadingInfo[]
 >;
 
-export const transformJumpLinkFromElementUseCase: TransformJumpLinkFromElementUseCase =
-    (domain) => (element) => {
-        const result = domain.transformHeadingNodeAttrToHeadingInfo(
-            domain.findHeadingNodesToDOM(element),
+export const transformJumpLinkFromBlogContentsUseCase: TransformJumpLinkFromBlogContentsUseCase =
+    (domain) => (blogContents) => {
+        const result = domain.transformHeadingBlockToHeadingInfo(
+            domain.findHeadingBlock(blogContents),
         );
         return result;
     };

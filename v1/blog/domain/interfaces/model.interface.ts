@@ -65,6 +65,8 @@ export type OriginalBlogContentWithChildren = OriginalBlogContent & {
 
 export type BlogContent = NotionBlogContent | NestedNotionBlogContent;
 
+export type BlogContentType = BlogContent["type"];
+
 export type Category = string;
 
 export interface SearchedBlogItem {
