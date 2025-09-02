@@ -3,19 +3,18 @@ import type { HeadingInfo } from "../../../../v1/blog/domain/interfaces/model.in
 
 interface Props {
     contents: HeadingInfo[];
-    className?: string;
 }
 
-const Contents: React.FC<Props> = ({ contents, className }) => {
+const Contents: React.FC<Props> = ({ contents }) => {
     return (
-        <ul className={className}>
-            {contents.map((content) => {
+        <ul>
+            {contents.map((content, idx) => {
                 const DEPTH_CLASS_NAMES = ["", "", "pl-4"];
 
                 return (
-                    <li key={content.text} className="mt-1">
+                    <li key={`table-of-contents-${idx}`} className="mt-1">
                         <a
-                            href={`#${content.text}`}
+                            href={`#${content.id}`}
                             className={`${DEPTH_CLASS_NAMES[content.level - 1]} opacity-70 underline underline-offset-4`}
                         >
                             {content.text}

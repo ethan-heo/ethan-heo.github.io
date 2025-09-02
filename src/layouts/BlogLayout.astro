@@ -12,5 +12,9 @@ const date = new Date(props.createdDate);
         `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
     }</time
 >
-<TableOfContents contents={props.tableOfContents} client:load />
+<TableOfContents
+    contents={props.tableOfContents}
+    className="mb-8"
+    client:load
+/>
 <slot />

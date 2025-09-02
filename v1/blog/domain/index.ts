@@ -182,6 +182,7 @@ const blogDomain: BlogDomain = {
                 .reduce((acc, { plain_text }) => acc + plain_text, "")
                 .trim(),
             level: Number(blogContent.type.match(/[0-9]/g)),
+            id: blogContent.id,
         }));
     },
 };

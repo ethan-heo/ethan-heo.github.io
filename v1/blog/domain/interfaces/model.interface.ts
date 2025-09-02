@@ -80,4 +80,5 @@ export interface SearchedBlogItem {
 export interface HeadingInfo {
     text: string;
     level: number;
+    id: string;
 }

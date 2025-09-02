@@ -4,11 +4,12 @@ import type { HeadingInfo } from "../../../../v1/blog/domain/interfaces/model.in
 
 interface Props {
     contents: HeadingInfo[];
+    className?: string;
 }
 
-const TableOfContents: React.FC<Props> = ({ contents = [] }) => {
+const TableOfContents: React.FC<Props> = ({ contents = [], className }) => {
     return (
-        <div className="mb-8">
+        <div className={className}>
             <Contents contents={contents} />
         </div>
     );
