@@ -5,16 +5,24 @@ import RenderBlock from "../../components/RenderBlock.astro";
 import BlogLayout from "../../layouts/BlogLayout.astro";
 import Template from "../../template/Template.astro";
 import blogController from "../../../v1/blog/controller";
+import createTestAPI from "../../../v1/blog/apis/test";
 
 export async function getStaticPaths() {
     dotenv.config();
 
     blogController.notion.init(process.env.NOTION_API_KEY as string);
+    const testAPI = createTestAPI();
 
     const result = [];
 
     for await (const blog of blogs) {
-        const contents = await blogController.notion.getBlogContentAll(blog.id);
+        let contents;
+
+        if (process.env.NODE_ENV === "development") {
+            contents = await testAPI.getOriginalBlogContents(blog.id);
+        } else {
+            contents = await blogController.notion.getBlogContentAll(blog.id);
+        }
 
         result.push({
             params: {
@@ -23,6 +31,10 @@ export async function getStaticPaths() {
             props: {
                 ...blog,
                 contents,
+                tableOfContents:
+                    blogController.blog.transformJumpLinkFromBlogContents(
+                        contents,
+                    ),
             },
         });
     }
