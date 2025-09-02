@@ -8,11 +8,11 @@ import type {
 import type { NotionBlogContent } from "../domain/interfaces/notion-blog-block.interface.ts";
 import type { BlogUseCase } from "./use-case.interface.ts";
 
-type CreateBlogListToJSONUseCase = BlogUseCase<[BlogItem[], string], void>;
+type ToJSONUseCase = BlogUseCase<[BlogItem[], string], void>;
 
-export const createBlogListToJSONUseCase: CreateBlogListToJSONUseCase =
+export const toJSONUseCase: ToJSONUseCase =
     (_, repository) => (blogItems, target) => {
-        repository.blog.toJSON(blogItems, target);
+        repository.toJSON(blogItems, target);
     };
 
 type GetBlogContentAllUseCase = BlogUseCase<[string], Promise<BlogContent[]>>;

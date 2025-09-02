@@ -5,7 +5,7 @@ import {
     getBlogListFromJSONUseCase,
     getBlogItemAllUseCase,
     searchBlogItemsUseCase,
-    createBlogListToJSONUseCase,
+    toJSONUseCase,
     initNotionClientUseCase,
     hasNextBlogListUseCase,
     transformJumpLinkFromElementUseCase,
@@ -13,10 +13,7 @@ import {
 
 const createBlogService = (domain: BlogDomain, repository: BlogRepository) => ({
     initNotionClientUseCase: initNotionClientUseCase(domain, repository),
-    createBlogListToJSONUseCase: createBlogListToJSONUseCase(
-        domain,
-        repository,
-    ),
+    toJSONUseCase: toJSONUseCase(domain, repository),
     getBlogContentAllUseCase: getBlogContentAllUseCase(domain, repository),
     getBlogListFromJSONUseCase: getBlogListFromJSONUseCase(domain, repository),
     getBlogItemAllUseCase: getBlogItemAllUseCase(domain, repository),

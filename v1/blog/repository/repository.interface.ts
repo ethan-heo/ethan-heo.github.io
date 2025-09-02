@@ -1,4 +1,5 @@
 import type {
+    BlogContent,
     BlogItem,
     OriginalBlogContentWithChildren,
     OriginalBlogItem,
@@ -15,6 +16,6 @@ export interface BlogRepository {
     blog: {
         getBlogList: (page: number, size?: number) => BlogItem[];
         hasNextBlogList: (page: number, size?: number) => boolean;
-        toJSON: (blogItems: BlogItem[], target: string) => void;
     };
+    toJSON: (data: any, target: string) => void;
 }

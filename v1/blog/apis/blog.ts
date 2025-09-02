@@ -22,8 +22,8 @@ const createBlogAPI = (): BlogAPI => {
             }
             return !!blogs[page * size + size];
         },
-        toJSON(blogItems, target) {
-            fs.writeFileSync(target, JSON.stringify(blogItems));
+        toJSON(data, target) {
+            fs.writeFileSync(target, JSON.stringify(data));
         },
     };
 };
@@ -33,5 +33,5 @@ export default createBlogAPI;
 export interface BlogAPI {
     getBlogList: (page: number, size?: number) => BlogItem[];
     hasNextBlogList: (page: number, size?: number) => boolean;
-    toJSON: (blogItems: BlogItem[], target: string) => void;
+    toJSON: (blogItems: any, target: string) => void;
 }

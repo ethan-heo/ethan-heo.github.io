@@ -1,7 +1,6 @@
 import blogDomain from "./domain/index.ts";
 import createBlogRepository from "./repository/index.ts";
 import createBlogService from "./service/index.ts";
-import type { BlogItem } from "./domain/interfaces/model.interface.ts";
 import createNotionAPI from "./apis/notion.ts";
 import createBlogAPI from "./apis/blog.ts";
 
@@ -17,8 +16,6 @@ const blogController = {
         getBlogItemAll: (id: string) => service.getBlogItemAllUseCase(id),
     },
     blog: {
-        createBlogListToJSON: (originalBlogItems: BlogItem[], target: string) =>
-            service.createBlogListToJSONUseCase(originalBlogItems, target),
         getBlogListFromJSON: (page: number, size: number) =>
             service.getBlogListFromJSONUseCase(page, size),
         searchBlogItems: (searchQuery: string) =>
@@ -28,6 +25,7 @@ const blogController = {
         transformJumpLinkFromElement:
             service.transformJumpLinkFromElementUseCase,
     },
+    toJSON: (data: any, target: string) => service.toJSONUseCase(data, target),
 };
 
 export default blogController;

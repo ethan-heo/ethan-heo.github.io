@@ -19,12 +19,13 @@ const createBlogRepository = (
         getBlogList(page, size) {
             return blogAPI.getBlogList(page, size);
         },
-        toJSON(blogItems, target) {
-            return blogAPI.toJSON(blogItems, target);
-        },
+
         hasNextBlogList(page, size) {
             return blogAPI.hasNextBlogList(page, size);
         },
+    },
+    toJSON(data, target) {
+        return blogAPI.toJSON(data, target);
     },
 });
 

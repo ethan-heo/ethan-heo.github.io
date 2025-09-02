@@ -7,7 +7,8 @@
         "build": "pnpm gen:blogs && astro build",
         "preview": "astro preview",
         "astro": "astro",
-        "gen:blogs": "node --loader ts-node/esm scripts/createBlogs.ts"
+        "gen:blogs": "node --loader ts-node/esm scripts/createBlogs.ts",
+        "create:mock": "node --loader ts-node/esm scripts/create-mock-data.ts"
     },
     "dependencies": {
         "@astrojs/react": "^4.3.0",
