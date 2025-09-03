@@ -16,6 +16,20 @@ const url = _url ?? "";
 <!doctype html>
 <html lang="ko" data-theme="abyss" class="scroll-smooth">
     <head>
+        <!-- Google tag (gtag.js) -->
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-7TEC4NLJ9V"
+        ></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "G-7TEC4NLJ9V");
+        </script>
         <meta charset="UTF-8" />
         <link rel="canonical" href={`https://ethan-heo.github.io${url}`} />
         <link rel="sitemap" href="/sitemap-index.xml" />
