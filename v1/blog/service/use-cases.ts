@@ -8,14 +8,17 @@ import type {
 import type { NotionBlogContent } from "../domain/interfaces/notion-blog-block.interface.ts";
 import type { BlogUseCase } from "./use-case.interface.ts";
 
-type ToJSONUseCase = BlogUseCase<[BlogItem[], string], void>;
+type ToJSONUseCase = BlogUseCase<[blogItems: BlogItem[], target: string], void>;
 
 export const toJSONUseCase: ToJSONUseCase =
     (_, repository) => (blogItems, target) => {
         repository.toJSON(blogItems, target);
     };
 
-type GetBlogContentAllUseCase = BlogUseCase<[string], Promise<BlogContent[]>>;
+type GetBlogContentAllUseCase = BlogUseCase<
+    [id: string],
+    Promise<BlogContent[]>
+>;
 
 export const getBlogContentAllUseCase: GetBlogContentAllUseCase =
     (domain, repository) => async (id) => {
@@ -41,7 +44,7 @@ export const getBlogContentAllUseCase: GetBlogContentAllUseCase =
         );
     };
 
-type GetBlogItemAllUseCase = BlogUseCase<[string], Promise<BlogItem[]>>;
+type GetBlogItemAllUseCase = BlogUseCase<[id: string], Promise<BlogItem[]>>;
 
 export const getBlogItemAllUseCase: GetBlogItemAllUseCase =
     (domain, repository) => async (id) => {
@@ -50,14 +53,20 @@ export const getBlogItemAllUseCase: GetBlogItemAllUseCase =
         return blogList.map(domain.transformBlogItem);
     };
 
-type GetBlogListFromJSONUseCase = BlogUseCase<[number, number], BlogItem[]>;
+type GetBlogListFromJSONUseCase = BlogUseCase<
+    [page: number, size: number],
+    BlogItem[]
+>;
 
 export const getBlogListFromJSONUseCase: GetBlogListFromJSONUseCase =
     (_, repository) => (page, size) => {
         return repository.blog.getBlogList(page, size);
     };
 
-type SearchBlogItemsUseCase = BlogUseCase<[string], SearchedBlogItem[] | Error>;
+type SearchBlogItemsUseCase = BlogUseCase<
+    [searchQuery: string],
+    SearchedBlogItem[] | Error
+>;
 
 export const searchBlogItemsUseCase: SearchBlogItemsUseCase =
     (domain, repository) => (searchQuery) => {
@@ -73,14 +82,17 @@ export const searchBlogItemsUseCase: SearchBlogItemsUseCase =
         );
     };
 
-type InitNotionClientUseCase = BlogUseCase<[string], void>;
+type InitNotionClientUseCase = BlogUseCase<[apiKey: string], void>;
 
 export const initNotionClientUseCase: InitNotionClientUseCase =
     (_, repository) => (apiKey) => {
         repository.notion.init(apiKey);
     };
 
-type HasNextBlogListUseCase = BlogUseCase<[number, number], boolean>;
+type HasNextBlogListUseCase = BlogUseCase<
+    [page: number, size: number],
+    boolean
+>;
 
 export const hasNextBlogListUseCase: HasNextBlogListUseCase =
     (_, repository) => (page, size) => {
@@ -88,7 +100,7 @@ export const hasNextBlogListUseCase: HasNextBlogListUseCase =
     };
 
 type TransformJumpLinkFromBlogContentsUseCase = BlogUseCase<
-    [BlogContent[]],
+    [blogContents: BlogContent[]],
     HeadingInfo[]
 >;
 
