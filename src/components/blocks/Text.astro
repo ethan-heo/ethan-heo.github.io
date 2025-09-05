@@ -1,10 +1,13 @@
 ---
 import cn from "classnames";
 import type { RichText } from "../../../v1/blog/domain/interfaces/notion-blog-block.interface";
+import type { JSX } from "astro/jsx-runtime";
 
-const { annotations, plain_text } = Astro.props as RichText;
+const { annotations, plain_text, text } = Astro.props as RichText;
 
 const useMark = annotations.code;
+const link = text.link?.url ?? "";
+const useLink = !!link;
 const ANNOTATIONS_CLASS_MAP = {
     bold: "font-bold",
     italic: "italic",
@@ -25,9 +28,21 @@ const annotationClass = Object.entries(annotations)
 
 {
     useMark ? (
-        <mark class={cn(annotationClass, "rounded-xs", "bg-secondary")}>
-            {plain_text}
-        </mark>
+        useLink ? (
+            <a href={link} class="link underline-offset-4" target="_blank">
+                <mark class={cn(annotationClass, "rounded-xs", "bg-secondary")}>
+                    {plain_text}
+                </mark>
+            </a>
+        ) : (
+            <mark class={cn(annotationClass, "rounded-xs", "bg-secondary")}>
+                {plain_text}
+            </mark>
+        )
+    ) : useLink ? (
+        <a href={link} class="link underline-offset-4" target="_blank">
+            <span class={cn(annotationClass)}>{plain_text}</span>
+        </a>
     ) : (
         <span class={cn(annotationClass)}>{plain_text}</span>
     )
