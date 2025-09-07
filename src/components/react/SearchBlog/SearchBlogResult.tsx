@@ -10,7 +10,7 @@ const SearchBlogResult = ({ results }: Props) => {
     }
 
     return (
-        <ul className="absolute flex top-11 left-0 list bg-base-100 shadow-md max-h-96 w-full">
+        <ul className="absolute flex top-11 left-0 list bg-base-100 shadow-md max-h-96 w-full overflow-y-auto">
             {results.map((result) => (
                 <li className="list-row" key={result.id}>
                     <div>
