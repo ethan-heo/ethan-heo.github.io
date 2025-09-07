@@ -1,4 +1,4 @@
-import type { OriginalBlogContent } from "./interfaces/model.interface.ts";
+import type { OriginalBlogContent } from "../interfaces/model.interface.ts";
 import type {
     CodeBlock,
     CodeBlockType,
@@ -16,7 +16,7 @@ import type {
     TextBlockType,
     TodoBlock,
     TodoBlockType,
-} from "./interfaces/notion-blog-block.interface.ts";
+} from "../interfaces/notion-blog-block.interface.ts";
 
 type TransformerResult<T extends NotionBlogBlockType> = T extends TextBlockType
     ? TextBlock
