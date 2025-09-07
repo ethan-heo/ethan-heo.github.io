@@ -1,4 +1,4 @@
-import type { KeyboardEvent } from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
 
 interface Props {
     onSearch: (query: string) => void;
@@ -8,6 +8,12 @@ const SearchBlogInput = ({ onSearch }: Props) => {
     const handleSearch = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             onSearch(e.currentTarget.value);
+        }
+    };
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value.trim().length === 0) {
+            onSearch("");
         }
     };
 
@@ -34,9 +40,8 @@ const SearchBlogInput = ({ onSearch }: Props) => {
                 className="grow"
                 placeholder="Search"
                 onKeyDown={handleSearch}
+                onChange={handleChange}
             />
-            <kbd className="kbd kbd-sm">⌘</kbd>
-            <kbd className="kbd kbd-sm">K</kbd>
         </label>
     );
 };
