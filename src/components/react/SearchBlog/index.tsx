@@ -7,7 +7,7 @@ const SearchBlogs = () => {
     const [query, setQuery] = useState("");
 
     return (
-        <div className="sticky top-0 left-0 mt-12 mb-12 pl-4 pr-4 z-50">
+        <div className="sticky top-4 left-0 mt-12 mb-12 pl-4 pr-4 z-50">
             <SearchBlogInput onSearch={setQuery} />
             <SearchBlogResult
                 results={blogController.blog.searchBlogItems(query)}
