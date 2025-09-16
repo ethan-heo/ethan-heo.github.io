@@ -1,12 +1,12 @@
-import transformBlogItem from "./transformBlogItem.ts";
-import searchResult from "./searchResult.ts";
-import validateSearchQuery from "./validateSearchQuery.ts";
-import transformSearchResult from "./transformSearchResult.ts";
-import transformOriginalBlogContent from "./transformOriginalBlogContent.ts";
-import transformNestedBlockContent from "./transformNestedBlockContent.ts";
-import findHeadingBlock from "./findHeadingBlock.ts";
-import transformHeadingBlockToHeadingInfo from "./transformHeadingBlockToHeadingInfo.ts";
-import findRelatedBlogItems from "./findRelatedBlogItem.ts";
+import transformBlogItem from "./transform-blog-item.ts";
+import searchResult from "./search-result.ts";
+import validateSearchQuery from "./validate-search-query.ts";
+import transformSearchResult from "./transform-search-result.ts";
+import transformOriginalBlogContent from "./transform-original-blog-content.ts";
+import transformNestedBlockContent from "./transform-nested-block-content.ts";
+import findHeadingBlock from "./find-heading-block.ts";
+import transformHeadingBlockToHeadingInfo from "./transform-heading-block-to-heading-info.ts";
+import findRelatedBlogItems from "./find-related-blog-item.ts";
 
 const blogDomain = {
     transformBlogItem,
