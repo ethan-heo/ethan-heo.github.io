@@ -1,5 +1,6 @@
 ---
 import TableOfContents from "../components/react/TableOfContents";
+import RelatedBlogList from "../components/RelatedBlogList.astro";
 import "../styles/global.css";
 
 const props = Astro.props;
@@ -18,3 +19,4 @@ const date = new Date(props.createdDate);
     client:load
 />
 <slot />
+<RelatedBlogList blogItems={props.relatedBlogItems} />

@@ -9,6 +9,7 @@ import {
     initNotionClientUseCase,
     hasNextBlogListUseCase,
     transformJumpLinkFromBlogContentsUseCase,
+    findRelatedBlogItemsUseCase,
 } from "./use-cases.ts";
 
 const createBlogService = (domain: BlogDomain, repository: BlogRepository) => ({
@@ -21,6 +22,10 @@ const createBlogService = (domain: BlogDomain, repository: BlogRepository) => ({
     hasNextBlogListUseCase: hasNextBlogListUseCase(domain, repository),
     transformJumpLinkFromBlogContentsUseCase:
         transformJumpLinkFromBlogContentsUseCase(domain, repository),
+    findRelatedBlogItemsUseCase: findRelatedBlogItemsUseCase(
+        domain,
+        repository,
+    ),
 });
 
 export default createBlogService;

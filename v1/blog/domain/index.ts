@@ -6,6 +6,7 @@ import transformOriginalBlogContent from "./transformOriginalBlogContent.ts";
 import transformNestedBlockContent from "./transformNestedBlockContent.ts";
 import findHeadingBlock from "./findHeadingBlock.ts";
 import transformHeadingBlockToHeadingInfo from "./transformHeadingBlockToHeadingInfo.ts";
+import findRelatedBlogItems from "./findRelatedBlogItem.ts";
 
 const blogDomain = {
     transformBlogItem,
@@ -16,6 +17,7 @@ const blogDomain = {
     transformNestedBlockContent,
     findHeadingBlock,
     transformHeadingBlockToHeadingInfo,
+    findRelatedBlogItems,
 };
 
 export default blogDomain;

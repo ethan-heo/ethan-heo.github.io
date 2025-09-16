@@ -24,6 +24,7 @@ const blogController = {
             service.hasNextBlogListUseCase(page, size),
         transformJumpLinkFromBlogContents:
             service.transformJumpLinkFromBlogContentsUseCase,
+        findRelatedBlogItems: service.findRelatedBlogItemsUseCase,
     },
     toJSON: (data: any, target: string) => service.toJSONUseCase(data, target),
 };

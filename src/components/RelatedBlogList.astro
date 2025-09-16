@@ -1,0 +1,60 @@
+---
+import type { BlogItem } from "../../v1/blog/domain/interfaces/model.interface";
+
+const { blogItems } = Astro.props as { blogItems: BlogItem[] };
+---
+
+<>
+    <h2 class="mb-4 mt-40 text-3xl font-bold">연관된 블로그</h2>
+    {
+        blogItems.length > 0 ? (
+            <ul class="list bg-base-100 rounded-box shadow-md">
+                {blogItems.map((blogItem, idx) => (
+                    <li class="list-row">
+                        <div>
+                            <img
+                                class="size-10 rounded-box"
+                                src={blogItem.backgroundImg}
+                            />
+                        </div>
+                        <div class="list-col-grow">
+                            <div>{blogItem.title}</div>
+                            <div class="text-xs uppercase font-semibold opacity-60">
+                                {blogItem.description}
+                            </div>
+                        </div>
+                        <a
+                            class="btn btn-square btn-ghost justify-self-end"
+                            href={`/blog/${blogItem.id}`}
+                            target="_blank"
+                        >
+                            <svg
+                                class="size-[1.2em]"
+                                viewBox="0 0 16 16"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                <g
+                                    id="SVGRepo_tracerCarrier"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                                <g
+                                    id="SVGRepo_iconCarrier"
+                                    stroke-linejoin="round"
+                                    stroke-linecap="round"
+                                    stroke-width="2"
+                                    fill="none"
+                                    stroke="currentColor"
+                                >
+                                    {" "}
+                                    <path d="m 4 2 c 0 -0.265625 0.105469 -0.519531 0.292969 -0.707031 c 0.390625 -0.390625 1.023437 -0.390625 1.414062 0 l 6 6 c 0.1875 0.1875 0.292969 0.441406 0.292969 0.707031 s -0.105469 0.519531 -0.292969 0.707031 l -6 6 c -0.390625 0.390625 -1.023437 0.390625 -1.414062 0 c -0.1875 -0.1875 -0.292969 -0.441406 -0.292969 -0.707031 s 0.105469 -0.519531 0.292969 -0.707031 l 5.292969 -5.292969 l -5.292969 -5.292969 c -0.1875 -0.1875 -0.292969 -0.441406 -0.292969 -0.707031 z m 0 0" />{" "}
+                                </g>
+                            </svg>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        ) : null
+    }
+</>

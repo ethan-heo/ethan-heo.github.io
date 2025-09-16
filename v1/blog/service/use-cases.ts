@@ -111,3 +111,12 @@ export const transformJumpLinkFromBlogContentsUseCase: TransformJumpLinkFromBlog
         );
         return result;
     };
+
+type FindRelatedBlogItemsUseCase = BlogUseCase<[blogIds: string[]], BlogItem[]>;
+
+export const findRelatedBlogItemsUseCase: FindRelatedBlogItemsUseCase =
+    (domain, repository) => (blogIds) => {
+        const blogItemAll = repository.blog.getBlogList(0);
+
+        return domain.findRelatedBlogItems(blogIds, blogItemAll);
+    };

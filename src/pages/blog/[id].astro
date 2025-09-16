@@ -31,6 +31,9 @@ export async function getStaticPaths() {
             props: {
                 ...blog,
                 contents,
+                relatedBlogItems: blogController.blog.findRelatedBlogItems(
+                    blog.related,
+                ),
                 tableOfContents:
                     blogController.blog.transformJumpLinkFromBlogContents(
                         contents,
