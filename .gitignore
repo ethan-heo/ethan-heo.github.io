@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 # mock
 src/mock/
+src/assets/

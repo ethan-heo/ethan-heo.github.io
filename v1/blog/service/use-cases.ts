@@ -6,12 +6,19 @@ import type {
     SearchedBlogItem,
 } from "../domain/interfaces/model.interface.ts";
 import type { NotionBlogContent } from "../domain/interfaces/notion-blog-block.interface.ts";
-import type { BlogUseCase } from "./use-case.interface.ts";
+import type {
+    BlogUseCase,
+    BlogUseCaseUsingDomain,
+    BlogUseCaseUsingRepository,
+} from "./use-case.interface.ts";
 
-type ToJSONUseCase = BlogUseCase<[blogItems: BlogItem[], target: string], void>;
+type ToJSONUseCase = BlogUseCaseUsingRepository<
+    [blogItems: BlogItem[], target: string],
+    void
+>;
 
 export const toJSONUseCase: ToJSONUseCase =
-    (_, repository) => (blogItems, target) => {
+    (repository) => (blogItems, target) => {
         repository.toJSON(blogItems, target);
     };
 
@@ -53,13 +60,13 @@ export const getBlogItemAllUseCase: GetBlogItemAllUseCase =
         return blogList.map(domain.transformBlogItem);
     };
 
-type GetBlogListFromJSONUseCase = BlogUseCase<
+type GetBlogListFromJSONUseCase = BlogUseCaseUsingRepository<
     [page: number, size: number],
     BlogItem[]
 >;
 
 export const getBlogListFromJSONUseCase: GetBlogListFromJSONUseCase =
-    (_, repository) => (page, size) => {
+    (repository) => (page, size) => {
         return repository.blog.getBlogList(page, size);
     };
 
@@ -82,24 +89,27 @@ export const searchBlogItemsUseCase: SearchBlogItemsUseCase =
         );
     };
 
-type InitNotionClientUseCase = BlogUseCase<[apiKey: string], void>;
+type InitNotionClientUseCase = BlogUseCaseUsingRepository<
+    [apiKey: string],
+    void
+>;
 
 export const initNotionClientUseCase: InitNotionClientUseCase =
-    (_, repository) => (apiKey) => {
+    (repository) => (apiKey) => {
         repository.notion.init(apiKey);
     };
 
-type HasNextBlogListUseCase = BlogUseCase<
+type HasNextBlogListUseCase = BlogUseCaseUsingRepository<
     [page: number, size: number],
     boolean
 >;
 
 export const hasNextBlogListUseCase: HasNextBlogListUseCase =
-    (_, repository) => (page, size) => {
+    (repository) => (page, size) => {
         return repository.blog.hasNextBlogList(page, size);
     };
 
-type TransformJumpLinkFromBlogContentsUseCase = BlogUseCase<
+type TransformJumpLinkFromBlogContentsUseCase = BlogUseCaseUsingDomain<
     [blogContents: BlogContent[]],
     HeadingInfo[]
 >;

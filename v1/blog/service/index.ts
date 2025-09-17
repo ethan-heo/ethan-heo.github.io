@@ -13,15 +13,15 @@ import {
 } from "./use-cases.ts";
 
 const createBlogService = (domain: BlogDomain, repository: BlogRepository) => ({
-    initNotionClientUseCase: initNotionClientUseCase(domain, repository),
-    toJSONUseCase: toJSONUseCase(domain, repository),
+    initNotionClientUseCase: initNotionClientUseCase(repository),
+    toJSONUseCase: toJSONUseCase(repository),
     getBlogContentAllUseCase: getBlogContentAllUseCase(domain, repository),
-    getBlogListFromJSONUseCase: getBlogListFromJSONUseCase(domain, repository),
+    getBlogListFromJSONUseCase: getBlogListFromJSONUseCase(repository),
     getBlogItemAllUseCase: getBlogItemAllUseCase(domain, repository),
     searchBlogItemsUseCase: searchBlogItemsUseCase(domain, repository),
-    hasNextBlogListUseCase: hasNextBlogListUseCase(domain, repository),
+    hasNextBlogListUseCase: hasNextBlogListUseCase(repository),
     transformJumpLinkFromBlogContentsUseCase:
-        transformJumpLinkFromBlogContentsUseCase(domain, repository),
+        transformJumpLinkFromBlogContentsUseCase(domain),
     findRelatedBlogItemsUseCase: findRelatedBlogItemsUseCase(
         domain,
         repository,
