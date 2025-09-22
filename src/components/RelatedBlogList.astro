@@ -4,10 +4,10 @@ import type { BlogItem } from "../../v1/blog/domain/interfaces/model.interface";
 const { blogItems } = Astro.props as { blogItems: BlogItem[] };
 ---
 
-<>
-    <h2 class="mb-4 mt-40 text-3xl font-bold">연관된 블로그</h2>
-    {
-        blogItems.length > 0 ? (
+{
+    blogItems.length > 0 ? (
+        <>
+            <h2 class="mb-4 mt-40 text-3xl font-bold">연관된 블로그</h2>
             <ul class="list bg-base-100 rounded-box shadow-md">
                 {blogItems.map((blogItem, idx) => (
                     <li class="list-row">
@@ -55,6 +55,6 @@ const { blogItems } = Astro.props as { blogItems: BlogItem[] };
                     </li>
                 ))}
             </ul>
-        ) : null
-    }
-</>
+        </>
+    ) : null
+}
