@@ -4,11 +4,13 @@ import Text from "./Text.astro";
 import type { TableBlock } from "../../../v1/blog/domain/interfaces/notion-blog-block.interface";
 
 const props = Astro.props as TableBlock;
-const [headRows, ...bodyRows] = props.content.table;
+const [headRows, ...bodyRows] = props.children as TableBlock[];
 const addHeaderRowClass = () =>
     props.content.has_column_header && "bg-base-200";
 const addHeaderColumnClass = (idx: number) =>
     props.content.has_row_header && idx === 0 && "bg-base-200";
+
+console.log(bodyRows);
 ---
 
 <div class="overflow-x-auto mt-2 mb-3">
@@ -17,10 +19,10 @@ const addHeaderColumnClass = (idx: number) =>
         <thead>
             <tr class={cn(addHeaderRowClass())}>
                 {
-                    headRows.map((cell, idx) => {
+                    headRows.content.table.map((cell, idx) => {
                         return (
                             <th class={cn(addHeaderColumnClass(idx))}>
-                                {cell && <Text {...cell} />}
+                                {cell.length > 0 && <Text {...cell.at(0)} />}
                             </th>
                         );
                     })
@@ -32,10 +34,12 @@ const addHeaderColumnClass = (idx: number) =>
                 bodyRows.map((cells) => {
                     return (
                         <tr>
-                            {cells.map((cell, idx) => {
+                            {cells.content.table.map((cell, idx) => {
                                 return (
                                     <td class={cn(addHeaderColumnClass(idx))}>
-                                        {cell && <Text {...cell} />}
+                                        {cell.length && (
+                                            <Text {...cell.at(0)} />
+                                        )}
                                     </td>
                                 );
                             })}
