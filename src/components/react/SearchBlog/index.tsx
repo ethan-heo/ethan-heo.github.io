@@ -5,13 +5,13 @@ import blogController from "../../../../v1/blog/controller";
 
 const SearchBlogs = () => {
     const [query, setQuery] = useState("");
+    const results = blogController.blog.searchBlogItems(query);
+    const isExpanded = results.length > 0 ? true : false;
 
     return (
         <div className="sticky top-4 left-0 mt-12 mb-12 pl-4 pr-4 z-50">
-            <SearchBlogInput onSearch={setQuery} />
-            <SearchBlogResult
-                results={blogController.blog.searchBlogItems(query)}
-            />
+            <SearchBlogInput onSearch={setQuery} isExpanded={isExpanded} />
+            <SearchBlogResult results={results} />
         </div>
     );
 };
