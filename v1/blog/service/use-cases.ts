@@ -72,7 +72,7 @@ export const getBlogListFromJSONUseCase: GetBlogListFromJSONUseCase =
 
 type SearchBlogItemsUseCase = BlogUseCase<
     [searchQuery: string],
-    SearchedBlogItem[] | Error
+    SearchedBlogItem[]
 >;
 
 export const searchBlogItemsUseCase: SearchBlogItemsUseCase =
@@ -81,7 +81,7 @@ export const searchBlogItemsUseCase: SearchBlogItemsUseCase =
         // 확실히 boolean으로 처리하는 것이 결과 처리에 대한 여러 상황에 대처하기 용이해보임.
 
         if (!domain.validateSearchQuery(searchQuery)) {
-            return new Error(`잘못된 입력입니다.`);
+            return [];
         }
 
         return domain.transformSearchResult(
