@@ -1,54 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getVisiblePosts, toPostUrl } from '../lib/posts';
+import PostList from '../components/PostList.astro';
+import { getVisiblePosts } from '../lib/posts';
 
 const posts = await getVisiblePosts();
-
-const dateFormat = new Intl.DateTimeFormat('ko-KR', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-});
 ---
 
-<BaseLayout title="블로그">
-  <h1>블로그</h1>
-  {
-    posts.length === 0 ? (
-      <p>아직 발행한 글이 없습니다.</p>
-    ) : (
-      <ul>
-        {posts.map((post) => (
-          <li>
-            <a href={toPostUrl(post)}>{post.data.title}</a>
-            <time datetime={post.data.date.toISOString()}>
-              {dateFormat.format(post.data.date)}
-            </time>
-            <p>{post.data.summary}</p>
-          </li>
-        ))}
-      </ul>
-    )
-  }
+<BaseLayout title="블로그" description="읽고 만든 것을 기록한다.">
+  <h1 class="text-h2 leading-tight">읽고 만든 것을 기록합니다.</h1>
+  <div class="mt-12 max-w-content">
+    <PostList posts={posts} />
+  </div>
 </BaseLayout>
-
-<style>
-  ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  li {
-    margin-bottom: 2rem;
-  }
-
-  time {
-    display: block;
-    font-size: 0.875rem;
-    color: #666;
-  }
-
-  p {
-    margin: 0.5rem 0 0;
-  }
-</style>
