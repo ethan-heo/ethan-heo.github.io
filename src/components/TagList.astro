@@ -1,0 +1,20 @@
+---
+import Tag from './Tag.astro';
+
+interface Props {
+  tags: string[];
+  label?: string;
+}
+
+const { tags, label = '태그' } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <ul class="flex flex-wrap gap-x-3 gap-y-1" aria-label={label}>
+      {tags.map((tag) => (
+        <Tag name={tag} />
+      ))}
+    </ul>
+  )
+}

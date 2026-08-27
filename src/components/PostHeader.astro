@@ -1,5 +1,6 @@
 ---
 import type { Post } from '../lib/posts';
+import TagList from './TagList.astro';
 
 interface Props {
   post: Post;
@@ -22,4 +23,7 @@ const dateFormat = new Intl.DateTimeFormat('ko-KR', {
       {dateFormat.format(post.data.date)}
     </time>
   </p>
+  <div class="mt-4">
+    <TagList tags={post.data.tags} label="이 글의 태그" />
+  </div>
 </header>
