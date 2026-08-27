@@ -1,0 +1,39 @@
+---
+// 초기 테마는 BaseLayout의 인라인 스크립트가 정한다. 여기서는 전환만 맡는다.
+---
+
+<button
+  type="button"
+  class="theme-toggle inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-sm border border-border bg-surface px-3 font-sans text-caption text-fg hover:bg-bg"
+  aria-label="테마 전환"
+  data-od-id="theme-toggle"
+>
+  <span class="theme-toggle-label" aria-hidden="true"></span>
+  <span class="sr-only theme-toggle-state"></span>
+</button>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-od-id="theme-toggle"]');
+  const label = button?.querySelector<HTMLElement>('.theme-toggle-label');
+  const state = button?.querySelector<HTMLElement>('.theme-toggle-state');
+
+  /** 현재 테마를 버튼 문구에 반영한다. */
+  function render(theme: string) {
+    if (label) label.textContent = theme === 'dark' ? '다크' : '라이트';
+    if (state) state.textContent = `현재 테마: ${theme === 'dark' ? '다크' : '라이트'}`;
+    button?.setAttribute('aria-label', theme === 'dark' ? '라이트 테마로 전환' : '다크 테마로 전환');
+  }
+
+  render(document.documentElement.dataset.theme ?? 'light');
+
+  button?.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      // 저장이 막혀 있으면 이 세션 안에서만 전환을 유지한다.
+    }
+    render(next);
+  });
+</script>
