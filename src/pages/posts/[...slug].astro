@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostHeader from '../../components/PostHeader.astro';
 import Prose from '../../components/Prose.astro';
+import BackLink from '../../components/BackLink.astro';
 import { getVisiblePosts, toSlugPath } from '../../lib/posts';
 import type { GetStaticPaths } from 'astro';
 
@@ -32,6 +33,9 @@ const dateFormat = new Intl.DateTimeFormat('ko-KR', {
   <article>
     <Prose><Content /></Prose>
   </article>
+  <footer class="mt-16">
+    <BackLink href="/" label="모든 글 보기" />
+  </footer>
 </BaseLayout>
 
 <style>
