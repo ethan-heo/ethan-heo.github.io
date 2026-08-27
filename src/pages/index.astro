@@ -1,17 +1,53 @@
 ---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getVisiblePosts, toPostUrl } from '../lib/posts';
 
+const posts = await getVisiblePosts();
+
+const dateFormat = new Intl.DateTimeFormat('ko-KR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="블로그">
+  {
+    posts.length === 0 ? (
+      <p>아직 발행한 글이 없습니다.</p>
+    ) : (
+      <ul>
+        {posts.map((post) => (
+          <li>
+            <a href={toPostUrl(post)}>{post.data.title}</a>
+            <time datetime={post.data.date.toISOString()}>
+              {dateFormat.format(post.data.date)}
+            </time>
+            <p>{post.data.summary}</p>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</BaseLayout>
+
+<style>
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  li {
+    margin-bottom: 2rem;
+  }
+
+  time {
+    display: block;
+    font-size: 0.875rem;
+    color: #666;
+  }
+
+  p {
+    margin: 0.5rem 0 0;
+  }
+</style>
