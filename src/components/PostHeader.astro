@@ -1,0 +1,25 @@
+---
+import type { Post } from '../lib/posts';
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+
+const dateFormat = new Intl.DateTimeFormat('ko-KR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<header class="mb-12" data-od-id="post-header">
+  <h1 class="text-h1 leading-tight">{post.data.title}</h1>
+  <p class="mt-4 font-sans text-muted leading-meta">{post.data.summary}</p>
+  <p class="mt-4 font-mono text-caption text-muted leading-meta">
+    <time datetime={post.data.date.toISOString()}>
+      {dateFormat.format(post.data.date)}
+    </time>
+  </p>
+</header>

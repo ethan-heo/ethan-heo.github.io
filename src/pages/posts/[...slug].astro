@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostHeader from '../../components/PostHeader.astro';
 import { getVisiblePosts, toSlugPath } from '../../lib/posts';
 import type { GetStaticPaths } from 'astro';
 
@@ -23,7 +24,7 @@ const dateFormat = new Intl.DateTimeFormat('ko-KR', {
 ---
 
 <BaseLayout title={post.data.title}>
-  <h1>{post.data.title}</h1>
+  <PostHeader post={post} />
   <time datetime={post.data.date.toISOString()}>
     {dateFormat.format(post.data.date)}
   </time>
