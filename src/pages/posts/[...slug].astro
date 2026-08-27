@@ -17,19 +17,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-
-const dateFormat = new Intl.DateTimeFormat('ko-KR', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-});
 ---
 
-<BaseLayout title={post.data.title}>
+<BaseLayout title={post.data.title} description={post.data.summary}>
   <PostHeader post={post} />
-  <time datetime={post.data.date.toISOString()}>
-    {dateFormat.format(post.data.date)}
-  </time>
   <article>
     <Prose><Content /></Prose>
   </article>
@@ -38,11 +29,3 @@ const dateFormat = new Intl.DateTimeFormat('ko-KR', {
   </footer>
 </BaseLayout>
 
-<style>
-  time {
-    display: block;
-    margin-bottom: 2rem;
-    font-size: 0.875rem;
-    color: #666;
-  }
-</style>
