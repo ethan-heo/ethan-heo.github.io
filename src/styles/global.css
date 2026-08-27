@@ -59,3 +59,53 @@
 :root {
   --focus-ring: oklch(from var(--color-accent) l c h / 0.45);
 }
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-serif);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+
+  /* 긴 URL이나 넓은 요소가 페이지 가로 스크롤을 만들지 않게 한다. */
+  body {
+    overflow-wrap: anywhere;
+  }
+
+  h1,
+  h2,
+  h3 {
+    line-height: var(--leading-tight);
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklch, var(--color-accent) 25%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
