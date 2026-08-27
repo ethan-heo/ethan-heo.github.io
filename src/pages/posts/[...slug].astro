@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostHeader from '../../components/PostHeader.astro';
+import Prose from '../../components/Prose.astro';
 import { getVisiblePosts, toSlugPath } from '../../lib/posts';
 import type { GetStaticPaths } from 'astro';
 
@@ -29,7 +30,7 @@ const dateFormat = new Intl.DateTimeFormat('ko-KR', {
     {dateFormat.format(post.data.date)}
   </time>
   <article>
-    <Content />
+    <Prose><Content /></Prose>
   </article>
 </BaseLayout>
 

@@ -1,0 +1,66 @@
+---
+// Markdown이 만들어 내는 요소는 Astro의 범위 지정 대상이 아니므로
+// 루트 클래스 아래에서만 전역 규칙을 적용한다.
+---
+
+<div class="prose" data-od-id="prose">
+  <slot />
+</div>
+
+<style is:global>
+  .prose {
+    font-family: var(--font-serif);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+
+  .prose > * + * {
+    margin-top: calc(var(--spacing) * 6);
+  }
+
+  .prose h2 {
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    font-size: var(--text-h2);
+    line-height: var(--leading-tight);
+  }
+
+  .prose h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    font-size: var(--text-h3);
+    line-height: var(--leading-tight);
+  }
+
+  .prose ul,
+  .prose ol {
+    padding-left: 1.5rem;
+  }
+
+  .prose ul {
+    list-style: disc;
+  }
+
+  .prose ol {
+    list-style: decimal;
+  }
+
+  .prose li + li {
+    margin-top: 0.5rem;
+  }
+
+  .prose a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .prose a:hover {
+    color: var(--color-link-hover);
+    text-decoration: underline;
+  }
+
+  .prose strong {
+    font-weight: 600;
+  }
+</style>
