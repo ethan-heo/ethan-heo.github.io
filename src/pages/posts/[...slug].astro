@@ -1,0 +1,41 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getVisiblePosts, toSlugPath } from '../../lib/posts';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getVisiblePosts();
+  return posts.map((post) => ({
+    params: { slug: toSlugPath(post) },
+    props: { post },
+  }));
+};
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const dateFormat = new Intl.DateTimeFormat('ko-KR', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={post.data.title}>
+  <time datetime={post.data.date.toISOString()}>
+    {dateFormat.format(post.data.date)}
+  </time>
+  <article>
+    <Content />
+  </article>
+</BaseLayout>
+
+<style>
+  time {
+    display: block;
+    margin-bottom: 2rem;
+    font-size: 0.875rem;
+    color: #666;
+  }
+</style>
