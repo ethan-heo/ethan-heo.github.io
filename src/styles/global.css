@@ -1,1 +1,61 @@
 @import "tailwindcss";
+
+/* 다크 테마는 색상 토큰 재정의로 처리하고, 토큰 하나로 표현되지 않는 속성에만 dark: 변형을 쓴다. */
+@custom-variant dark ([data-theme="dark"] &);
+
+/* 값을 참조하는 토큰이 있어 사용 여부와 무관하게 모두 방출한다. */
+@theme static {
+  --color-bg: oklch(98% 0.008 95);
+  --color-surface: oklch(100% 0 0);
+  --color-fg: oklch(24% 0.025 260);
+  --color-muted: oklch(51% 0.025 260);
+  --color-border: oklch(88% 0.018 260);
+  --color-accent: oklch(50% 0.14 215);
+
+  --color-on-accent: oklch(98% 0.008 95);
+  --color-code-bg: color-mix(in oklch, var(--color-surface) 88%, var(--color-fg));
+  --color-link-hover: oklch(from var(--color-accent) calc(l - 0.08) c h);
+  --color-success: oklch(52% 0.13 150);
+  --color-danger: oklch(55% 0.16 25);
+
+  /* DESIGN.md의 --space-1 ~ --space-16이 0.25rem 배수와 일치하므로 단일 기준값만 둔다. */
+  --spacing: 0.25rem;
+
+  --font-serif: ui-serif, Georgia, "Noto Serif KR", serif;
+  --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --text-display: clamp(2rem, 4vw, 3.5rem);
+  --text-h1: clamp(1.875rem, 3vw, 2.75rem);
+  --text-h2: clamp(1.5rem, 2.2vw, 2rem);
+  --text-h3: 1.25rem;
+  --text-body: 1.125rem;
+  --text-caption: 0.875rem;
+
+  --leading-tight: 1.2;
+  --leading-body: 1.85;
+  --leading-meta: 1.45;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+
+  --shadow-subtle: 0 1px 2px color-mix(in oklch, var(--color-fg) 10%, transparent);
+
+  --container-content: 42.5rem;
+  --container-page: 70rem;
+}
+
+[data-theme="dark"] {
+  --color-bg: oklch(17% 0.018 260);
+  --color-surface: oklch(22% 0.022 260);
+  --color-fg: oklch(93% 0.012 95);
+  --color-muted: oklch(72% 0.018 260);
+  --color-border: oklch(34% 0.025 260);
+  --color-accent: oklch(76% 0.13 205);
+  --color-on-accent: oklch(17% 0.018 260);
+}
+
+/* 유틸리티로 쓰지 않고 :focus-visible 규칙에서만 참조한다. */
+:root {
+  --focus-ring: oklch(from var(--color-accent) l c h / 0.45);
+}
