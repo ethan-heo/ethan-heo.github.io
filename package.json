@@ -18,5 +18,8 @@
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "github-slugger": "^2.0.0"
   }
 }

@@ -60,7 +60,136 @@
     text-decoration: underline;
   }
 
+
   .prose strong {
     font-weight: 600;
+  }
+
+  /* 앵커 링크는 제목보다 약하게 두고 포커스와 호버에서만 드러낸다. */
+  .prose :is(h2, h3) {
+    scroll-margin-top: 1.5rem;
+  }
+
+  .prose .heading-anchor {
+    margin-left: 0.4em;
+    color: var(--color-muted);
+    font-size: 0.7em;
+    text-decoration: none;
+    opacity: 0;
+  }
+
+  .prose :is(h2, h3):hover .heading-anchor,
+  .prose .heading-anchor:focus-visible {
+    opacity: 1;
+  }
+
+  .prose blockquote {
+    border-left: 3px solid var(--color-border);
+    background-color: var(--color-surface);
+    padding: 0.75rem 1rem;
+    color: var(--color-muted);
+  }
+
+  .prose blockquote > * + * {
+    margin-top: 1rem;
+  }
+
+  .prose :not(pre) > code {
+    background-color: var(--color-code-bg);
+    border-radius: var(--radius-sm);
+    padding: 0.1em 0.3em;
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+  }
+
+  .prose pre {
+    position: relative;
+    background-color: var(--color-code-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    /* 긴 코드는 페이지가 아니라 코드 블록 안에서만 스크롤한다. */
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: var(--text-caption);
+    line-height: var(--leading-meta);
+  }
+
+  .prose pre code {
+    font-family: inherit;
+  }
+
+  .prose pre[data-language]::before {
+    content: attr(data-language);
+    position: absolute;
+    top: 0.35rem;
+    right: 0.6rem;
+    color: var(--color-muted);
+    font-size: 0.75em;
+    line-height: 1;
+  }
+
+  /* Shiki가 배경색을 인라인 스타일로 넣으므로 토큰 값으로 덮는다. */
+  .prose pre.astro-code {
+    background-color: var(--color-code-bg) !important;
+  }
+
+  /* 두 테마의 색을 함께 내보내므로 다크에서만 글자 색을 바꿔 준다. */
+  [data-theme='dark'] .prose .astro-code,
+  [data-theme='dark'] .prose .astro-code span {
+    color: var(--shiki-dark) !important;
+  }
+
+  /* 넓은 표는 표 안에서만 가로로 스크롤한다. */
+  .prose table {
+    display: block;
+    overflow-x: auto;
+    width: max-content;
+    max-width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-caption);
+    line-height: var(--leading-meta);
+  }
+
+  .prose :is(th, td) {
+    border: 1px solid var(--color-border);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+
+  .prose th {
+    background-color: var(--color-surface);
+    font-weight: 600;
+  }
+
+  .prose :is(img, video) {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+  }
+
+  .prose figure > figcaption {
+    margin-top: 0.5rem;
+    color: var(--color-muted);
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--leading-meta);
+  }
+
+  /* 주의·팁은 본문 계층을 가리지 않는 보조 영역으로 둔다. */
+  .prose .callout {
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-caption);
+    line-height: var(--leading-meta);
+  }
+
+  .prose hr {
+    border: 0;
+    border-top: 1px solid var(--color-border);
   }
 </style>
