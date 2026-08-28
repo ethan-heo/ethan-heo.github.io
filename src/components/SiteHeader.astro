@@ -4,9 +4,11 @@ import ThemeToggle from './ThemeToggle.astro';
 ---
 
 <header
-  class="flex items-center justify-between gap-4 py-6"
+  class="flex items-center justify-between gap-4 border-b border-border py-7"
   data-od-id="site-header"
 >
   <SiteBrand />
-  <ThemeToggle />
+  <nav class="flex gap-2" aria-label="페이지 도구">
+    <ThemeToggle />
+  </nav>
 </header>
