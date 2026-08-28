@@ -6,6 +6,7 @@ tags:
   - 기록
   - astro
 draft: false
+keyPoint: true
 ---
 
 ## 왜 정적 페이지인가
