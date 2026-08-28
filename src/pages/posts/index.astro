@@ -22,7 +22,14 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
   <section class="max-w-[760px]" data-od-id="all-posts-list">
     <PostSearch />
     <SectionHead title="전체 기록" note={posts.length > 0 ? countLabel : undefined} />
-    <div class="mt-4">
+    <p
+      class="border-y border-border py-6 font-sans text-caption leading-meta text-muted"
+      data-od-id="no-results"
+      hidden
+    >
+      검색 결과가 없습니다.
+    </p>
+    <div class="mt-4" data-od-id="post-list-region">
       <PostList posts={posts} />
     </div>
     <script
@@ -52,6 +59,10 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
       items.set(item.dataset.postId ?? '', item);
     });
 
+    const summary = region.querySelector<HTMLElement>('[data-od-id="section-note"]');
+    const empty = region.querySelector<HTMLElement>('[data-od-id="no-results"]');
+    const listRegion = region.querySelector<HTMLElement>('[data-od-id="post-list-region"]');
+
     const state = { query: '' };
 
     /** 현재 상태로 남길 글을 고른다. */
@@ -60,12 +71,18 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
       return entries.filter((entry) => entry.text.includes(state.query));
     }
 
-    /** 고른 글만 목록에 남긴다. */
+    /** 고른 글만 목록에 남기고, 글 수와 결과 없음 안내를 함께 맞춘다. */
     function render() {
-      const visible = new Set(select().map((entry) => entry.id));
+      const selected = select();
+      const visible = new Set(selected.map((entry) => entry.id));
       items.forEach((item, id) => {
         item.hidden = !visible.has(id);
       });
+
+      const found = selected.length > 0;
+      if (listRegion) listRegion.hidden = !found;
+      if (empty) empty.hidden = found;
+      if (summary) summary.textContent = `총 ${String(selected.length).padStart(2, '0')}편 · 최신순`;
     }
 
     form.addEventListener('submit', (event) => {
