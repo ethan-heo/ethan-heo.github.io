@@ -1,13 +1,17 @@
 ---
 import type { Post } from '../lib/posts';
 import MapNode from './MapNode.astro';
-import { MAP_EDGE_CLASSES } from '../lib/mapGrid';
+import { MAP_CELL_COUNT, MAP_EDGE_CLASSES } from '../lib/mapGrid';
 
 interface Props {
   posts: Post[];
 }
 
 const { posts } = Astro.props;
+
+// 글이 모자라도 격자 모양이 무너지지 않도록 남는 자리를 셈해 둔다.
+const blankCount = Math.max(0, MAP_CELL_COUNT - posts.length);
+const blanks = Array.from({ length: blankCount }, (_, offset) => posts.length + offset);
 ---
 
 {
@@ -23,6 +27,16 @@ const { posts } = Astro.props;
           index={index}
           featured={index === 0}
           edgeClass={MAP_EDGE_CLASSES[index] ?? ''}
+        />
+      ))}
+      {blanks.map((index) => (
+        <div
+          aria-hidden="true"
+          class:list={[
+            /* 글이 든 칸과 같은 최소 높이를 줘야 빈 칸만 남은 행이 납작해지지 않는다. */
+            'min-h-[145px] border-border bg-bg wide:min-h-[170px]',
+            MAP_EDGE_CLASSES[index] ?? '',
+          ]}
         />
       ))}
     </div>
