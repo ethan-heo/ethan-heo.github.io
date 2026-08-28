@@ -27,21 +27,19 @@ const MAP_NODE_LIMIT = 5;
 
 /**
  * 지식 맵에 올릴 글을 돌려준다.
- * `mapOrder`를 적은 글을 오름차순으로 고르고, 하나도 없으면 최신 글로 채운다.
- * 일부만 적혀 있으면 최신 글로 채우지 않는다. 앞세울 글을 고르는 일이 작성자의 판단이기 때문이다.
+ * `keyPoint`를 표시한 글을 발행일 내림차순으로 고르고, 하나도 없으면 최신 글로 채운다.
+ * 표시한 글이 하나라도 있으면 최신 글로 채우지 않는다. 앞세울 글을 고르는 일이 작성자의 판단이기 때문이다.
  */
 export async function getMapPosts(): Promise<Post[]> {
   const posts = await getVisiblePosts();
-  const ordered = posts.filter((post) => post.data.mapOrder !== undefined);
+  // getVisiblePosts가 이미 발행일 내림차순이므로, 거른 결과의 순서가 곧 발행 순서다.
+  const chosen = posts.filter((post) => post.data.keyPoint);
 
-  if (ordered.length === 0) {
+  if (chosen.length === 0) {
     return posts.slice(0, MAP_NODE_LIMIT);
   }
 
-  // getVisiblePosts가 이미 발행일 내림차순이므로, 순번이 같으면 그 순서가 남는다.
-  return ordered
-    .sort((a, b) => a.data.mapOrder! - b.data.mapOrder!)
-    .slice(0, MAP_NODE_LIMIT);
+  return chosen.slice(0, MAP_NODE_LIMIT);
 }
 
 /** 분당 읽는 글자 수. 기술 글을 천천히 읽는 상황에 맞춘 값이다. */
