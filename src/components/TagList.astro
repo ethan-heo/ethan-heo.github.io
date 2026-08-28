@@ -11,7 +11,7 @@ const { tags, label = '태그' } = Astro.props;
 
 {
   tags.length > 0 && (
-    <ul class="flex flex-wrap gap-x-3 gap-y-1" aria-label={label}>
+    <ul class="flex flex-wrap gap-x-1.5 gap-y-0.5" aria-label={label}>
       {tags.map((tag) => (
         <Tag name={tag} />
       ))}
