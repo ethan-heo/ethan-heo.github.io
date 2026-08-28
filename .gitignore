@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # 계획서 (로컬 보관)
 docs/plans/
+
+# PRD (로컬 보관)
+docs/prds/
