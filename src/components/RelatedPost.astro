@@ -1,0 +1,23 @@
+---
+import type { Post } from '../lib/posts';
+import { toPostUrl } from '../lib/posts';
+
+interface Props {
+  post?: Post;
+}
+
+const { post } = Astro.props;
+---
+
+{
+  post && (
+    <aside class="mt-18 border-t border-border pt-6" data-od-id="related-post">
+      <p class="mb-[18px] font-mono text-[0.72rem] font-medium tracking-[0.1em] uppercase text-accent">
+        다음으로 읽기
+      </p>
+      <a href={toPostUrl(post)} class="font-sans text-body leading-tight">
+        {post.data.title} →
+      </a>
+    </aside>
+  )
+}
