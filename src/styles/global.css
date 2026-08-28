@@ -21,8 +21,7 @@
   /* DESIGN.md의 --space-1 ~ --space-16이 0.25rem 배수와 일치하므로 단일 기준값만 둔다. */
   --spacing: 0.25rem;
 
-  --font-serif: ui-serif, Georgia, "Noto Serif KR", serif;
-  --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+  --font-sans: "Noto Sans KR", ui-sans-serif, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --text-display: clamp(2rem, 4vw, 3.5rem);
@@ -75,7 +74,7 @@
   body {
     background-color: var(--color-bg);
     color: var(--color-fg);
-    font-family: var(--font-serif);
+    font-family: var(--font-sans);
     font-size: var(--text-body);
     line-height: var(--leading-body);
   }
