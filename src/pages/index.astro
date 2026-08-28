@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HomeIntro from '../components/HomeIntro.astro';
+import PageIntro from '../components/PageIntro.astro';
 import KnowledgeMap from '../components/KnowledgeMap.astro';
 import PostList from '../components/PostList.astro';
 import SectionHead from '../components/SectionHead.astro';
@@ -11,7 +11,11 @@ const mapPosts = await getMapPosts();
 ---
 
 <BaseLayout title="블로그" description="읽고 만든 것을 기록한다.">
-  <HomeIntro />
+  <PageIntro
+    eyebrow="블로그"
+    heading="읽고 만든 것을 기록합니다."
+    description="읽고 만든 것을 기록한다."
+  />
   {
     mapPosts.length > 0 && (
       <section>
