@@ -1,0 +1,24 @@
+---
+import type { Post } from '../lib/posts';
+import MapNode from './MapNode.astro';
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+{
+  posts.length > 0 && (
+    /* 격자의 1px 간격에 경계선 색을 깔아 칸을 나눈다. */
+    <div
+      class="grid grid-cols-2 gap-px border-y border-border bg-border wide:grid-cols-[1.45fr_1fr_1fr]"
+      data-od-id="knowledge-map"
+    >
+      {posts.map((post, index) => (
+        <MapNode post={post} index={index} featured={index === 0} />
+      ))}
+    </div>
+  )
+}
