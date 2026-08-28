@@ -13,6 +13,15 @@ export async function getVisiblePosts(): Promise<Post[]> {
   return posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 
+/** 홈의 최신 글 목록에 둘 최대 개수. 홈에서 한 번에 훑을 만한 분량으로 잡은 값이다. */
+const RECENT_POST_LIMIT = 5;
+
+/** 홈의 최신 글 목록에 올릴 글을 발행일 내림차순으로 돌려준다. */
+export async function getRecentPosts(): Promise<Post[]> {
+  const posts = await getVisiblePosts();
+  return posts.slice(0, RECENT_POST_LIMIT);
+}
+
 /** 지식 맵에 올릴 글의 최대 개수. 시안의 격자가 다섯 칸이다. */
 const MAP_NODE_LIMIT = 5;
 
