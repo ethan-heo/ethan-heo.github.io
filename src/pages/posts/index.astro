@@ -4,6 +4,7 @@ import PageIntro from '../../components/PageIntro.astro';
 import PostList from '../../components/PostList.astro';
 import PostSearch from '../../components/PostSearch.astro';
 import SectionHead from '../../components/SectionHead.astro';
+import SortToggle from '../../components/SortToggle.astro';
 import { getVisiblePosts, toSearchEntries } from '../../lib/posts';
 
 const posts = await getVisiblePosts();
@@ -21,7 +22,9 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
   />
   <section class="max-w-[760px]" data-od-id="all-posts-list">
     <PostSearch />
-    <SectionHead title="전체 기록" note={posts.length > 0 ? countLabel : undefined} />
+    <SectionHead title="전체 기록" note={posts.length > 0 ? countLabel : undefined}>
+      <SortToggle slot="action" />
+    </SectionHead>
     <p
       class="border-y border-border py-6 font-sans text-caption leading-meta text-muted"
       data-od-id="no-results"
@@ -63,12 +66,17 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
     const empty = region.querySelector<HTMLElement>('[data-od-id="no-results"]');
     const listRegion = region.querySelector<HTMLElement>('[data-od-id="post-list-region"]');
 
-    const state = { query: '' };
+    const sortButton = region.querySelector<HTMLButtonElement>('[data-od-id="sort-toggle"]');
+    const list = region.querySelector<HTMLElement>('[data-od-id="post-list"]');
 
-    /** 현재 상태로 남길 글을 고른다. */
+    const state = { query: '', oldestFirst: false };
+
+    /** 현재 상태로 남길 글을 고르고 정렬 기준대로 순서를 정한다. */
     function select(): SearchEntry[] {
-      if (state.query === '') return entries;
-      return entries.filter((entry) => entry.text.includes(state.query));
+      const matched =
+        state.query === '' ? entries : entries.filter((entry) => entry.text.includes(state.query));
+      const sorted = [...matched].sort((a, b) => b.time - a.time);
+      return state.oldestFirst ? sorted.reverse() : sorted;
     }
 
     /** 고른 글만 목록에 남기고, 글 수와 결과 없음 안내를 함께 맞춘다. */
@@ -79,10 +87,26 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
         item.hidden = !visible.has(id);
       });
 
+      // 목록의 순서는 고른 결과의 순서를 그대로 따른다.
+      selected.forEach((entry) => {
+        const item = items.get(entry.id);
+        if (item && list) list.append(item);
+      });
+
+      const sortLabel = state.oldestFirst ? '오래된 순' : '최신순';
+      if (sortButton) {
+        sortButton.setAttribute(
+          'aria-label',
+          state.oldestFirst ? '최신순으로 정렬' : '오래된 순으로 정렬',
+        );
+      }
+
       const found = selected.length > 0;
       if (listRegion) listRegion.hidden = !found;
       if (empty) empty.hidden = found;
-      if (summary) summary.textContent = `총 ${String(selected.length).padStart(2, '0')}편 · 최신순`;
+      if (summary) {
+        summary.textContent = `총 ${String(selected.length).padStart(2, '0')}편 · ${sortLabel}`;
+      }
     }
 
     form.addEventListener('submit', (event) => {
@@ -91,8 +115,14 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
       render();
     });
 
-    // 조작이 실제로 동작하는 시점에만 검색 영역을 드러낸다.
+    sortButton?.addEventListener('click', () => {
+      state.oldestFirst = !state.oldestFirst;
+      render();
+    });
+
+    // 조작이 실제로 동작하는 시점에만 조작 수단을 드러낸다.
     form.hidden = false;
+    if (sortButton) sortButton.hidden = false;
     render();
   }
 </script>
