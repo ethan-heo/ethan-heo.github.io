@@ -19,7 +19,7 @@ const mapPosts = await getMapPosts();
   {
     mapPosts.length > 0 && (
       <section>
-        <SectionHead title="앞세운 글" note={`${mapPosts.length}편`} />
+        <SectionHead title="최근 생각" note={`${mapPosts.length}편`} />
         <div class="mt-4">
           <KnowledgeMap posts={mapPosts} />
         </div>
