@@ -1,0 +1,13 @@
+---
+interface Props {
+  title: string;
+  note?: string;
+}
+
+const { title, note } = Astro.props;
+---
+
+<div class="flex items-baseline justify-between gap-4">
+  <h2 class="text-h3 leading-tight">{title}</h2>
+  {note && <span class="font-sans text-[0.78rem] leading-meta text-muted">{note}</span>}
+</div>
