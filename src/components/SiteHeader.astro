@@ -8,7 +8,14 @@ import ThemeToggle from './ThemeToggle.astro';
   data-od-id="site-header"
 >
   <SiteBrand />
-  <nav class="flex gap-2" aria-label="페이지 도구">
+  <nav class="flex items-center gap-2" aria-label="페이지 도구">
+    <a
+      href="/posts"
+      class="inline-flex min-h-11 items-center px-2 font-sans text-caption text-fg no-underline hover:text-accent"
+      data-od-id="articles-link"
+    >
+      Articles
+    </a>
     <ThemeToggle />
   </nav>
 </header>
