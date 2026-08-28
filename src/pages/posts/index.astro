@@ -35,7 +35,7 @@ const countLabel = `총 ${posts.length}편`;
     <div class="mt-4" data-od-id="post-list-region">
       <PostList posts={posts} />
     </div>
-    <Pagination />
+    <div aria-hidden="true" data-od-id="scroll-sentinel" hidden></div>
     <script
       type="application/json"
       data-od-id="post-search-entries"
@@ -73,11 +73,14 @@ const countLabel = `총 ${posts.length}편`;
     const list = region.querySelector<HTMLElement>('[data-od-id="post-list"]');
 
     const pagination = region.querySelector<HTMLElement>('[data-od-id="pagination"]');
+    const sentinel = region.querySelector<HTMLElement>('[data-od-id="scroll-sentinel"]');
 
     /** 화면을 처음 열 때 드러내는 글 수. 첫 화면이 차고도 남을 만큼 잡은 값이다. */
     const INITIAL_VISIBLE = 20;
     /** 목록 끝에 닿을 때마다 더 드러내는 글 수. */
     const VISIBLE_STEP = 10;
+    /** 목록 끝이 눈에 보이기 전에 다음 묶음을 붙이려고 미리 잡는 여유 거리. */
+    const SENTINEL_MARGIN = '0px 0px 200px 0px';
 
     const state = { query: '', oldestFirst: false, visible: INITIAL_VISIBLE };
 
@@ -120,6 +123,8 @@ const countLabel = `총 ${posts.length}편`;
       const found = selected.length > 0;
       if (listRegion) listRegion.hidden = !found;
       if (!found && pagination) pagination.hidden = true;
+      // 더 드러낼 글이 남아 있을 때만 감시 요소를 관찰 대상으로 둔다.
+      if (sentinel) sentinel.hidden = !found || visible.length >= selected.length;
       if (empty) empty.hidden = found;
       if (summary) {
         summary.textContent = `총 ${selected.length}편`;
@@ -138,6 +143,18 @@ const countLabel = `총 ${posts.length}편`;
       state.visible = INITIAL_VISIBLE;
       render();
     });
+
+    if (sentinel) {
+      const observer = new IntersectionObserver(
+        (records) => {
+          if (!records.some((record) => record.isIntersecting)) return;
+          state.visible = Math.min(state.visible + VISIBLE_STEP, entries.length);
+          render();
+        },
+        { rootMargin: SENTINEL_MARGIN },
+      );
+      observer.observe(sentinel);
+    }
 
     // 조작이 실제로 동작하는 시점에만 조작 수단을 드러낸다.
     form.hidden = false;
