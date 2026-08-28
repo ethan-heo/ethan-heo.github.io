@@ -1,0 +1,62 @@
+---
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+
+/** 목차 항목 하나. `h3`는 바로 앞 `h2`의 children으로 들어간다. */
+interface TocItem {
+  slug: string;
+  text: string;
+  children: TocItem[];
+}
+
+const toItem = (heading: MarkdownHeading): TocItem => ({
+  slug: heading.slug,
+  text: heading.text,
+  children: [],
+});
+
+const items: TocItem[] = [];
+
+for (const heading of headings) {
+  const last = items.at(-1);
+  // 앞선 h2가 없는 h3는 갈 자리가 없으므로 바깥 목록에 둔다.
+  if (heading.depth === 3 && last) {
+    last.children.push(toItem(heading));
+  } else {
+    items.push(toItem(heading));
+  }
+}
+---
+
+{
+  items.length > 0 && (
+    <nav
+      class="my-14 border-y border-border py-5 font-sans text-caption leading-meta"
+      aria-label="본문 목차"
+      data-od-id="post-toc"
+    >
+      <strong class="font-sans text-fg">이 글의 구성</strong>
+      <ol class="mt-2.5 list-decimal pl-5 leading-[1.8] text-muted">
+        {items.map((item) => (
+          <li>
+            <a href={`#${item.slug}`}>{item.text}</a>
+            {item.children.length > 0 && (
+              <ol class="list-decimal pl-5">
+                {item.children.map((child) => (
+                  <li>
+                    <a href={`#${child.slug}`}>{child.text}</a>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  )
+}

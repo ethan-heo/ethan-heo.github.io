@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostHeader from '../../components/PostHeader.astro';
+import PostToc from '../../components/PostToc.astro';
 import Prose from '../../components/Prose.astro';
 import BackLink from '../../components/BackLink.astro';
 import { getVisiblePosts, toSlugPath } from '../../lib/posts';
@@ -16,7 +17,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 ---
 
 <BaseLayout title={post.data.title} description={post.data.summary}>
@@ -25,6 +26,7 @@ const { Content } = await render(post);
       <BackLink href="/posts" label="← 모든 글 보기" />
     </div>
     <PostHeader post={post} />
+    <PostToc headings={headings} />
     <Prose><Content /></Prose>
   </article>
 </BaseLayout>
