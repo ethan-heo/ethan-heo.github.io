@@ -1,0 +1,47 @@
+---
+import type { Post } from '../lib/posts';
+import { getReadingMinutes, toPostUrl } from '../lib/posts';
+
+interface Props {
+  post: Post;
+  /** 격자에 놓인 차례. 글에 적은 순번이 아니라 배치 순서다. */
+  index: number;
+  featured?: boolean;
+}
+
+const { post, index, featured = false } = Astro.props;
+
+const order = String(index + 1).padStart(2, '0');
+const minutes = getReadingMinutes(post);
+// 분류가 없으면 구분용 가운뎃점도 남기지 않는다.
+const meta = [post.data.category, `${minutes}분 읽기`].filter(Boolean).join(' · ');
+
+// 항목 전체를 링크로 감싸므로, 링크의 이름은 제목만 가리키게 한다.
+const titleId = `map-node-title-${post.id}`;
+---
+
+<a
+  href={toPostUrl(post)}
+  aria-labelledby={titleId}
+  class:list={[
+    'flex flex-col justify-between gap-4 bg-bg p-4 no-underline hover:bg-soft wide:p-[22px]',
+    featured
+      ? 'col-span-2 min-h-[250px] wide:col-span-1 wide:col-start-1 wide:row-span-2 wide:min-h-[341px] wide:bg-soft'
+      : 'min-h-[145px] wide:min-h-[170px]',
+  ]}
+  data-od-id={`map-node-${post.id}`}
+>
+  <span class="font-sans text-[0.72rem] leading-meta text-muted">
+    {featured ? `${order} / 중심 글` : order}
+  </span>
+  <h3
+    id={titleId}
+    class:list={[
+      'leading-tight text-fg',
+      featured ? 'text-[clamp(1.45rem,3vw,2.4rem)]' : 'text-[1.1rem]',
+    ]}
+  >
+    {post.data.title}
+  </h3>
+  <span class="font-sans text-[0.72rem] leading-meta text-muted">{meta}</span>
+</a>
