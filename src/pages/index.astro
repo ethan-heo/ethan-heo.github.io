@@ -2,11 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageIntro from '../components/PageIntro.astro';
 import KnowledgeMap from '../components/KnowledgeMap.astro';
-import PostList from '../components/PostList.astro';
+import RecentPostList from '../components/RecentPostList.astro';
 import SectionHead from '../components/SectionHead.astro';
-import { getMapPosts, getVisiblePosts } from '../lib/posts';
+import { getMapPosts, getRecentPosts } from '../lib/posts';
 
-const posts = await getVisiblePosts();
+const posts = await getRecentPosts();
 const mapPosts = await getMapPosts();
 ---
 
@@ -26,10 +26,23 @@ const mapPosts = await getMapPosts();
       </section>
     )
   }
-  <section class="mt-[clamp(4.5rem,12vw,9rem)] max-w-[680px]">
-    <SectionHead title="모든 글" note={posts.length > 0 ? '최신순' : undefined} />
-    <div class="mt-4">
-      <PostList posts={posts} />
-    </div>
-  </section>
+  {
+    posts.length > 0 && (
+      <section class="mt-[clamp(4.5rem,12vw,9rem)] max-w-[680px]">
+        <SectionHead title="최신 글">
+          <a
+            slot="action"
+            href="/posts"
+            class="font-sans text-[0.78rem] leading-meta text-muted no-underline hover:text-accent"
+            data-od-id="recent-post-list-more"
+          >
+            전체 보기
+          </a>
+        </SectionHead>
+        <div class="mt-4">
+          <RecentPostList posts={posts} />
+        </div>
+      </section>
+    )
+  }
 </BaseLayout>
