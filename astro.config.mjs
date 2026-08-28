@@ -22,6 +22,7 @@ function headingAnchors() {
 
         ctx.setProperty(node, 'id', id);
         ctx.setProperty(node, 'tabIndex', -1);
+        // 앵커 글자를 마크업에 넣으면 제목 텍스트에 딸려 오므로 CSS로 그린다.
         ctx.appendChild(node, {
           type: 'element',
           tagName: 'a',
@@ -30,7 +31,7 @@ function headingAnchors() {
             className: ['heading-anchor'],
             'aria-label': `${text} 문단 링크`,
           },
-          children: [{ type: 'text', value: '#' }],
+          children: [],
         });
       },
     },
