@@ -4,22 +4,29 @@
 
 <button
   type="button"
-  class="theme-toggle inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-sm border border-border bg-surface px-3 font-sans text-caption text-fg hover:bg-bg"
+  class="theme-toggle inline-flex min-h-11 min-w-11 items-center justify-center bg-transparent text-fg hover:text-accent"
   aria-label="테마 전환"
   data-od-id="theme-toggle"
 >
-  <span class="theme-toggle-label" aria-hidden="true"></span>
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 24 24"
+    class="h-5 w-5 fill-none stroke-current"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M20.2 15.2A8.5 8.5 0 0 1 8.8 3.8 8.5 8.5 0 1 0 20.2 15.2Z"></path>
+  </svg>
   <span class="sr-only theme-toggle-state"></span>
 </button>
 
 <script>
   const button = document.querySelector<HTMLButtonElement>('[data-od-id="theme-toggle"]');
-  const label = button?.querySelector<HTMLElement>('.theme-toggle-label');
   const state = button?.querySelector<HTMLElement>('.theme-toggle-state');
 
-  /** 현재 테마를 버튼 문구에 반영한다. */
+  /** 현재 테마를 버튼의 접근 가능한 이름과 상태 문구에 반영한다. */
   function render(theme: string) {
-    if (label) label.textContent = theme === 'dark' ? '다크' : '라이트';
     if (state) state.textContent = `현재 테마: ${theme === 'dark' ? '다크' : '라이트'}`;
     button?.setAttribute('aria-label', theme === 'dark' ? '라이트 테마로 전환' : '다크 테마로 전환');
   }
