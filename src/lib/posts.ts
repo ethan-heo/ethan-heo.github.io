@@ -13,6 +13,28 @@ export async function getVisiblePosts(): Promise<Post[]> {
   return posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 
+/** 지식 맵에 올릴 글의 최대 개수. 시안의 격자가 다섯 칸이다. */
+const MAP_NODE_LIMIT = 5;
+
+/**
+ * 지식 맵에 올릴 글을 돌려준다.
+ * `mapOrder`를 적은 글을 오름차순으로 고르고, 하나도 없으면 최신 글로 채운다.
+ * 일부만 적혀 있으면 최신 글로 채우지 않는다. 앞세울 글을 고르는 일이 작성자의 판단이기 때문이다.
+ */
+export async function getMapPosts(): Promise<Post[]> {
+  const posts = await getVisiblePosts();
+  const ordered = posts.filter((post) => post.data.mapOrder !== undefined);
+
+  if (ordered.length === 0) {
+    return posts.slice(0, MAP_NODE_LIMIT);
+  }
+
+  // getVisiblePosts가 이미 발행일 내림차순이므로, 순번이 같으면 그 순서가 남는다.
+  return ordered
+    .sort((a, b) => a.data.mapOrder! - b.data.mapOrder!)
+    .slice(0, MAP_NODE_LIMIT);
+}
+
 /** 발행일과 파일명으로 `2026/08/hello-blog` 형태의 주소 조각을 만든다. */
 export function toSlugPath(post: Post): string {
   const year = String(post.data.date.getFullYear());
