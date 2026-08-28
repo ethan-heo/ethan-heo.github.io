@@ -9,29 +9,43 @@ interface Props {
 
 const { post } = Astro.props;
 
+// 시안이 날짜를 2026.08.27 형태로 두므로 구분자를 점으로 맞춘다.
 const dateFormat = new Intl.DateTimeFormat('ko-KR', {
   year: 'numeric',
-  month: 'long',
-  day: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
 });
+const dateLabel = dateFormat.format(post.data.date).replace(/\. ?/g, '.').replace(/\.$/, '');
+
+// 항목 전체를 링크로 감싸므로, 링크의 이름은 제목만 가리키게 한다.
+const titleId = `post-card-title-${post.id}`;
 ---
 
-<li class="border-b border-border pb-8 last:border-b-0" data-od-id={`post-card-${post.id}`}>
-  <h2 class="text-h3 leading-tight">
-    <a
-      href={toPostUrl(post)}
-      class="text-fg no-underline hover:text-accent hover:underline underline-offset-4 visited:text-muted"
+<li class="border-t border-border last:border-b">
+  <a
+    href={toPostUrl(post)}
+    aria-labelledby={titleId}
+    class="group grid grid-cols-1 gap-x-7 gap-y-2 py-6 no-underline wide:grid-cols-[1fr_auto]"
+    data-od-id={`post-card-${post.id}`}
+  >
+    <p
+      class="font-mono text-[0.7rem] leading-meta whitespace-nowrap text-muted wide:col-start-2 wide:row-span-3 wide:row-start-1"
     >
-      {post.data.title}
-    </a>
-  </h2>
-  <p class="mt-3 font-sans text-caption leading-meta text-muted">{post.data.summary}</p>
-  <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
-    <p class="font-mono text-caption leading-meta text-muted">
       <time datetime={post.data.date.toISOString()}>
-        {dateFormat.format(post.data.date)}
+        {dateLabel}
       </time>
     </p>
-    <TagList tags={post.data.tags} label={`${post.data.title}의 태그`} />
-  </div>
+    <h3
+      id={titleId}
+      class="text-h3 leading-tight text-fg group-hover:text-accent wide:col-start-1 wide:row-start-1"
+    >
+      {post.data.title}
+    </h3>
+    <p class="font-sans text-caption leading-meta text-muted wide:col-start-1 wide:row-start-2">
+      {post.data.summary}
+    </p>
+    <div class="wide:col-start-1 wide:row-start-3">
+      <TagList tags={post.data.tags} label={`${post.data.title}의 태그`} />
+    </div>
+  </a>
 </li>
