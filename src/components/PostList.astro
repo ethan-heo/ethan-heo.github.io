@@ -14,7 +14,7 @@ const { posts } = Astro.props;
   posts.length === 0 ? (
     <EmptyState title="아직 발행한 글이 없습니다." />
   ) : (
-    <ul aria-label="최신 글부터" data-od-id="post-list">
+    <ul class="border-b border-border" aria-label="최신 글부터" data-od-id="post-list">
       {posts.map((post) => (
         <PostCard post={post} />
       ))}

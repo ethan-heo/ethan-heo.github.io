@@ -21,7 +21,7 @@ const dateLabel = dateFormat.format(post.data.date).replace(/\. ?/g, '.').replac
 const titleId = `post-card-title-${post.id}`;
 ---
 
-<li class="border-t border-border last:border-b">
+<li class="border-t border-border" data-post-id={post.id}>
   <a
     href={toPostUrl(post)}
     aria-labelledby={titleId}

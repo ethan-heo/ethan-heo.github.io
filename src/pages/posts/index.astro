@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import PostList from '../../components/PostList.astro';
+import PostSearch from '../../components/PostSearch.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import { getVisiblePosts, toSearchEntries } from '../../lib/posts';
 
@@ -19,6 +20,7 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
     description="읽고 만든 것을 기록한 글을 모두 모았다."
   />
   <section class="max-w-[760px]" data-od-id="all-posts-list">
+    <PostSearch />
     <SectionHead title="전체 기록" note={posts.length > 0 ? countLabel : undefined} />
     <div class="mt-4">
       <PostList posts={posts} />
@@ -30,3 +32,50 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
     />
   </section>
 </BaseLayout>
+
+<script>
+  interface SearchEntry {
+    id: string;
+    text: string;
+    time: number;
+  }
+
+  const region = document.querySelector<HTMLElement>('[data-od-id="all-posts-list"]');
+  const data = region?.querySelector<HTMLScriptElement>('[data-od-id="post-search-entries"]');
+  const form = region?.querySelector<HTMLFormElement>('[data-od-id="post-search"]');
+  const input = region?.querySelector<HTMLInputElement>('#post-search-input');
+
+  if (region && data && form && input) {
+    const entries: SearchEntry[] = JSON.parse(data.textContent ?? '[]');
+    const items = new Map<string, HTMLElement>();
+    region.querySelectorAll<HTMLElement>('[data-post-id]').forEach((item) => {
+      items.set(item.dataset.postId ?? '', item);
+    });
+
+    const state = { query: '' };
+
+    /** 현재 상태로 남길 글을 고른다. */
+    function select(): SearchEntry[] {
+      if (state.query === '') return entries;
+      return entries.filter((entry) => entry.text.includes(state.query));
+    }
+
+    /** 고른 글만 목록에 남긴다. */
+    function render() {
+      const visible = new Set(select().map((entry) => entry.id));
+      items.forEach((item, id) => {
+        item.hidden = !visible.has(id);
+      });
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      state.query = input.value.trim().toLowerCase();
+      render();
+    });
+
+    // 조작이 실제로 동작하는 시점에만 검색 영역을 드러낸다.
+    form.hidden = false;
+    render();
+  }
+</script>
