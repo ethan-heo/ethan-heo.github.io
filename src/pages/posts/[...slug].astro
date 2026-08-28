@@ -5,7 +5,6 @@ import PostHeader from '../../components/PostHeader.astro';
 import PostToc from '../../components/PostToc.astro';
 import Prose from '../../components/Prose.astro';
 import RelatedPost from '../../components/RelatedPost.astro';
-import BackLink from '../../components/BackLink.astro';
 import { getRelatedPost, getVisiblePosts, toSlugPath } from '../../lib/posts';
 import type { GetStaticPaths } from 'astro';
 
@@ -24,9 +23,6 @@ const relatedPost = await getRelatedPost(post);
 
 <BaseLayout title={post.data.title} description={post.data.summary}>
   <article class="mx-auto max-w-[680px]" data-od-id="article-view">
-    <div class="mb-12">
-      <BackLink href="/posts" label="← 모든 글 보기" />
-    </div>
     <PostHeader post={post} />
     <PostToc headings={headings} />
     <Prose><Content /></Prose>
