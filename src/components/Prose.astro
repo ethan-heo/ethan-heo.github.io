@@ -8,10 +8,11 @@
 </div>
 
 <style is:global>
+  /* 본문만 좁은 밀도를 쓴다. 전역 토큰을 바꾸면 다른 화면까지 함께 작아진다. */
   .prose {
     font-family: var(--font-sans);
-    font-size: var(--text-body);
-    line-height: var(--leading-body);
+    font-size: 1rem;
+    line-height: 1.45;
   }
 
   .prose > * + * {
