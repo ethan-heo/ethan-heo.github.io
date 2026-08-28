@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import PostList from '../../components/PostList.astro';
+import SectionHead from '../../components/SectionHead.astro';
+import { getVisiblePosts } from '../../lib/posts';
+
+const posts = await getVisiblePosts();
+
+// 시안이 글 수를 두 자리로 채워 표시한다.
+const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순`;
+---
+
+<BaseLayout title="모든 글 | 블로그" description="발행한 글을 모두 모아 최신순으로 정리했다.">
+  <PageIntro
+    eyebrow="Archive"
+    heading="모든 글"
+    description="읽고 만든 것을 기록한 글을 모두 모았다."
+  />
+  <section class="max-w-[760px]" data-od-id="all-posts-list">
+    <SectionHead title="전체 기록" note={posts.length > 0 ? countLabel : undefined} />
+    <div class="mt-4">
+      <PostList posts={posts} />
+    </div>
+  </section>
+</BaseLayout>
