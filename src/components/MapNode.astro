@@ -24,7 +24,8 @@ const titleId = `map-node-title-${post.id}`;
   href={toPostUrl(post)}
   aria-labelledby={titleId}
   class:list={[
-    'flex flex-col justify-between gap-4 bg-bg p-4 no-underline hover:bg-soft wide:p-[22px]',
+    /* 인접한 노드끼리 윤곽선이 겹쳐 1px 선으로 보인다. */
+    'flex flex-col justify-between gap-4 bg-bg p-4 no-underline outline-1 outline-border hover:bg-soft wide:p-[22px]',
     featured
       ? 'col-span-2 min-h-[250px] wide:col-span-1 wide:col-start-1 wide:row-span-2 wide:min-h-[341px] wide:bg-soft'
       : 'min-h-[145px] wide:min-h-[170px]',
