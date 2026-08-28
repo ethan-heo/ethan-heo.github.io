@@ -1,0 +1,16 @@
+---
+// 시안의 한글 문구가 복원되지 않아 새로 짓지 않고 기존 사이트 이름과 태그라인을 옮겨 쓴다.
+const eyebrow = '블로그';
+const heading = '읽고 만든 것을 기록합니다.';
+const description = '읽고 만든 것을 기록한다.';
+---
+
+<section class="mb-[clamp(4rem,10vw,7rem)] max-w-[720px]" data-od-id="home-intro">
+  <p class="font-mono text-[0.72rem] font-medium tracking-[0.12em] uppercase text-accent">
+    {eyebrow}
+  </p>
+  <h1 class="max-w-[13ch] text-[clamp(2.2rem,6vw,4.8rem)] leading-[1.12] tracking-[-0.075em]">
+    {heading}
+  </h1>
+  <p class="max-w-[580px] font-sans text-[1.08rem] leading-[1.8] text-muted">{description}</p>
+</section>
