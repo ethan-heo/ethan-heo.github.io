@@ -7,9 +7,11 @@ interface Props {
   /** 격자에 놓인 차례. 글에 적은 순번이 아니라 배치 순서다. */
   index: number;
   featured?: boolean;
+  /** 이 칸이 그릴 테두리 방향. 격자에서 계산해 넘겨준다. */
+  edgeClass?: string;
 }
 
-const { post, index, featured = false } = Astro.props;
+const { post, index, featured = false, edgeClass = '' } = Astro.props;
 
 const order = String(index + 1).padStart(2, '0');
 const minutes = getReadingMinutes(post);
@@ -24,8 +26,8 @@ const titleId = `map-node-title-${post.id}`;
   href={toPostUrl(post)}
   aria-labelledby={titleId}
   class:list={[
-    /* 인접한 노드끼리 윤곽선이 겹쳐 1px 선으로 보인다. */
-    'flex flex-col justify-between gap-4 bg-bg p-4 no-underline outline-1 outline-border hover:bg-soft wide:p-[22px]',
+    'flex flex-col justify-between gap-4 border-border bg-bg p-4 no-underline hover:bg-soft wide:p-[22px]',
+    edgeClass,
     featured
       ? 'col-span-2 min-h-[250px] wide:col-span-1 wide:col-start-1 wide:row-span-2 wide:min-h-[341px] wide:bg-soft'
       : 'min-h-[145px] wide:min-h-[170px]',

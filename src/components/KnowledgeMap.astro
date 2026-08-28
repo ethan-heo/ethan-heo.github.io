@@ -1,6 +1,7 @@
 ---
 import type { Post } from '../lib/posts';
 import MapNode from './MapNode.astro';
+import { MAP_EDGE_CLASSES } from '../lib/mapGrid';
 
 interface Props {
   posts: Post[];
@@ -11,13 +12,18 @@ const { posts } = Astro.props;
 
 {
   posts.length > 0 && (
-    /* 칸을 나누는 선은 노드의 윤곽선이 맡는다. 채워지지 않은 자리는 배경색 그대로 남는다. */
+    /* 칸 사이의 선은 한 칸만 그린다. 어느 칸이 어느 방향을 맡는지는 mapGrid가 정한다. */
     <div
       class="grid grid-cols-2 border-y border-border wide:grid-cols-[1.45fr_1fr_1fr]"
       data-od-id="knowledge-map"
     >
       {posts.map((post, index) => (
-        <MapNode post={post} index={index} featured={index === 0} />
+        <MapNode
+          post={post}
+          index={index}
+          featured={index === 0}
+          edgeClass={MAP_EDGE_CLASSES[index] ?? ''}
+        />
       ))}
     </div>
   )
