@@ -2,7 +2,7 @@ import { defineCollection, reference, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const posts = defineCollection({
-  loader: glob({ base: './src/content/posts', pattern: '**/*.md' }),
+  loader: glob({ base: './src/content/posts', pattern: ['**/*.md', '!**/.obsidian/**'] }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),

@@ -28,3 +28,6 @@ docs/plans/
 
 # PRD (로컬 보관)
 docs/prds/
+
+# Obsidian files
+.obsidian/
