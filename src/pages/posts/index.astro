@@ -11,8 +11,7 @@ import { getVisiblePosts, toSearchEntries } from '../../lib/posts';
 const posts = await getVisiblePosts();
 const searchEntries = toSearchEntries(posts);
 
-// 시안이 글 수를 두 자리로 채워 표시한다.
-const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순`;
+const countLabel = `총 ${posts.length}편`;
 ---
 
 <BaseLayout title="모든 글 | 블로그" description="혹시 아나요? 진짜로 도움이 되는 글이 있을지">
@@ -107,7 +106,6 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
         if (item && list) list.append(item);
       });
 
-      const sortLabel = state.oldestFirst ? '오래된 순' : '최신순';
       if (sortButton) {
         sortButton.setAttribute(
           'aria-label',
@@ -126,7 +124,7 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
       if (!found && pagination) pagination.hidden = true;
       if (empty) empty.hidden = found;
       if (summary) {
-        summary.textContent = `총 ${String(selected.length).padStart(2, '0')}편 · ${sortLabel}`;
+        summary.textContent = `총 ${selected.length}편`;
       }
     }
 
