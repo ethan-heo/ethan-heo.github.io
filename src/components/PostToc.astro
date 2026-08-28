@@ -41,12 +41,12 @@ for (const heading of headings) {
       data-od-id="post-toc"
     >
       <strong class="font-sans text-fg">이 글의 구성</strong>
-      <ol class="mt-2.5 list-decimal pl-5 leading-[1.8] text-muted">
+      <ol class="mt-2.5 list-none pl-5 leading-[1.8] text-muted">
         {items.map((item) => (
           <li>
             <a href={`#${item.slug}`}>{item.text}</a>
             {item.children.length > 0 && (
-              <ol class="list-decimal pl-5">
+              <ol class="list-none pl-5">
                 {item.children.map((child) => (
                   <li>
                     <a href={`#${child.slug}`}>{child.text}</a>
