@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import PostList from '../../components/PostList.astro';
 import PostSearch from '../../components/PostSearch.astro';
+import Pagination from '../../components/Pagination.astro';
 import SectionHead from '../../components/SectionHead.astro';
 import SortToggle from '../../components/SortToggle.astro';
 import { getVisiblePosts, toSearchEntries } from '../../lib/posts';
@@ -35,6 +36,7 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
     <div class="mt-4" data-od-id="post-list-region">
       <PostList posts={posts} />
     </div>
+    <Pagination />
     <script
       type="application/json"
       data-od-id="post-search-entries"
@@ -69,7 +71,17 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
     const sortButton = region.querySelector<HTMLButtonElement>('[data-od-id="sort-toggle"]');
     const list = region.querySelector<HTMLElement>('[data-od-id="post-list"]');
 
-    const state = { query: '', oldestFirst: false };
+    const pagination = region.querySelector<HTMLElement>('[data-od-id="pagination"]');
+    const numbers = region.querySelector<HTMLElement>('[data-od-id="pagination-numbers"]');
+    const prev = region.querySelector<HTMLButtonElement>('[data-od-id="pagination-prev"]');
+    const next = region.querySelector<HTMLButtonElement>('[data-od-id="pagination-next"]');
+
+    /** 한 페이지에 두는 글 수. */
+    const PAGE_SIZE = 10;
+    /** 번호를 한 번에 나열하는 개수. 이전과 다음 버튼은 이 묶음 단위로 넘긴다. */
+    const GROUP_SIZE = 10;
+
+    const state = { query: '', oldestFirst: false, page: 1 };
 
     /** 현재 상태로 남길 글을 고르고 정렬 기준대로 순서를 정한다. */
     function select(): SearchEntry[] {
@@ -82,13 +94,15 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
     /** 고른 글만 목록에 남기고, 글 수와 결과 없음 안내를 함께 맞춘다. */
     function render() {
       const selected = select();
-      const visible = new Set(selected.map((entry) => entry.id));
-      items.forEach((item, id) => {
-        item.hidden = !visible.has(id);
-      });
+
+      const totalPages = Math.max(1, Math.ceil(selected.length / PAGE_SIZE));
+      if (state.page > totalPages) state.page = totalPages;
+      const start = (state.page - 1) * PAGE_SIZE;
+      const paged = selected.slice(start, start + PAGE_SIZE);
+      const shown = new Set(paged.map((entry) => entry.id));
 
       // 목록의 순서는 고른 결과의 순서를 그대로 따른다.
-      selected.forEach((entry) => {
+      paged.forEach((entry) => {
         const item = items.get(entry.id);
         if (item && list) list.append(item);
       });
@@ -101,22 +115,83 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
         );
       }
 
+      items.forEach((item, id) => {
+        item.hidden = !shown.has(id);
+      });
+
+      renderPagination(selected.length, totalPages);
+
       const found = selected.length > 0;
       if (listRegion) listRegion.hidden = !found;
+      if (!found && pagination) pagination.hidden = true;
       if (empty) empty.hidden = found;
       if (summary) {
         summary.textContent = `총 ${String(selected.length).padStart(2, '0')}편 · ${sortLabel}`;
       }
     }
 
+    /** 번호 나열과 이전·다음 버튼을 현재 페이지에 맞춘다. */
+    function renderPagination(total: number, totalPages: number) {
+      if (!pagination || !numbers || !prev || !next) return;
+
+      if (total <= PAGE_SIZE) {
+        pagination.hidden = true;
+        return;
+      }
+
+      const group = Math.floor((state.page - 1) / GROUP_SIZE);
+      const first = group * GROUP_SIZE + 1;
+      const last = Math.min(first + GROUP_SIZE - 1, totalPages);
+
+      numbers.replaceChildren();
+      for (let page = first; page <= last; page += 1) {
+        const current = page === state.page;
+        const item = document.createElement('li');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = String(page);
+        button.className =
+          'inline-flex min-h-11 min-w-11 items-center justify-center bg-transparent font-mono text-caption hover:text-accent';
+        button.classList.add(current ? 'text-accent' : 'text-muted');
+        if (current) {
+          button.setAttribute('aria-current', 'page');
+        }
+        button.setAttribute('aria-label', `${page}페이지`);
+        button.addEventListener('click', () => {
+          state.page = page;
+          render();
+        });
+        item.append(button);
+        numbers.append(item);
+      }
+
+      prev.disabled = group === 0;
+      next.disabled = last >= totalPages;
+      pagination.hidden = false;
+    }
+
+    prev?.addEventListener('click', () => {
+      const group = Math.floor((state.page - 1) / GROUP_SIZE);
+      state.page = Math.max(1, (group - 1) * GROUP_SIZE + 1);
+      render();
+    });
+
+    next?.addEventListener('click', () => {
+      const group = Math.floor((state.page - 1) / GROUP_SIZE);
+      state.page = (group + 1) * GROUP_SIZE + 1;
+      render();
+    });
+
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       state.query = input.value.trim().toLowerCase();
+      state.page = 1;
       render();
     });
 
     sortButton?.addEventListener('click', () => {
       state.oldestFirst = !state.oldestFirst;
+      state.page = 1;
       render();
     });
 
