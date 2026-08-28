@@ -44,9 +44,11 @@ const { title, description } = Astro.props;
     </script>
   </head>
   <body>
-    <div class="mx-auto flex min-h-screen max-w-page flex-col px-5 md:px-7 desktop:px-8">
+    <div
+      class="mx-auto flex min-h-screen w-[min(100%-40px,70rem)] flex-col max-[430px]:w-[calc(100%-32px)]"
+    >
       <SiteHeader />
-      <main class="flex-1 py-12">
+      <main class="flex-1 pt-[clamp(3.5rem,9vw,7rem)] pb-24">
         <slot />
       </main>
       <SiteFooter />
