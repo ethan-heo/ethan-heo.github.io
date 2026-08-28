@@ -58,3 +58,22 @@ export function toSlugPath(post: Post): string {
 export function toPostUrl(post: Post): string {
   return `/posts/${toSlugPath(post)}`;
 }
+
+/** 검색에 쓰는 글 하나의 정보. 화면의 글자가 아니라 이 값으로 검색한다. */
+export interface SearchEntry {
+  /** 목록 항목을 찾는 식별자. `PostCard`의 `data-od-id`와 짝을 이룬다. */
+  id: string;
+  /** 제목, 요약, 태그를 소문자로 합친 검색 대상 문자열. */
+  text: string;
+  /** 발행일을 밀리초로 담은 값. 정렬 기준으로 쓴다. */
+  time: number;
+}
+
+/** 글 목록을 검색과 정렬에 필요한 값만 남긴 배열로 바꾼다. */
+export function toSearchEntries(posts: Post[]): SearchEntry[] {
+  return posts.map((post) => ({
+    id: post.id,
+    text: [post.data.title, post.data.summary, ...post.data.tags].join(' ').toLowerCase(),
+    time: post.data.date.valueOf(),
+  }));
+}

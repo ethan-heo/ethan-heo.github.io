@@ -3,9 +3,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import PostList from '../../components/PostList.astro';
 import SectionHead from '../../components/SectionHead.astro';
-import { getVisiblePosts } from '../../lib/posts';
+import { getVisiblePosts, toSearchEntries } from '../../lib/posts';
 
 const posts = await getVisiblePosts();
+const searchEntries = toSearchEntries(posts);
 
 // 시안이 글 수를 두 자리로 채워 표시한다.
 const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순`;
@@ -22,5 +23,10 @@ const countLabel = `총 ${String(posts.length).padStart(2, '0')}편 · 최신순
     <div class="mt-4">
       <PostList posts={posts} />
     </div>
+    <script
+      type="application/json"
+      data-od-id="post-search-entries"
+      set:html={JSON.stringify(searchEntries)}
+    />
   </section>
 </BaseLayout>
