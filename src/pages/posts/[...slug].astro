@@ -20,12 +20,11 @@ const { Content } = await render(post);
 ---
 
 <BaseLayout title={post.data.title} description={post.data.summary}>
-  <PostHeader post={post} />
-  <article>
+  <article class="mx-auto max-w-[680px]" data-od-id="article-view">
+    <div class="mb-12">
+      <BackLink href="/posts" label="← 모든 글 보기" />
+    </div>
+    <PostHeader post={post} />
     <Prose><Content /></Prose>
   </article>
-  <footer class="mt-16">
-    <BackLink href="/" label="모든 글 보기" />
-  </footer>
 </BaseLayout>
-
