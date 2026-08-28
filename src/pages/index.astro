@@ -1,14 +1,31 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import HomeIntro from '../components/HomeIntro.astro';
+import KnowledgeMap from '../components/KnowledgeMap.astro';
 import PostList from '../components/PostList.astro';
-import { getVisiblePosts } from '../lib/posts';
+import SectionHead from '../components/SectionHead.astro';
+import { getMapPosts, getVisiblePosts } from '../lib/posts';
 
 const posts = await getVisiblePosts();
+const mapPosts = await getMapPosts();
 ---
 
 <BaseLayout title="블로그" description="읽고 만든 것을 기록한다.">
-  <h1 class="text-h2 leading-tight">읽고 만든 것을 기록합니다.</h1>
-  <div class="mt-12 max-w-content">
-    <PostList posts={posts} />
-  </div>
+  <HomeIntro />
+  {
+    mapPosts.length > 0 && (
+      <section>
+        <SectionHead title="앞세운 글" note={`${mapPosts.length}편`} />
+        <div class="mt-4">
+          <KnowledgeMap posts={mapPosts} />
+        </div>
+      </section>
+    )
+  }
+  <section class="mt-[clamp(4.5rem,12vw,9rem)] max-w-[680px]">
+    <SectionHead title="모든 글" note={posts.length > 0 ? '최신순' : undefined} />
+    <div class="mt-4">
+      <PostList posts={posts} />
+    </div>
+  </section>
 </BaseLayout>
