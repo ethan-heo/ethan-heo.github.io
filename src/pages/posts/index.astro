@@ -68,6 +68,8 @@ const countLabel = `총 ${posts.length}편`;
     const listRegion = region.querySelector<HTMLElement>('[data-od-id="post-list-region"]');
 
     const sortButton = region.querySelector<HTMLButtonElement>('[data-od-id="sort-toggle"]');
+    const sortIconDesc = region.querySelector<SVGElement>('[data-od-id="sort-icon-desc"]');
+    const sortIconAsc = region.querySelector<SVGElement>('[data-od-id="sort-icon-asc"]');
     const list = region.querySelector<HTMLElement>('[data-od-id="post-list"]');
 
     const pagination = region.querySelector<HTMLElement>('[data-od-id="pagination"]');
@@ -112,6 +114,10 @@ const countLabel = `총 ${posts.length}편`;
           state.oldestFirst ? '최신순으로 정렬' : '오래된 순으로 정렬',
         );
       }
+
+      // 보이는 화살표 하나가 현재 정렬을 알린다.
+      if (sortIconDesc) sortIconDesc.toggleAttribute('hidden', state.oldestFirst);
+      if (sortIconAsc) sortIconAsc.toggleAttribute('hidden', !state.oldestFirst);
 
       items.forEach((item, id) => {
         item.hidden = !shown.has(id);
