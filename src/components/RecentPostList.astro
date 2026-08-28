@@ -1,0 +1,46 @@
+---
+import type { Post } from '../lib/posts';
+import { toPostUrl } from '../lib/posts';
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+
+// 날짜 표기는 PostCard와 같은 2026.08.27 형태로 맞춘다.
+const dateFormat = new Intl.DateTimeFormat('ko-KR', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+const toDateLabel = (date: Date) =>
+  dateFormat.format(date).replace(/\. ?/g, '.').replace(/\.$/, '');
+---
+
+{
+  posts.length > 0 && (
+    <ul class="border-b border-border" aria-label="최신 글부터" data-od-id="recent-post-list">
+      {posts.map((post) => (
+        <li class="border-t border-border">
+          <a
+            href={toPostUrl(post)}
+            aria-labelledby={`post-line-title-${post.id}`}
+            class="group flex items-baseline gap-6 py-4 no-underline"
+            data-od-id={`post-line-${post.id}`}
+          >
+            <h3
+              id={`post-line-title-${post.id}`}
+              class="min-w-0 flex-1 truncate text-body leading-tight text-fg group-hover:text-accent"
+            >
+              {post.data.title}
+            </h3>
+            <p class="font-mono text-[0.7rem] leading-meta whitespace-nowrap text-muted">
+              <time datetime={post.data.date.toISOString()}>{toDateLabel(post.data.date)}</time>
+            </p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
