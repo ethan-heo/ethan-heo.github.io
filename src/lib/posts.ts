@@ -1,4 +1,4 @@
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
 
 export type Post = CollectionEntry<'posts'>;
 
@@ -45,6 +45,23 @@ const IGNORED_IN_BODY = /(```[\s\S]*?```|`[^`]*`|!?\[[^\]]*\]\([^)]*\)|[#>*_~\-|
 export function getReadingMinutes(post: Post): number {
   const letters = (post.body ?? '').replace(IGNORED_IN_BODY, '').length;
   return Math.max(1, Math.ceil(letters / CHARS_PER_MINUTE));
+}
+
+/**
+ * 다 읽은 뒤 이어서 볼 글을 돌려준다.
+ * 지정하지 않았거나 그 글이 노출 대상이 아니면 `undefined`를 돌려준다.
+ */
+export async function getRelatedPost(post: Post): Promise<Post | undefined> {
+  const related = post.data.related;
+  if (!related) return undefined;
+
+  const target = await getEntry(related);
+  // 참조가 깨져도 Astro는 빌드를 멈추지 않으므로 여기서 막는다.
+  if (!target) {
+    throw new Error(`${post.id}의 related가 가리키는 글을 찾을 수 없다: ${related.id}`);
+  }
+
+  return isVisible(target) ? target : undefined;
 }
 
 /** 발행일과 파일명으로 `2026/08/hello-blog` 형태의 주소 조각을 만든다. */

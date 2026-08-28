@@ -1,4 +1,4 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection, reference, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 const posts = defineCollection({
@@ -13,6 +13,8 @@ const posts = defineCollection({
     mapOrder: z.number().int().positive().optional(),
     /** 지식 맵 노드에 붙는 영역 이름. 태그와 별개다. */
     category: z.string().optional(),
+    /** 다 읽은 뒤 이어서 볼 글. 존재하지 않는 글을 적으면 빌드가 멈춘다. */
+    related: reference('posts').optional(),
   }),
 });
 
