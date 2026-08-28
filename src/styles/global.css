@@ -11,6 +11,8 @@
   --color-muted: oklch(51% 0.025 260);
   --color-border: oklch(88% 0.018 260);
   --color-accent: oklch(50% 0.14 215);
+  /* 지식 맵의 강조 노드와 노드 호버 배경에만 쓴다. */
+  --color-soft: oklch(93% 0.035 215);
 
   --color-on-accent: oklch(98% 0.008 95);
   --color-code-bg: color-mix(in oklch, var(--color-surface) 88%, var(--color-fg));
@@ -54,6 +56,7 @@
   --color-muted: oklch(72% 0.018 260);
   --color-border: oklch(34% 0.025 260);
   --color-accent: oklch(76% 0.13 205);
+  --color-soft: oklch(29% 0.045 215);
   --color-on-accent: oklch(17% 0.018 260);
 }
 
