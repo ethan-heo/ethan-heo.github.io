@@ -9,7 +9,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
@@ -20,6 +21,7 @@
     "esbuild": true
   },
   "devDependencies": {
-    "github-slugger": "^2.0.0"
+    "github-slugger": "^2.0.0",
+    "sharp": "^0.35.4"
   }
 }
