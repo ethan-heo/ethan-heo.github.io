@@ -71,11 +71,12 @@ export async function getRelatedPost(post: Post): Promise<Post | undefined> {
   return isVisible(target) ? target : undefined;
 }
 
-/** 발행일과 파일명으로 `2026/08/hello-blog` 형태의 주소 조각을 만든다. */
+/**
+ * 글이 놓인 폴더 경로를 그대로 주소 조각으로 쓴다.
+ * `post.id`가 `src/content/posts` 기준 상대 경로이므로 발행일을 덧붙이지 않는다.
+ */
 export function toSlugPath(post: Post): string {
-  const year = String(post.data.date.getFullYear());
-  const month = String(post.data.date.getMonth() + 1).padStart(2, '0');
-  return `${year}/${month}/${post.id}`;
+  return post.id;
 }
 
 /** 글 본문 페이지의 절대 경로를 돌려준다. */
