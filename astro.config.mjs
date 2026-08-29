@@ -38,6 +38,15 @@ function headingAnchors() {
   };
 }
 
+/** `400`이나 `400px` 형태만 폭으로 받는다. 읽을 수 없으면 `null`을 돌려준다. */
+function parseWidth(value) {
+  const matched = /^\s*(\d+)\s*(?:px)?\s*$/.exec(value);
+  if (!matched) return null;
+
+  const width = Number(matched[1]);
+  return width > 0 ? width : null;
+}
+
 /**
  * 이미지 링크의 title 자리에 적은 `w=400`을 읽어 표시 폭과 가운데 정렬을 넣는다.
  * 이 자리는 이미지 파일이 만들어진 뒤라 파일 크기는 달라지지 않는다.
@@ -52,7 +61,13 @@ function imageWidth() {
         const title = node.properties?.title;
         if (typeof title !== 'string' || !title.startsWith('w=')) return;
 
-        const width = Number.parseInt(title.slice(2).trim(), 10);
+        const width = parseWidth(title.slice(2));
+
+        if (width === null) {
+          // 폭을 못 읽었다고 이미지를 지울 수는 없으므로 알리고 그대로 둔다.
+          console.warn(`[image-width] 폭으로 읽을 수 없는 값이라 무시한다: "${title}"`);
+          return;
+        }
 
         // `setProperty`로는 속성을 지울 수 없어 `title`을 뺀 노드로 갈아 끼운다.
         const { title: _dropped, ...rest } = node.properties;
@@ -62,7 +77,8 @@ function imageWidth() {
           tagName: 'img',
           properties: {
             ...rest,
-            style: `max-width: ${width}px; display: block; margin-inline: auto;`,
+            // 인라인 선언이 `.prose img`의 규칙을 이기므로 본문 폭을 넘지 않게 여기서 함께 묶는다.
+            style: `max-width: min(${width}px, 100%); display: block; margin-inline: auto;`,
           },
           children: [],
         };
