@@ -19,7 +19,7 @@ keyPoint: true
 - 프론트매터는 빌드할 때 검증된다.
 - `draft: true`인 글은 개발 서버에서만 보인다.
 
-![글 폴더와 이미지가 나란히 놓인 구조](./folder-structure.png)
+![글 폴더와 이미지가 나란히 놓인 구조](./folder-structure.webp)
 
 ```ts
 const posts = await getCollection('posts');

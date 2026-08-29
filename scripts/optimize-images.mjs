@@ -6,7 +6,7 @@
  *   npm run images                    글 전체
  *   npm run images -- <글 폴더 경로>   그 글만
  */
-import { readdir, rename, stat, unlink } from 'node:fs/promises';
+import { readFile, readdir, rename, stat, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
@@ -35,6 +35,31 @@ async function collectImages(dir) {
   return found;
 }
 
+/**
+ * 바뀐 파일을 가리키는 참조를 같은 폴더의 `index.md`에서 새 확장자로 고친다.
+ * 다른 글의 본문은 건드리지 않는다.
+ */
+async function updateReferences(before, after) {
+  const post = path.join(path.dirname(before), 'index.md');
+  const body = await readFile(post, 'utf8').catch(() => null);
+  if (body === null) return;
+
+  const oldName = path.basename(before);
+  const newName = path.basename(after);
+  // `./이름.png`와 `이름.png` 양쪽을 받되 앞에 다른 경로 조각이 붙은 것은 건너뛴다.
+  const pattern = new RegExp(`(\\]\\(\\.?/?)${escapeForRegExp(oldName)}(\\))`, 'g');
+  const updated = body.replace(pattern, `$1${newName}$2`);
+
+  if (updated === body) return;
+
+  await writeFile(post, updated);
+  console.log(`  참조 갱신: ${post}`);
+}
+
+function escapeForRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 /** 이미지 하나를 WebP로 바꾸고 원본을 지운다. */
 async function convert(file) {
   const target = path.join(path.dirname(file), `${path.basename(file, path.extname(file))}.webp`);
@@ -51,6 +76,7 @@ async function convert(file) {
   await rename(`${target}.tmp`, target);
 
   console.log(`변환: ${file} (${width}px) -> ${target}`);
+  await updateReferences(file, target);
   return target;
 }
 
