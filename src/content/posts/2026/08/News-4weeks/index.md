@@ -5,7 +5,6 @@ summary: 2026. 08 넷째주에 읽었던 글을 소개합니다.
 tags:
   - CSS
   - Frontend
-draft: true
 keyPoint: true
 ---
 
