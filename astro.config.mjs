@@ -89,6 +89,7 @@ function imageWidth() {
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://ethan-heo.github.io',
   markdown: {
     // 두 테마의 색을 함께 내보내고 전환은 global.css에서 처리한다.
     shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' } },
