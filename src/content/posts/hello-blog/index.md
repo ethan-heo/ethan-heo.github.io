@@ -5,6 +5,6 @@ summary: 마크다운으로 글을 쓰고 정적 페이지로 내보내는 환�
 tags:
   - 기록
   - astro
-draft: false
+draft: true
 keyPoint: true
 ---
