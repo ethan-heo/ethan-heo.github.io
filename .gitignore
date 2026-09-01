@@ -23,11 +23,8 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# 계획서 (로컬 보관)
-docs/plans/
-
-# PRD (로컬 보관)
-docs/prds/
+# 문서 (로컬 보관)
+docs/
 
 # Obsidian files
 .obsidian/
