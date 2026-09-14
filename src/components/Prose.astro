@@ -7,6 +7,72 @@
   <slot />
 </div>
 
+<script>
+  import mermaid from 'mermaid';
+
+  let renderSequence = 0;
+
+  function currentTheme() {
+    return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default';
+  }
+
+  async function renderDiagrams() {
+    const prose = document.querySelector<HTMLElement>('[data-od-id="prose"]');
+    if (!prose) return;
+
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'strict',
+      theme: currentTheme(),
+    });
+
+    const blocks = prose.querySelectorAll<HTMLElement>(
+      'pre[data-language="mermaid"], .mermaid-diagram',
+    );
+
+    for (const block of blocks) {
+      const source = block.dataset.mermaidSource ?? block.textContent?.trim();
+      if (!source) continue;
+
+      const id = `mermaid-diagram-${renderSequence++}`;
+      try {
+        const { svg } = await mermaid.render(id, source);
+        if (block.matches('.mermaid-diagram')) {
+          block.innerHTML = svg;
+        } else {
+          const diagram = document.createElement('div');
+          diagram.className = 'mermaid-diagram';
+          diagram.dataset.mermaidSource = source;
+          diagram.setAttribute('role', 'img');
+          diagram.setAttribute('aria-label', 'Mermaid 다이어그램');
+          diagram.innerHTML = svg;
+          block.replaceWith(diagram);
+        }
+      } catch (error) {
+        console.error('[mermaid] 다이어그램을 렌더링하지 못했습니다.', error);
+      }
+    }
+  }
+
+  function startMermaid() {
+    void renderDiagrams();
+
+    const observer = new MutationObserver(() => {
+      void renderDiagrams();
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startMermaid, { once: true });
+  } else {
+    startMermaid();
+  }
+</script>
+
 <style is:global>
   /* 본문만 좁은 밀도를 쓴다. 전역 토큰을 바꾸면 다른 화면까지 함께 작아진다. */
   .prose {
@@ -137,6 +203,20 @@
   /* Shiki가 배경색을 인라인 스타일로 넣으므로 토큰 값으로 덮는다. */
   .prose pre.astro-code {
     background-color: var(--color-code-bg) !important;
+  }
+
+  .prose .mermaid-diagram {
+    overflow-x: auto;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    padding: 1rem;
+  }
+
+  .prose .mermaid-diagram svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-inline: auto;
   }
 
   /* 두 테마의 색을 함께 내보내므로 다크에서만 글자 색을 바꿔 준다. */
