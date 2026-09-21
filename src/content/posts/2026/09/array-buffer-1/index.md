@@ -3,8 +3,6 @@ title: ArrayBuffer - PNG 파일 분석
 date: 2026-08-27
 summary: PNG 파일을 바이트 그대로 읽어 청크 구조를 훑고, 이미지의 가로·세로 크기와 색상 정보를 꺼내는 프로그램을 만들기
 tags:
-  - 기록
-  - astro
   - JavaScript
   - ArrayBuffer
   - PNG
