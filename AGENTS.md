@@ -1,77 +1,37 @@
-## Development
+# 프로젝트 지침
 
-When starting the dev server, use background mode:
+## 게시글
 
-```
-astro dev --background
-```
+- 글은 `src/content/posts/<이름>/index.md`에 둔다. 이미지는 글과 같은 폴더에 둔다.
+- 공부한 내용을 정리하고 나중에 다시 찾아볼 수 있는 글로 쓴다. 책 소개나 장별 요약보다 이해한 개념, 직접 확인한 내용, 다시 볼 기준을 남긴다.
+- 결론과 핵심 내용을 먼저 쓰고 근거, 예제, 배운 점을 이어서 쓴다. 같은 내용을 표현만 바꿔 반복하지 않는다.
+- 개인 기록처럼 담백하게 쓴다. 홍보 문구, 과장된 표현, 기계적인 요약, 불필요한 도입과 맺음말을 넣지 않는다.
+- `몇 장에서는 무엇을 다룬다`, 절 번호, 책 범위 표, 다음 장 예고는 본문과 요약에 쓰지 않는다. 연재 글을 구분하는 제목과 경로의 장 번호는 유지할 수 있다.
+- 실습을 위해 만든 상황은 실제 경험처럼 쓰지 않는다. `실습에서는`, `예제로 가정했다`처럼 성격을 분명히 밝힌다.
+- 표의 제목과 행 이름은 내용만 읽어도 뜻을 알 수 있게 쓴다. 코드 변수명, 수식 기호, 인물 이름은 비교에 꼭 필요할 때만 사용한다.
+- 사실, 코드, 전문용어, 확신의 정도를 바꾸지 않는다. 원문에 없는 경험이나 근거를 만들지 않는다.
+- 번역투, 긴 관형절, 과도한 명사화와 피동 표현을 피한다. 처음 읽는 사람이 다시 읽어야 하는 문장은 문장 구조를 고친다.
 
-Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+## 이미지
 
-## Documentation
+- 본문에서는 이미지를 상대 경로로 참조한다: `![대체 텍스트](./이름.webp)`.
+- 표시 폭은 링크 제목에 `w=`로 적는다: `![대체 텍스트](./이름.webp "w=400")`.
+- 새 이미지를 넣은 뒤 `npm run images -- <글 폴더 경로>`를 실행한다. 원본은 최대 폭 1360px WebP로 바뀐다.
+- 움직이는 GIF, 이미 조건을 만족하는 WebP, 외부 URL 이미지는 변환하지 않는다.
 
-Full documentation: https://docs.astro.build
+## 검증
 
-Consult these guides before working on related tasks:
+- 게시글을 수정한 뒤 문장 흐름, 용어 통일, 표의 헤더와 내용을 처음부터 끝까지 확인한다.
+- 마크다운이나 프런트매터만 바꿔도 `npm run build`를 실행한다.
+- 빌드가 실패하면 핵심 오류와 수정 내용을 보고한다. 기존 경고는 새 오류와 구분한다.
 
-- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
-- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
-- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
-- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
-- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+## 개발 서버
 
-## Posts and Images
-
-글은 `src/content/posts/<이름>/index.md`에 둔다. 파일 하나로 두지 않고 폴더를 만드는 이유는 이미지를 같은 자리에 보관하기 위해서다. Astro의 id 생성 규칙이 끝의 `/index`를 잘라내므로 폴더로 바꿔도 글 주소는 파일 이름을 그대로 쓸 때와 같다.
-
-이미지는 글과 같은 폴더에 두고 본문에서 상대 경로로 참조한다.
-
-```markdown
-![대체 텍스트](./이름.webp)
-```
-
-이미지 폭을 줄이고 싶으면 링크 title 자리에 `w=` 표기를 쓴다. 폭을 지정한 이미지는 가로 가운데에 놓인다.
-
-```markdown
-![대체 텍스트](./이름.webp "w=400")
-```
-
-`w=400px`처럼 단위를 붙여도 되고 앞뒤 공백은 무시한다. 숫자로 읽을 수 없는 값이나 0 이하 값은 빌드 로그에 경고를 남기고 폭을 적용하지 않는다. `w=`로 시작하지 않는 문구는 그대로 툴팁이 된다. 본문 폭보다 큰 값을 적어도 본문을 넘지 않는다.
-
-이 표기는 화면에 보이는 폭만 바꾼다. 만들어지는 이미지 파일은 여전히 최대 폭 1360px 하나다.
-
-`src/` 안에 있어야 빌드할 때 Astro가 WebP 변환과 해시 파일명을 적용한다. `public/`에 두면 그대로 복사만 되므로 쓰지 않는다.
-
-글 주소는 `src/content/posts` 아래의 폴더 경로를 그대로 따른다. 발행일은 주소에 넣지 않는다.
-
-| 글 위치 | 주소 |
-| --- | --- |
-| `hello-blog/index.md` | `/posts/hello-blog` |
-| `2026/8월/뉴스/index.md` | `/posts/2026/8월/뉴스` |
-
-경로의 각 조각은 Astro의 slug 규칙을 거쳐 소문자로 낮아지고 공백은 하이픈이 된다. `2026. 08 News - 4 weeks`처럼 마침표와 하이픈이 섞인 이름은 `2026-08-news---4-weeks`가 되어 하이픈이 겹치므로, 폴더 이름은 주소에 그대로 드러난다는 점을 염두에 두고 짓는다.
-
-저장소에 커밋되는 원본은 빌드가 줄여 주지 않는다. 이미지를 넣은 뒤 아래 명령을 돌려 최대 폭 1360px WebP로 바꾼다. 원본은 지워지고 본문의 상대 경로 참조도 새 확장자로 함께 바뀐다.
-
-```
-npm run images                    # 글 전체
-npm run images -- <글 폴더 경로>   # 그 글만
-```
-
-움직이는 GIF, 이미 기준을 만족하는 WebP, 외부 URL 참조는 건드리지 않는다. 바꾸려는 이름의 `.webp`가 이미 있으면 덮어쓰지 않고 오류로 멈춘다.
+- 개발 서버는 `astro dev --background`로 실행한다.
+- 상태 확인과 종료에는 `astro dev status`, `astro dev logs`, `astro dev stop`을 사용한다.
 
 ## Git
 
-브랜치를 합칠 때 머지 커밋을 만들지 않는다. `--no-ff`를 쓰지 않으며, 기능 브랜치를 상위 브랜치에 반영할 때는 먼저 상위 브랜치 위로 리베이스한 뒤 fast-forward로 합친다. 히스토리는 항상 한 줄로 유지한다.
-
-```
-git checkout <기능 브랜치>
-git rebase <상위 브랜치>
-git checkout <상위 브랜치>
-git merge --ff-only <기능 브랜치>
-```
-
-기본 브랜치인 `main`에는 사용자가 명시적으로 지시했을 때만 합친다. 계획서의 구현 항목을 모두 끝냈다는 사실은 머지를 승인한 것이 아니다. 구현이 끝나면 작업 브랜치를 그대로 남겨 둔 채 완료 사실과 브랜치 이름을 알리고, 합칠지 여부는 사용자의 답을 받아 결정한다. 기능 브랜치를 `feature/<주제>` 같은 상위 작업 브랜치에 합치는 일은 이 제한을 받지 않는다.
-
-작업 브랜치를 지우는 일도 사용자의 지시를 받은 뒤에 한다. 머지하지 않은 브랜치는 물론이고 이미 합친 브랜치도 임의로 지우지 않는다.
+- 기본 브랜치 `main`에는 사용자가 명시적으로 지시했을 때만 합친다.
+- 기능 브랜치는 상위 브랜치로 리베이스한 뒤 `git merge --ff-only`로 합친다. 머지 커밋을 만들지 않는다.
+- 작업 브랜치는 합친 뒤에도 사용자의 지시 없이 삭제하지 않는다.
