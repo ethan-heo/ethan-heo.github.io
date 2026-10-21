@@ -8,3 +8,5 @@ tags:
 draft: true
 keyPoint: true
 ---
+AI와 함께 작성한 글입니다.
+
