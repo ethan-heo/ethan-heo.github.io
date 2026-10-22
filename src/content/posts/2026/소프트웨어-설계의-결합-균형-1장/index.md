@@ -2,7 +2,7 @@
 title: 결합은 지식이다, 소프트웨어 설계의 결합 균형 1장
 category: 소프트웨어 설계
 date: 2026-09-30
-summary: 결합을 구성요소가 주고받는 지식으로 보고, 티켓 목록 컴포넌트에 얽힌 공유된 지식과 암묵적 지식을 각자 맡을 곳으로 옮겨 봤다.
+summary: 구성요소가 서로 알아야 하는 지식을 찾아보고, 티켓 목록 컴포넌트가 API·저장소·상태 관리의 세부 사항을 직접 알지 않도록 경계를 다시 잡았다.
 tags:
   - 독서
   - 소프트웨어_설계
@@ -13,167 +13,116 @@ keyPoint: true
 ---
 AI와 함께 작성한 글입니다.
 
-'소프트웨어 설계의 결합 균형'을 읽으며 가장 기억에 남은 문장은 **결합은 지식**이라는 설명이었다. 두 구성요소가 함께 동작하려면 서로에 관해 알아야 한다. 이때 주고받는 지식이 곧 결합이다.
+결합을 줄이려고 파일부터 나누면 무엇을 고쳐야 하는지 판단하기 어렵다. 먼저 구성요소가 함께 동작하려고 어떤 지식을 공유하는지 적어야 한다.
 
-예를 들어 티켓 목록 컴포넌트가 API를 호출한다면 요청 주소와 매개변수, 응답 구조를 알아야 한다. 컴포넌트는 이 지식만큼 API와 결합한다. `수명주기`는 구성요소를 함께 테스트하고 배포하고 관리해야 하는 기간을 말한다. 결합을 무조건 없애기보다 어떤 지식을 어디에서 맡을지 정하는 일이 먼저다.
+예를 들어 티켓 목록 화면이 API를 직접 호출하면 화면은 API 경로, 응답 구조, 정렬 규칙, 인증 정보가 저장된 위치, 상태 관리 액션의 형태를 모두 알아야 한다. 이 지식이 화면에 모여 있으면 API 응답이나 인증 방식을 바꿀 때 화면도 함께 바뀐다.
 
-책의 설명을 티켓 목록 코드에 적용해 봤다.
+이번 글의 질문은 하나다.
 
-## 티켓 정보를 보여주는 컴포넌트
+> 화면이 알아야 할 지식과 다른 모듈이 맡아야 할 지식을 어떻게 나눌까?
 
-아래 컴포넌트는 API에서 티켓을 받아 정렬한 뒤 화면에 보여 준다.
+## 화면이 직접 알고 있던 것
+
+처음 코드는 화면 안에서 요청, 변환, 상태 업데이트, 렌더링을 모두 처리한다.
 
 ```tsx
-'use client';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { formatDate } from '@/features/customer/utils/formatDate';
-
 export function TicketList() {
   const [tickets, setTickets] = useState<any[]>([]);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const agentId = localStorage.getItem('wd_agent_id');
+    const agentId = localStorage.getItem("wd_agent_id");
     axios
       .get(`https://api.wolfdesk.io/v2/tickets?assignee=${agentId}&status=OPEN`)
       .then((res) => {
-        const sorted = res.data.items.sort((a: any, b: any) => a.priority - b.priority);
+        const sorted = res.data.items.sort(
+          (a: any, b: any) => a.priority - b.priority,
+        );
         setTickets(sorted);
-        dispatch({ type: 'tickets/loaded', payload: res.data.items });
+        dispatch({ type: "tickets/loaded", payload: res.data.items });
       });
   }, []);
 
-  return (
-    <ul className="ticket-list">
-      {tickets.map((t) => (
-        <li key={t.ticket_id} className={t.priority === 1 ? 'urgent' : ''}>
-          <strong>{t.subject}</strong>
-          <span>{t.customer.email}</span>
-          <time>{formatDate(t.created_at)}</time>
-        </li>
-      ))}
-    </ul>
-  );
+  return tickets.map((ticket) => <span>{ticket.customer.email}</span>);
 }
 ```
 
-이 코드에서 컴포넌트가 직접 아는 지식은 다음과 같다.
+화면이 티켓을 보여 주는 기능만 맡는 것처럼 보이지만, 실제로는 API와 저장소의 구현 세부까지 알고 있다. 이 코드를 개선하는 방법은 모두 같은 방향을 가리킨다. 지식마다 바뀔 가능성이 가장 높은 모듈이 맡게 한다.
 
-- API 도메인, 버전, 경로와 응답 구조
-- API가 받는 조회 조건
-- `priority`가 낮을수록 우선순위가 높다는 규칙
-- `created_at`의 날짜 형식
+실습에서는 먼저 화면이 아는 내용을 하나씩 적었다. API 주소와 응답 필드는 눈에 보였지만, `wd_agent_id`라는 저장 키와 `tickets/loaded` 액션의 payload처럼 코드 여러 곳이 암묵적으로 맞춰야 하는 규칙도 있었다. 파일을 나누기 전에 이 목록을 만든 덕분에 무엇을 어느 경계로 옮겨야 하는지 정할 수 있었다.
 
-코드에 바로 드러나지 않지만 동작에 영향을 주는 지식도 있다.
+## 바뀌는 결정을 API 모듈에 맡기기
 
-- 현재 상담원 ID는 `wd_agent_id`라는 키로 `localStorage`에 저장한다.
-- 리듀서는 `tickets/loaded` 액션과 원본 응답 구조를 기대한다.
-- `Array.prototype.sort`는 원본 배열을 바꾼다.
-- `formatDate`는 `created_at`의 형식에 의존한다.
-
-앞의 항목은 구성요소가 상호작용하려고 함께 아는 `공유된 지식`이다. 뒤의 항목은 코드를 읽을 때 바로 보이지 않는 `암묵적 지식`이다. 이 지식들이 화면 컴포넌트 한 곳에 모여 있으니 변경 이유가 다른 코드도 함께 바뀌게 된다.
-
-## HTTP 요청 방식 감추기
-
-컴포넌트가 Axios 사용법까지 알 필요는 없다. HTTP 클라이언트를 따로 두면 Axios를 다른 라이브러리로 바꿔도 화면 코드는 영향을 받지 않는다.
+API 도메인, 버전, 서버 필드 이름, 정렬 기준은 티켓 API 모듈이 맡는다. 화면에는 실제로 사용하는 `Ticket`만 반환한다.
 
 ```ts
-import axios from 'axios'
-
-const API_DOMAIN = 'https://api.wolfdesk.io'
-const API_VERSION = 'v2'
-
-export const httpClient = {
-	get: <ReturnType>(url) => {
-		return axios.get<ReturnType>(`${API_DOMAIN}/${API_VERSION}${url}`)
-	}
-	// ...
-}
-```
-## 상담원 ID를 읽는 곳 모으기
-
-상담원 ID는 지금 `localStorage`에 있지만 나중에는 세션 쿠키에서 읽을 수도 있다. 저장 위치를 함수 안에 감추면 인증 방식이 바뀌어도 이 함수를 쓰는 쪽은 그대로 둘 수 있다.
-
-```ts
-export const getCurrentAgentId = () => {
-	return localStorage.getItem('wd_agent_id')
-}
-```
-## API 지식을 한곳에 모으기
-
-경로와 조회 조건, 응답 구조, 정렬 기준, 날짜 변환은 API 모듈이 맡는다. 화면에서는 서버의 필드 이름 대신 화면에서 쓸 `Ticket`만 알면 된다.
-
-```ts
-import { httpClient } from '@/shared/api/httpClient';
-import { getCurrentAgentId } from '@/features/auth';
-import type { Ticket } from '../model/ticket';
-
 type TicketDto = {
-  ticket_id: string; subject: string; priority: number;
-  created_at: string; customer: { email: string };
+  ticket_id: string;
+  subject: string;
+  priority: number;
+  created_at: string;
+  customer: { email: string };
 };
 
-const toTicket = (d: TicketDto): Ticket => ({
-  id: d.ticket_id,
-  subject: d.subject,
-  customerEmail: d.customer.email,
-  createdAt: new Date(d.created_at),
-  isUrgent: d.priority === 1,
+type Ticket = {
+  id: string;
+  subject: string;
+  customerEmail: string;
+  createdAt: Date;
+  isUrgent: boolean;
+};
+
+const toTicket = (dto: TicketDto): Ticket => ({
+  id: dto.ticket_id,
+  subject: dto.subject,
+  customerEmail: dto.customer.email,
+  createdAt: new Date(dto.created_at),
+  isUrgent: dto.priority === 1,
 });
 
 export async function fetchMyOpenTickets(): Promise<Ticket[]> {
   const agentId = getCurrentAgentId();
-  const { data } = await httpClient.get<{ items: TicketDto[] }>('/tickets', {
-    params: { assignee: agentId, status: 'OPEN' },
+  const { data } = await httpClient.get<{ items: TicketDto[] }>("/tickets", {
+    params: { assignee: agentId, status: "OPEN" },
   });
+
   return [...data.items]
     .sort((a, b) => a.priority - b.priority)
     .map(toTicket);
 }
 ```
-## 상태 관리를 훅으로 분리하기
 
-API 호출과 상태 업데이트는 커스텀 훅으로 옮겼다. 컴포넌트에는 티켓을 가져오는 절차 대신 받아서 보여 주는 코드만 남는다.
+이제 서버가 `created_at`을 `opened_at`으로 바꾸거나 날짜 변환 방식을 바꿔도 화면은 알 필요가 없다. 화면과 API 사이에 공유되는 지식은 `fetchMyOpenTickets`의 반환 계약으로 줄어든다.
+
+처음에는 요청 코드만 `httpClient`로 옮기면 충분하다고 생각했다. 하지만 화면이 여전히 `ticket_id`, `created_at`, `priority`를 읽고 있으면 서버 구조에 대한 지식은 그대로 남는다. 요청과 함께 응답 변환까지 API 모듈이 맡아야 화면의 결합이 실제로 줄었다.
+
+## 환경 지식은 작은 함수로 감추기
+
+상담원 ID를 `localStorage`에서 읽는다는 사실도 화면의 기능과는 관계가 없다.
 
 ```ts
-import { fetchMyOpenTickets } from '@/features/tickets/api/ticketApi.ts'
-import { useDispatch } from 'react-redux';
-
-export const useMyOpenTickets = () => {
-	const [tickets, setTickets] = useState([])
-	
-	useEffect(() => {
-		fetchMyOpenTickets().then((items) => {
-			setTickets(items)
-			dispatch({ type: 'tickets/loaded', payload: res.data.items });
-		})
-	}, [])
-	
-	return tickets
+export function getCurrentAgentId(): string | null {
+  return localStorage.getItem("wd_agent_id");
 }
 ```
 
-## 화면 컴포넌트에 남은 코드
+나중에 세션 쿠키나 인증 상태 관리 모듈로 바꾸더라도 호출부는 그대로 둘 수 있다. 같은 방식으로 Axios 사용법도 `httpClient` 안에 감춘다. 중요한 것은 파일을 나누는 행위가 아니라, 변경 이유가 같은 지식을 한곳에 모으는 일이다.
 
-지식을 각각 맡을 곳으로 옮기고 나니 컴포넌트에는 렌더링에 필요한 코드만 남았다.
+## 화면에 남길 계약
+
+데이터를 가져오고 변환하는 책임을 옮긴 뒤 화면은 렌더링에 필요한 값만 안다.
 
 ```tsx
-import { useMyOpenTickets } from '@/features/tickets';
-import { formatDateTime } from '@/shared/lib/date';
-import styles from './TicketList.module.css';
-
 export function TicketList() {
   const tickets = useMyOpenTickets();
-  
+
   return (
-    <ul className={styles.list}>
-      {tickets.map((t) => (
-        <li key={t.id} data-urgent={t.isUrgent}>
-          <strong>{t.subject}</strong>
-          <span>{t.customerEmail}</span>
-          <time>{formatDateTime(t.createdAt)}</time>
+    <ul>
+      {tickets.map((ticket) => (
+        <li key={ticket.id} data-urgent={ticket.isUrgent}>
+          <strong>{ticket.subject}</strong>
+          <span>{ticket.customerEmail}</span>
+          <time>{formatDateTime(ticket.createdAt)}</time>
         </li>
       ))}
     </ul>
@@ -181,8 +130,13 @@ export function TicketList() {
 }
 ```
 
-## 마무리
+화면이 더 단순해진 이유는 결합이 사라졌기 때문이 아니다. API와 인증 방식에 관한 지식을 각 모듈 안에 감추고 화면에는 공개 계약만 남겼기 때문이다. 결합은 없애는 대상이라기보다, 어떤 구성요소가 어떤 지식을 맡을지 정하는 기준이다.
 
-그동안은 “결합도는 낮고 응집도는 높아야 한다”는 문장을 먼저 떠올렸다. 그래서 코드를 보면 무엇을 나눌지부터 고민했고, 나눈 뒤에도 이게 맞는지 판단하기 어려웠다.
+## 다시 볼 기준
 
-결합을 지식으로 바꿔 생각하니 기준이 조금 선명해졌다. 먼저 구성요소가 무엇을 알아야 함께 동작하는지 적고, 그 지식을 맡을 곳을 정하면 된다. 결합은 없애야 할 문제가 아니라 상호작용에 필요한 도구다. 다만 한 구성요소가 알 필요 없는 지식까지 떠안지 않도록 경계를 정해야 한다.
+다음에 컴포넌트가 복잡해 보이면 먼저 파일을 나누지 않고 다음을 묻는다.
+
+- 이 구성요소가 알아야 하는 지식은 무엇인가?
+- 그 지식은 화면의 기능인가, 다른 모듈의 구현 방식인가?
+- 변경될 가능성이 높은 결정은 어느 경계 안에 둘 것인가?
+- 화면에 남겨야 할 공개 계약은 어디까지인가?
