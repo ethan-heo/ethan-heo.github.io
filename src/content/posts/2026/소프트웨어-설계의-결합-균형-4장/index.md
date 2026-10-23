@@ -35,7 +35,37 @@ AI와 함께 작성한 글입니다.
 
 필드를 지운다고 정보 은닉이 끝나지는 않는다. 화면이 내리던 결정을 모듈 안으로 옮겨야 변경 범위가 실제로 줄어든다.
 
-모듈의 조건을 판별하는 실습에서는 처음에 호출할 수 있는 함수만 있으면 모듈로 봤다. 그러자 로직이 드러나 있거나 독립적으로 교체할 수 없는 코드도 모듈로 분류됐다. 또 맥락을 `!!context`로 검사해 빈 배열도 맥락이 있는 것으로 처리했다. 기능뿐 아니라 로직 은닉, 맥락, 교체 가능성을 함께 확인해야 한다는 점을 구현 오류로 확인했다.
+모듈의 조건을 판별하는 실습에서는 처음에 호출할 수 있는 함수만 있으면 모듈로 봤다. 그러자 로직이 드러나 있거나 독립적으로 교체할 수 없는 코드도 모듈로 분류됐다. 또 맥락을 `!!context`로 검사해 빈 배열도 맥락이 있는 것으로 처리했다. 기능뿐 아니라 로직 은닉, 맥락, 교체 가능성을 함께 확인해야 했다.
+
+조건을 모두 검사하도록 고친 뒤에도 문제가 남았다. 각 분기에서 `isModule`을 `true`나 `false`로 바꾸면 뒤의 분기가 앞의 판정을 덮을 수 있다. 검사 조건이 늘어날 때마다 분기 순서까지 알아야 하는 구조였다.
+
+수정한 구현은 각 조건에서 판정하지 않고 누락 항목과 공개 지식만 모은다.
+
+```ts
+export function assessModule(descriptor: ModuleDescriptor): ModuleAssessment {
+  const missing: MissingModuleProperty[] = [];
+  const publicKnowledge: string[] = [];
+
+  if (descriptor.publicFunction?.callable) {
+    publicKnowledge.push(descriptor.publicFunction.name);
+  } else {
+    missing.push("function");
+  }
+
+  if (descriptor.context?.length) {
+    publicKnowledge.push(...descriptor.context);
+  } else {
+    missing.push("context");
+  }
+
+  if (!descriptor.isLogicHidden) missing.push("hiddenLogic");
+  if (!descriptor.independentlyReplaceable) missing.push("replaceability");
+
+  return { isModule: missing.length === 0, missing, publicKnowledge };
+}
+```
+
+모든 검사를 마친 뒤 `missing.length === 0`으로 `isModule`을 한 번만 계산한다. 이제 검사 순서를 바꿔도 판정과 누락 목록이 어긋나지 않는다. 여러 속성이 동시에 빠졌을 때도 모든 누락 항목을 반환해야 하므로 첫 실패에서 바로 반환하지 않았다. 이 변경은 실습 테스트 6개와 4장 타입 검사를 통과했다.
 
 ## 화면이 전송 결정을 내리지 않게 하기
 
@@ -83,7 +113,7 @@ export function createTicketNotifier(port: TransportPort) {
 }
 ```
 
-화면은 `ticketId`와 `requesterName`만 넘긴다. 전송이 실시간으로 끝났는지 나중에 처리되는지는 결과의 `delivery`로 알 수 있지만, 어떤 전송 기술을 썼는지는 알 필요가 없다. 필수 결과를 숨기지 않으면서 구현 결정을 숨긴 것이다.
+화면은 `ticketId`와 `requesterName`만 넘긴다. 전송이 실시간으로 끝났는지 나중에 처리되는지는 결과의 `delivery`로 알 수 있지만, 어떤 전송 기술을 썼는지는 알 필요가 없다. 필수 결과는 남기고 구현 결정만 숨겼다.
 
 결과를 줄일 때는 `attempts`를 빼고 `delivery`를 남겼다. 재시도 횟수는 전송 정책의 세부 사항이므로 화면에 필요하지 않다. 반면 `delivery`를 없애면 화면은 실시간 전송 여부를 알기 위해 모듈 내부를 봐야 한다. 정보를 적게 공개하는 것보다 사용하는 쪽이 실제로 필요한 정보를 정확히 공개하는 편이 중요했다.
 
@@ -121,7 +151,7 @@ type TicketQueueFilter = {
 
 반대로 필터 모듈에 정렬, 배지 표시, CSV 열 구성까지 넣으면 관련 없는 책임이 섞인다. 모듈 밖의 지식은 줄었지만 모듈 안의 응집도는 낮아진다.
 
-따라서 모듈을 평가할 때는 두 질문을 함께 사용한다.
+모듈을 평가할 때는 두 질문을 함께 사용한다.
 
 - 사용하는 쪽이 꼭 알아야 하는 기능과 결과를 공개했는가?
 - 함께 바뀌는 결정만 모듈 안에 모았는가?
