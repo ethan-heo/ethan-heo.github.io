@@ -23,7 +23,7 @@ AI와 함께 작성한 글입니다.
 
 ## 화면이 직접 알고 있던 것
 
-처음 코드는 화면 안에서 요청, 변환, 상태 업데이트, 렌더링을 모두 처리한다.
+문제 상황에서는 화면 안에서 요청, 변환, 상태 업데이트, 렌더링을 모두 처리한다.
 
 ```tsx
 export function TicketList() {
@@ -94,7 +94,7 @@ export async function fetchMyOpenTickets(): Promise<Ticket[]> {
 
 이제 서버가 `created_at`을 `opened_at`으로 바꾸거나 날짜 변환 방식을 바꿔도 화면은 알 필요가 없다. 화면과 API 사이에 공유되는 지식은 `fetchMyOpenTickets`의 반환 계약으로 줄어든다.
 
-처음에는 요청 코드만 `httpClient`로 옮기면 충분하다고 생각했다. 하지만 화면이 여전히 `ticket_id`, `created_at`, `priority`를 읽고 있으면 서버 구조에 대한 지식은 그대로 남는다. 요청과 함께 응답 변환까지 API 모듈이 맡아야 화면의 결합이 실제로 줄었다.
+요청 코드만 `httpClient`로 옮기는 것만으로는 충분하지 않다. 화면이 여전히 `ticket_id`, `created_at`, `priority`를 읽고 있으면 서버 구조에 대한 지식은 그대로 남는다. 요청과 함께 응답 변환까지 API 모듈이 맡아야 화면의 결합이 실제로 줄어든다.
 
 ## 환경 지식은 작은 함수로 감추기
 
