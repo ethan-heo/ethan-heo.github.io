@@ -11,6 +11,7 @@ tags:
   - typescript
 draft: false
 keyPoint: true
+related: 2026/소프트웨어-설계의-결합-균형-4장
 ---
 AI와 함께 작성한 글입니다.
 
