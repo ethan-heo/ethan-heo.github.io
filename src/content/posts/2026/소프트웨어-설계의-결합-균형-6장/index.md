@@ -9,7 +9,7 @@ tags:
   - 공생성
   - 모듈성
   - typescript
-draft: true
+draft: false
 keyPoint: true
 ---
 AI와 함께 작성한 글입니다.
